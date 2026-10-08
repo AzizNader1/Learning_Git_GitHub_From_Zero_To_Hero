@@ -1,1221 +1,1004 @@
-# Git & GitHub: From Zero to Hero
+# The Complete Git and GitHub Mastery Guide
 
-![Guide](https://img.shields.io/badge/guide-zero--to--hero-blue)
-![Level](https://img.shields.io/badge/level-beginner%20%E2%86%92%20master-green)
-![Updated](https://img.shields.io/badge/updated-2026-orange)
-![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen)
-![License](https://img.shields.io/badge/license-CC--BY--4.0-lightgrey)
+## From Absolute Zero to Professional Mastery - Every Line Explained
 
-> **The complete, step-by-step, no-experience-required guide to version control.**
->
-> Start knowing nothing. Finish thinking in commits, branches, pull requests, and CI pipelines.
->
-> **Zero → functional in one day. Zero → master with practice over a few weeks.**
+> This single document is a complete course. It takes you from "I have never heard of version control" to "I can build, branch, collaborate, automate, and ship real applications with Git and GitHub." Every concept is explained word by word, every command is explained line by line, and every command output is decoded so you understand exactly what your computer is doing at all times.
 
 ---
 
-## Who This Guide Is For
+## About This Guide
 
-- You have **never used Git or GitHub** in your life, and words like *commit*, *push*, *pull request* sound intimidating.
-- You have *tried* Git before, got burned by a merge conflict or a scary error message, and quietly went back to emailing yourself `project_final_v3_REALLYFINAL.zip`.
-- You know a handful of commands but copy-paste them blindly and want to actually **understand** what they do.
-- You want to collaborate like professional developers do: branches, pull requests, code reviews, and automated tests.
+Welcome. If you have arrived here knowing nothing at all about Git or GitHub, you are in exactly the right place, and you should read this guide from the very top to the very bottom in order. If you already know a little, you can skim the early chapters, but be warned: this guide builds like a staircase, where every chapter stands on the one before it, so skipping steps may leave gaps that confuse you later.
 
-No programming knowledge is required. Every concept is explained from first principles, every command comes with a realistic example **and** its expected terminal output, and every chapter ends with a **"Your Turn"** exercise you can do right now on your own machine.
+This guide was written around three promises:
 
----
+1. **Zero assumed knowledge.** We start from the absolute beginning: what version control is, why it exists, and where Git and GitHub came from. You do not need to be a programmer to read Parts A through E. You only need a computer and curiosity.
+2. **Every line explained.** Every command you are asked to type is followed by an "Anatomy of the command" breakdown that explains each word, each flag, and each symbol. Every command output is followed by a "What just happened" section that decodes every line of the output, including the parts that look like gibberish at first.
+3. **From theory to a shipped application.** By the end you will not just "know about" Git and GitHub. You will have used them the way professional teams do: branching, committing, opening pull requests, running automated tests, and deploying a real, working application to a live public URL.
 
-## What You Will Learn
+The guide is organized into eight parts, plus two reference appendices:
 
-By the end of this guide you will be able to:
+- **Part A - The Foundations:** What Git and GitHub are, their history, what they give you, why you should use them, and how Git actually works internally.
+- **Part B - Getting Set Up:** Installing Git on every operating system, configuring it, and connecting it to GitHub securely.
+- **Part C - Git Fundamentals:** The daily core loop of status, add, and commit; commit messages; inspecting history; and ignoring files.
+- **Part D - Branching and Merging:** Branches, merges, merge conflicts, rebasing, stashing, and tagging.
+- **Part E - GitHub and Collaboration:** Remotes, pushing and pulling, pull requests, forking, and contributing to open source.
+- **Part F - Advanced Git:** Undoing anything, cherry-picking, bisect, hooks, aliases, submodules, and a tour inside Git's internals.
+- **Part G - Automation with GitHub Actions:** Continuous integration and continuous deployment, with every line of every automation file explained.
+- **Part H - Mastery and the Real World:** A full capstone project where we build and ship a real application, team workflows, best practices, a troubleshooting encyclopedia, interview questions, and your roadmap forward.
 
-1. Explain what version control is and why every developer on Earth relies on it.
-2. Install and configure Git on Windows, macOS, or Linux, and connect it securely to GitHub.
-3. Create repositories, track changes, and write professional commit messages.
-4. Branch, merge, and resolve merge conflicts without fear (or data loss).
-5. Push your work to GitHub, open pull requests, and review other people's code.
-6. Use advanced tools: `rebase`, `cherry-pick`, `bisect`, `stash`, `reflog`, hooks, submodules.
-7. Automate anything with GitHub Actions (CI/CD), including tests, builds, and deploys.
-8. Recover from disasters: deleted branches, bad merges, force-pushes, corrupted repos.
-9. Contribute to open-source projects with proper etiquette.
-10. Build a real, deployed portfolio website end-to-end using everything above.
+Read it in order. Type every command yourself. By the end, you will have knowledge that most working professionals use every single day of their careers.
 
 ---
 
 ## How to Use This Guide
 
-**Read in order.** Each chapter assumes you have done the previous one. Concepts stack: you cannot understand a pull request without first understanding branches, and you cannot understand branches without first understanding commits.
+Before you start, learn the visual conventions used in every chapter. They never change, so learning them once will make every code block in this guide instantly readable.
 
-**Type the commands yourself.** Reading `git commit -m "..."` is not the same as typing it. Muscle memory matters. Every command in this guide is meant to be run on your own machine in a real terminal.
-
-**Do the exercises.** Each chapter ends with a **"Your Turn"** section. Skipping them is like reading about swimming without ever getting in the water.
-
-**Refer back.** Chapters 14 (Cheat Sheet) and 15 (Troubleshooting) are designed to be searched, not read. When you hit an error in three months, jump there.
-
-### Conventions Used
-
-| Style | Meaning |
-|---|---|
-| `inline code` | A command, file name, or literal text you type exactly. |
-| ```bash ... ``` | A terminal block. Lines starting with `$ ` you type; lines without `$ ` are output. Lines starting with `# ` are comments — do not type them. |
-| > Blockquote | A note, warning, or aside from the author. |
-| **Bold** | Important term introduced for the first time. |
-| *Italics* | Emphasis. |
-
-### The Six Commands That Cover 90% of Daily Git
-
-If you only learn six commands today, learn these. The rest of the guide explains them properly:
+**Convention 1 - Commands you type.** When you see a code block containing lines starting with the dollar sign `$`, the text after the `$` is a command that you type into your terminal:
 
 ```bash
-git status          # What changed? What's staged? What branch am I on?
-git add <file>      # Stage changes (tell Git "I want to save this next")
-git commit -m "..." # Save a snapshot with a message
-git push            # Upload commits to GitHub
-git pull            # Download commits from GitHub
-git log --oneline   # See the history of commits
+$ git status
 ```
 
-### The Learning Roadmap
+You type `git status` (without the dollar sign and without the space). The `$` is only a symbol representing your terminal's prompt, which is the blinking cursor that waits for your input. In many places this guide will also show commands without the `$` so that comments can be added to the right of them, like this:
 
-| Stage | Chapters | What you can do at the end |
-|---|---|---|
-| 🌱 Beginner | 0 – 2 | Talk about Git, install it, make your first commits. |
-| 🌿 Intermediate | 3 – 6 | Branch, merge, push to GitHub, open a pull request. |
-| 🌳 Advanced | 7 – 9 | Rebase, recover from disasters, automate with CI/CD. |
-| 🎯 Mastery | 10 – 13 | Use GUIs, follow best practices, build real projects, contribute to open source. |
-| 📚 Reference | 14 – 16 | Find any command, fix any error, find what to learn next. |
+```bash
+git status    # Ask Git: "What is the current state of my files?"
+```
+
+In that style, everything after the `#` symbol is a comment. A comment is text written for humans that the computer ignores. The `#` comment exists purely to teach you what that part of the command means.
+
+**Convention 2 - Output you receive.** Code blocks labeled `text` show what your computer prints back to you. You never type these; Git prints them. After most important outputs, you will find a "What just happened (line by line)" section that translates each output line into plain English.
+
+**Convention 3 - Anatomy of the command.** For every significant new command, you get a word-by-word breakdown. For example, later you will learn that in `git commit -m "message"`, the word `git` is the program, `commit` is the subcommand (the specific action), `-m` is a flag meaning "here is my message inline," and `"message"` is the value passed to that flag. Nothing is left unexplained.
+
+**Convention 4 - Try it yourself.** Boxes like the one below mark hands-on moments. Reading about Git is like reading about swimming: useless until you get in the water.
+
+> **Try it yourself:** Do not just read the commands in this guide. Open a terminal, create a practice folder, and type them. Your fingers learn what your eyes only think they know.
+
+**Convention 5 - Practice files.** In Parts C and D we will work inside a practice repository that you will create and destroy yourself, so nothing can go wrong. Later, Part H builds a real application. You can also re-read any chapter using its Table of Contents link.
+
+A final promise before we begin: Git has a reputation for being confusing, and honestly, parts of it are strange. But almost everything confusing about Git becomes clear once you understand one simple picture: **files move through three areas on your computer, and every command you will ever learn is just moving files between those areas (or between your computer and GitHub).** Chapter 7 will teach you that picture, and it will be your mental map for the entire rest of the guide.
 
 ---
 
 ## Table of Contents
 
-- [Chapter 0 — The Big Picture: What, Why, and History](#chapter-0--the-big-picture-what-why-and-history)
-  - [0.1 What Is Version Control?](#01-what-is-version-control)
-  - [0.2 A Brief History of Version Control](#02-a-brief-history-of-version-control)
-  - [0.3 What Is Git?](#03-what-is-git)
-  - [0.4 What Is GitHub?](#04-what-is-github)
-  - [0.5 Git vs GitHub](#05-git-vs-github)
-  - [0.6 What Git Provides You](#06-what-git-provides-you)
-  - [0.7 Why You Should Use Git & GitHub](#07-why-you-should-use-git--github)
-  - [0.8 How Git Thinks (Four Mental Models)](#08-how-git-thinks-four-mental-models)
-  - [0.9 Vocabulary You Will See Everywhere](#09-vocabulary-you-will-see-everywhere)
-  - [0.10 Your Turn](#010-your-turn)
-- [Chapter 1 — Installation & First Setup](#chapter-1--installation--first-setup)
-- [Chapter 2 — Git Fundamentals: Your First Repository](#chapter-2--git-fundamentals-your-first-repository)
-- [Chapter 3 — Git Internals: What's Actually Inside `.git`](#chapter-3--git-internals-whats-actually-inside-git)
-- [Chapter 4 — Branching and Merging](#chapter-4--branching-and-merging)
-- [Chapter 5 — Remotes and Publishing to GitHub](#chapter-5--remotes-and-publishing-to-github)
-- [Chapter 6 — The GitHub Collaboration Workflow](#chapter-6--the-github-collaboration-workflow)
-- [Chapter 7 — Undoing Things and Disaster Recovery](#chapter-7--undoing-things-and-disaster-recovery)
-- [Chapter 8 — Intermediate to Advanced Git](#chapter-8--intermediate-to-advanced-git)
-- [Chapter 9 — GitHub Actions: Automation for Everyone](#chapter-9--github-actions-automation-for-everyone)
-- [Chapter 10 — GUI Clients, Tools & Editor Integrations](#chapter-10--gui-clients-tools--editor-integrations)
-- [Chapter 11 — Best Practices and Conventions](#chapter-11--best-practices-and-conventions)
-- [Chapter 12 — Guided Real-World Projects](#chapter-12--guided-real-world-projects)
-- [Chapter 13 — Open-Source Contribution Workflow](#chapter-13--open-source-contribution-workflow)
-- [Chapter 14 — The Complete Cheat Sheet](#chapter-14--the-complete-cheat-sheet)
-- [Chapter 15 — Troubleshooting and FAQ](#chapter-15--troubleshooting-and-faq)
-- [Chapter 16 — Resources, Glossary & Next Steps](#chapter-16--resources-glossary--next-steps)
+### Part A - The Foundations
+
+- [Chapter 1: Welcome and How to Use This Guide](#chapter-1-welcome-and-how-to-use-this-guide) - What you will learn and how the guide is structured
+- [Chapter 2: What Are Git and GitHub?](#chapter-2-what-are-git-and-github) - The two tools, explained word by word, and how they differ
+- [Chapter 3: The History of Git and GitHub](#chapter-3-the-history-of-git-and-github) - Linux, BitKeeper, a ten-day sprint, and a 7.5 billion dollar acquisition
+- [Chapter 4: What Git and GitHub Give You](#chapter-4-what-git-and-github-give-you) - Every benefit, mapped to a real situation you will face
+- [Chapter 5: Why You Should Use Git and GitHub](#chapter-5-why-you-should-use-git-and-github) - Seven honest reasons, plus the common objections answered
+- [Chapter 6: Understanding Version Control](#chapter-6-understanding-version-control) - Local, centralized, and distributed systems compared
+- [Chapter 7: How Git Works Under the Hood](#chapter-7-how-git-works-under-the-hood) - Snapshots, the three areas, hashes, and why branches are cheap
+
+### Part B - Getting Set Up
+
+- [Chapter 8: Installing Git on Windows, macOS, and Linux](#chapter-8-installing-git-on-windows-macos-and-linux) - Every step of installation, plus a terminal primer for absolute beginners
+- [Chapter 9: First-Time Configuration](#chapter-9-first-time-configuration) - Telling Git who you are, with every setting explained
+- [Chapter 10: GitHub Account and SSH Connection](#chapter-10-github-account-and-ssh-connection) - Creating your account and connecting securely with SSH keys
+
+### Part C - Git Fundamentals
+
+- [Chapter 11: Your First Repository](#chapter-11-your-first-repository) - `git init` and `git clone`, and what actually happens
+- [Chapter 12: The Core Daily Loop](#chapter-12-the-core-daily-loop) - `git status`, `git add`, `git commit` - the loop you will use forever
+- [Chapter 13: Writing Great Commit Messages](#chapter-13-writing-great-commit-messages) - Conventional Commits, atomic commits, and amending
+- [Chapter 14: Inspecting History with log, show, and diff](#chapter-14-inspecting-history-with-log-show-and-diff) - Reading history and understanding every diff symbol
+- [Chapter 15: The .gitignore File](#chapter-15-the-gitignore-file) - Controlling exactly what Git tracks and ignores
+
+### Part D - Branching and Merging
+
+- [Chapter 16: Branches](#chapter-16-branches) - Creating, switching, renaming, and deleting branches
+- [Chapter 17: Merging Branches](#chapter-17-merging-branches) - Fast-forward and three-way merges decoded
+- [Chapter 18: Merge Conflicts: The Complete Walkthrough](#chapter-18-merge-conflicts-the-complete-walkthrough) - A real conflict, created, understood, and resolved
+- [Chapter 19: Rebasing](#chapter-19-rebasing) - Rewriting history safely, plus interactive rebase
+- [Chapter 20: Stashing](#chapter-20-stashing) - Saving unfinished work for later
+- [Chapter 21: Tagging](#chapter-21-tagging) - Marking releases with semantic versions
+
+### Part E - GitHub and Collaboration
+
+- [Chapter 22: Remotes: push, pull, and fetch](#chapter-22-remotes-push-pull-and-fetch) - Connecting local work to GitHub, every word explained
+- [Chapter 23: The Pull Request Workflow](#chapter-23-the-pull-request-workflow) - The professional way to merge work, end to end
+- [Chapter 24: Forking and Open Source Contributions](#chapter-24-forking-and-open-source-contributions) - Contributing to projects you do not own
+- [Chapter 25: GitHub Power Features](#chapter-25-github-power-features) - Issues, Projects, Wiki, Gists, Releases, Pages, security, and the GitHub CLI
+
+### Part F - Advanced Git
+
+- [Chapter 26: Undoing Anything in Git](#chapter-26-undoing-anything-in-git) - restore, reset, revert, and the reflog time machine
+- [Chapter 27: Precision Tools: cherry-pick, bisect, and grep](#chapter-27-precision-tools-cherry-pick-bisect-and-grep) - Surgical tools for exact jobs
+- [Chapter 28: Hooks and Aliases](#chapter-28-hooks-and-aliases) - Automating checks and typing less
+- [Chapter 29: Submodules](#chapter-29-submodules) - One repository inside another
+- [Chapter 30: Inside the .git Directory](#chapter-30-inside-the-git-directory) - A guided tour that removes all the mystery
+
+### Part G - Automation with GitHub Actions
+
+- [Chapter 31: GitHub Actions from Zero](#chapter-31-github-actions-from-zero) - What CI/CD is, and your first automated workflow
+- [Chapter 32: Building a Real CI Pipeline](#chapter-32-building-a-real-ci-pipeline) - A professional test pipeline, line by line
+- [Chapter 33: Continuous Deployment](#chapter-33-continuous-deployment) - Automatic deployment to GitHub Pages and real servers
+
+### Part H - Mastery and the Real World
+
+- [Chapter 34: Capstone Project: Build and Ship a Real Application](#chapter-34-capstone-project-build-and-ship-a-real-application) - The full professional workflow, from `git init` to a live URL
+- [Chapter 35: Team Workflows](#chapter-35-team-workflows) - GitHub Flow, Git Flow, and trunk-based development
+- [Chapter 36: Best Practices and Golden Rules](#chapter-36-best-practices-and-golden-rules) - The habits of people who never lose work
+- [Chapter 37: Troubleshooting Encyclopedia](#chapter-37-troubleshooting-encyclopedia) - Every common error, decoded and fixed
+- [Chapter 38: Git Interview Questions and Answers](#chapter-38-git-interview-questions-and-answers) - Prove your knowledge to yourself and to employers
+- [Chapter 39: Your Roadmap to Mastery](#chapter-39-your-roadmap-to-mastery) - Practice plan, resources, and what comes next
+
+### Appendices
+
+- [Appendix A: Complete Command Reference](#appendix-a-complete-command-reference) - Every command in this guide, grouped by purpose
+- [Appendix B: Glossary](#appendix-b-glossary) - Every term, defined in one line
 
 ---
 
+## Part A: The Foundations
 
-# Chapter 0 — The Big Picture: What, Why, and History
+Everything in this guide rests on the concepts in Part A. Do not skip it, even if you are eager to type commands. The five minutes you spend understanding *why* Git works the way it does will save you hours of confusion later, because most Git confusion is really "I never learned the mental model" confusion.
 
-> **Goal of this chapter:** Before touching a single command, you should be able to explain *what* version control is, *why* it exists, *how* it evolved, and *what* Git and GitHub actually are — to a friend who has never heard of them.
+### Chapter 1: Welcome and How to Use This Guide
 
-This chapter is intentionally command-free. Read it on the bus, in bed, or while waiting for your code to compile. Everything here is conceptual scaffolding that will make the commands in later chapters feel obvious rather than arbitrary.
+#### 1.1 What You Will Be Able to Do at the End
 
----
+By the last page of this guide, the following sentences will be boringly true about you. Read them now as a preview of your future skill set, and notice that each one currently has a chapter waiting for it:
 
-## 0.1 What Is Version Control?
+- You can explain what version control is, and why every software team on Earth uses it.
+- You can create a repository, track changes, and read your project's full history like a story.
+- You can branch, merge, rebase, and resolve conflicts without fear.
+- You can connect a local project to GitHub, push it, and clone it anywhere else.
+- You can open, review, and merge pull requests like a professional collaborator.
+- You can contribute to open source projects through forking.
+- You can write automated pipelines that test and deploy your code on every push.
+- You can recover from mistakes that used to make people delete the repository and start over.
 
-**Version control** is a system that records changes to a file or set of files over time, so that you can recall specific versions later.
+That last point deserves emphasis, because it is the quiet reason professionals trust Git so much: **in this guide you will learn that in Git, almost nothing is ever truly lost**, and you will prove it to yourself by digging "deleted" work back out of the reflog in Chapter 26.
 
-That is the entire definition. Everything else — Git, GitHub, branches, pull requests — is just engineering on top of this single idea.
+#### 1.2 The Philosophy of This Guide
 
-### The problem it solves
+Most Git tutorials fail beginners in one of two ways. The first kind teaches commands only: "type this, then this, then this." The learner obeys, produces the right output, and understands nothing, so the first error message destroys them. The second kind teaches theory only: directed acyclic graphs of commit objects, and the learner can lecture about internals but cannot save a file.
 
-You have written an essay. You save it as `essay.docx`. You make some edits, then realise you deleted a paragraph you actually needed. You:
+This guide refuses both shortcuts. For every command, you will learn three layers: what it does (the behavior), why it exists (the design reason), and how to read its output (the feedback). Understanding output matters more than beginners expect, because Git talks to you constantly; if you cannot read what it says, you are working blind.
 
-1. Hit **Ctrl+Z** fifty times hoping to recover it.
-2. Realise you also saved and closed the file. Ctrl+Z no longer works.
-3. Search your email for `essay_v2.docx`, `essay_v2_final.docx`, `essay_v2_REAL_FINAL.docx`, `essay_v2_FINAL_I_PROMISE.docx` …
-4. Cry a little.
+#### 1.3 How to Practice
 
-Now multiply this by:
-- Multiple files (a website has hundreds).
-- Multiple people editing the same files at the same time.
-- A history going back years.
+Create a folder somewhere on your computer named `git-practice`. Every hands-on block in Parts C and D can be executed inside throwaway repositories inside that folder. Break things freely. Delete repositories. Invent conflicts on purpose. The absolute worst outcome of practicing Git is deleting a practice repository, which costs you nothing. The absolute worst outcome of not practicing Git is losing real work later, which can cost you a weekend.
 
-Without version control, this is chaos. With version control, every change is a discrete, named, timestamped, reversible step.
+#### 1.4 What You Need
 
-### The five questions version control answers
-
-A good version control system lets you answer these five questions at any time, for any file, instantly:
-
-1. **What changed?** — a precise, line-by-line diff
-2. **When?** — exact timestamp
-3. **Who?** — which author
-4. **Why?** — the commit message
-5. **How do I get back to a previous state?** — by checking out an older version
-
-If your current workflow cannot answer all five, you do not have version control — you have hope.
+- A computer running Windows, macOS, or Linux (Chapter 8 covers installing Git on all three).
+- Internet access, for creating a GitHub account and pushing code.
+- No programming knowledge is required until Part G, and even there every line is explained. If you can edit text files, you can follow this guide.
 
 ---
 
-## 0.2 A Brief History of Version Control
+### Chapter 2: What Are Git and GitHub?
 
-Knowing where Git came from will make its design feel less arbitrary. Many of Git's quirks are direct responses to problems earlier systems had.
+#### 2.1 The Problem Both Tools Were Built to Solve
 
-### The Pre-Version-Control Era (before 1970s)
-
-People literally kept source code on punched cards. "Undo" meant re-punching a corrected card. There was no concept of history — only the latest stack of cards existed. If you dropped the box, the project was gone.
-
-### First Generation: Local Diffs (1972 — SCCS)
-
-**SCCS** (Source Code Control System), built at Bell Labs by Marc Rochkind in 1972, was the first widely-used VCS. It stored deltas — the *differences* between versions — in a single file. To reconstruct version 47, you applied deltas 1→2→3→…→47 sequentially.
-
-**Limitation:** it worked on one file at a time, and only locally. There was no concept of "a project" or "a server".
-
-### Second Generation: Centralized (1982 — 1990)
-
-Two systems dominated the 1980s and 1990s:
-
-- **RCS** (Revision Control System, 1982) — improved SCCS, still single-file, still local.
-- **CVS** (Concurrent Versions System, 1986) and later **Subversion** (SVN, 2000) — introduced the **central server** model. Every developer had a working copy on their machine, but the canonical history lived on a single server. To commit, you had to talk to the server.
-
-**Centralized model:**
-
-```
-        [ Central Server ]
-        /       |        \
-   [ Alice ] [ Bob ] [ Carol ]
-   working   working  working
-    copy      copy     copy
-```
-
-**Strength:** conceptually simple. Everyone checks out from one source of truth.
-
-**Weakness:** the server is a single point of failure. If the server is down, nobody can commit. If the server's disk dies and there is no backup, the entire project history is gone. Working offline is impossible.
-
-In 2002, the Linux kernel team started using a proprietary VCS called **BitKeeper**. It was distributed, fast, and free for open-source use. Things were good — for a while.
-
-### The BitKeeper Schism (April 2005)
-
-In 2005, BitMover (the company behind BitKeeper) revoked the free license for the Linux community after some community members tried to reverse-engineer the protocol. Linus Torvalds, the creator of Linux, found himself unable to use BitKeeper and unwilling to go back to CVS.
-
-On **3 April 2005**, Linus announced he would build a replacement. He had three non-negotiable requirements:
-
-1. **Distributed** — every clone is a full backup, with full history.
-2. **Fast** — diffing and branching must be cheaper than the competition.
-3. **Ironclad integrity** — it must be cryptographically impossible to silently corrupt history.
-
-He also wanted it done quickly. He started coding on **3 April 2005**. He announced the first self-hosting version on **7 April 2005** — four days later. The first official release, **Git 1.0**, came out in **December 2005**.
-
-The name "git" is British slang for an unpleasant person. Linus joked: *"I'm an egotistical bastard, and I name all my projects after myself. First Linux, now Git."* The man page defines `git` as "the stupid content tracker".
-
-### Third Generation: Distributed (2005 — today)
-
-Git was not the only distributed VCS, but it won. The other contenders were:
-
-- **Mercurial (hg)** — also born in 2005, in response to the BitKeeper schism. Cleaner design, easier to learn, but slower for huge repositories.
-- **Bazaar (bzr)** — Canonical/Ubuntu's entry, 2005. Powerful but slow.
-- **Darcs** — academic, elegant theory, never achieved wide adoption.
-
-Git won for three reasons:
-1. **Speed** — its data model (snapshots, not diffs) made common operations O(1).
-2. **The Linux kernel used it** — which gave it instant credibility and a huge contributor base.
-3. **GitHub (2008)** — gave it a social, friendly home that nobody else had. More on that below.
-
-### The GitHub Era (2008 — today)
-
-In 2008, three developers — **Tom Preston-Werner**, **Chris Wanstrath**, and **PJ Hyett** — launched **GitHub**, a web platform that hosted Git repositories and added collaboration features on top: pull requests, issues, code review, social following. Git was a tool for engineers; GitHub made it approachable for designers, writers, researchers, and students.
-
-By 2011, GitHub had overtaken SourceForge and Google Code. By 2018, Microsoft acquired GitHub for **$7.5 billion**. As of 2025, GitHub hosts over **200 million repositories** and is used by over **100 million developers**. It is the default place code lives on the internet.
-
----
-
-## 0.3 What Is Git?
-
-**Git** is a free, open-source, distributed version control system that runs on your computer. It is a command-line tool (though many GUIs wrap it) that records snapshots of your files and lets you navigate their history.
-
-Three properties make Git special:
-
-### 1. Distributed
-
-There is no "server" in the traditional sense. When you `git clone` a repository, you download the *entire history* of the project — every commit, every branch, every tag. Your local copy is a first-class citizen. You can commit, branch, merge, and explore history entirely offline.
-
-### 2. Snapshot-based, not delta-based
-
-Older systems (CVS, SVN, Perforce) stored *changes*: "line 17 was changed from `foo` to `bar`". To reconstruct file X at version 100, you applied 100 deltas in order.
-
-Git stores **snapshots**. Each commit is a complete picture of every file at that moment. Files that didn't change are not re-stored — Git just stores a pointer to the previous version. This makes branching and merging dramatically faster, because branches are not copies of files; they are just pointers to commits.
-
-```
-Older VCS (delta-based):
-  v1: file = "abc"
-  v2: delta: replace "b" with "B"        → reconstruct by applying deltas
-  v3: delta: insert "X" at position 0
-
-Git (snapshot-based):
-  v1: file = "abc"                        → full content stored
-  v2: file = "aBc"                        → full content stored (or pointer if unchanged)
-  v3: file = "XaBc"                       → full content stored
-```
-
-### 3. Cryptographic integrity
-
-Every object in Git — every blob, tree, commit — is identified by a **SHA-1 hash** (Git is migrating to SHA-256) of its content. If a single byte anywhere in the history is corrupted, the hashes will not match and Git will refuse to operate. This is why Git users say *"you can't lose history with Git"* — corruption is mathematically detectable.
-
-### What Git is NOT
-
-- Git is **not** a backup system (though it can be used as one). It tracks files you tell it to track.
-- Git is **not** GitHub. Git is the engine; GitHub is one of many websites that hosts Git repositories.
-- Git is **not** a deployment system. It deploys *code*, not running services (you need CI/CD for that — Chapter 9).
-- Git is **not** specifically for programmers. People use it to version novels, legal contracts, academic papers, configuration files, and even legislation.
-
----
-
-## 0.4 What Is GitHub?
-
-**GitHub** is a web platform (a company, owned by Microsoft since 2018) that hosts Git repositories in the cloud and adds collaboration features on top of bare Git.
-
-If Git is the engine of a car, GitHub is the road network: a shared place where everyone drives their Git-powered cars together. You can use Git perfectly well without GitHub (many teams use GitLab, Bitbucket, Gitea, or just a bare server). But GitHub is the most popular, and it adds significant value:
-
-| Feature | What it gives you |
-|---|---|
-| **Hosted repositories** | Your code lives on `github.com`, accessible from any browser. |
-| **Pull requests (PRs)** | A structured way to propose changes and review them before merging. |
-| **Issues** | A built-in bug tracker / to-do list. |
-| **Wiki & Pages** | Free documentation hosting and a free static website from your repo. |
-| **GitHub Actions** | A CI/CD platform — run tests, build, deploy automatically. |
-| **Forks** | A one-click way to copy someone else's repo into your account. |
-| **Code review** | Inline comments on diffs, approvals, requested changes. |
-| **GitHub CLI (`gh`)** | Do all of the above from the terminal. |
-| **Gists** | Tiny snippets you want to share quickly. |
-| **Projects** | A Kanban board for issues and PRs. |
-| **Codespaces** | A full VS Code environment running in the cloud, in seconds. |
-
-### Other Git hosting platforms (for context)
-
-| Platform | Owner | Distinctive feature |
-|---|---|---|
-| **GitLab** | GitLab Inc. | Built-in CI/CD, can self-host the entire platform. |
-| **Bitbucket** | Atlassian | Tight integration with Jira. |
-| **Gitea / Forgejo** | Open source | Lightweight, self-hosted, no vendor lock-in. |
-| **Codeberg** | Non-profit | Privacy-first, EU-based. |
-| **Azure DevOps** | Microsoft | Enterprise pipelines + boards, used by .NET teams. |
-
-You can switch between them — they all speak Git. Your `git push` command is the same; only the URL changes.
-
----
-
-## 0.5 Git vs GitHub
-
-People new to this world conflate Git and GitHub all the time. Here is the simplest way to keep them straight:
-
-| | Git | GitHub |
-|---|---|---|
-| What is it? | A tool (a program) | A website (a service) |
-| Where does it run? | On your computer | On servers in the cloud |
-| Who owns it? | The open-source community (maintained by the Git project) | Microsoft |
-| Do I need an account? | No — just install it | Yes — sign up at github.com |
-| Can I use it offline? | Yes — fully | No — needs internet |
-| Can I use it without the other? | Yes — try GitLab or your own server | No — GitHub only hosts Git repos |
-| What is its job? | Track file changes | Host Git repos and add collaboration features |
-
-A useful analogy: **Git is the recorder; GitHub is the radio station.** You can record music without ever going on air. But if you want people to hear it, the radio station is where you publish.
-
----
-
-## 0.6 What Git Provides You
-
-Let's get concrete. Here is what you actually get when you start using Git on a project:
-
-### 1. A time machine for your files
-
-You can move your entire project back to any point in its history with one command. You can compare today's version with last month's version, line by line. You can find out exactly when a bug was introduced and by whom.
-
-### 2. Safe experimentation with branches
-
-A **branch** is a parallel timeline. You can create a branch called `experiment-redesign`, do wildly destructive work on it, and your `main` branch stays untouched. If the experiment works, you merge it. If it doesn't, you delete the branch and nothing happened.
-
-### 3. A distributed backup
-
-Every clone of your repository contains the full history. If your laptop dies tomorrow, you `git clone` from GitHub and you are back where you were. If GitHub disappears tomorrow (it won't), you still have the full history on your laptop.
-
-### 4. The ability to collaborate without overwriting
-
-Git is built for parallel work. Alice and Bob can edit the same file at the same time. When they merge, Git combines their changes automatically if they touched different parts of the file. If they touched the same line, Git pauses and asks a human to decide — this is called a **merge conflict** (Chapter 4).
-
-### 5. An audit trail
-
-Every commit records author, timestamp, and message. Every line of code can be traced back to the commit that introduced it (`git blame`). If a regulator asks "who changed this code, when, and why?" — Git answers in seconds.
-
-### 6. A release management system
-
-You can tag commits: `v1.0`, `v1.1`, `v2.0`. Each tag is a fixed, named point in history. When you publish version 2.0, you tag the commit and the release is locked — anyone who checks out that tag gets the exact code you shipped.
-
-### 7. A foundation for automation
-
-Because commits are structured, machines can act on them. "When a commit lands on `main`, run the tests. If they pass, deploy to production." This is CI/CD, and it would be impossible without version control.
-
----
-
-## 0.7 Why You Should Use Git & GitHub
-
-If you are still wondering whether version control is worth the effort, here are the concrete reasons you should adopt Git and GitHub today:
-
-### For an individual developer
-
-- **You will never lose code again.** Every change is preserved; every deletion is reversible.
-- **You can experiment freely.** Branches let you try things without risk.
-- **You can work from any machine.** Push from your laptop, pull on your desktop, continue on a colleague's machine.
-- **Your portfolio becomes discoverable.** A GitHub profile with real projects is the modern CV for software roles.
-
-### For a team
-
-- **Parallel work without chaos.** Multiple developers can work on the same codebase simultaneously.
-- **Code review before merge.** Catch bugs and spread knowledge before code reaches `main`.
-- **Continuous integration.** Tests run automatically on every push; broken code is caught within minutes, not weeks.
-- **Onboarding is faster.** A new hire can read the commit history to understand *why* the code is the way it is, not just *what* it does.
-
-### For an open-source project
-
-- **Anyone can contribute.** Fork → branch → PR → review → merge. No access grants needed up-front.
-- **Transparent history.** Every decision is public and traceable.
-- **Distributed load.** Hundreds of contributors can submit changes; maintainers review and merge at their own pace.
-
-### For non-developers
-
-- **Writers** version manuscripts (the `git-book` community uses Git extensively).
-- **Lawyers** version contracts (every clause change is a commit).
-- **Researchers** version datasets and analysis scripts (reproducibility).
-- **Designers** version design files (with the right tools).
-- **Governments** version legislation (e.g., the US Code is on GitHub).
-
-Git is not just for code. It is for *any* file whose history matters.
-
----
-
-## 0.8 How Git Thinks (Four Mental Models)
-
-Git has a reputation for being confusing. The confusion usually comes from trying to use it without a mental model. Here are four models that, taken together, explain 95% of Git behaviour.
-
-### Model 1 — The Snapshot Chain
-
-A Git repository is a chain of **snapshots**. Each snapshot is a complete picture of every tracked file at one moment in time. Each snapshot remembers its parent(s). The chain of snapshots *is* the history.
-
-```
-Snapshot 1     Snapshot 2     Snapshot 3     Snapshot 4
-"Initial"  ←── "Add README" ←── "Fix typo" ←── "Add tests"
- (parent:∅)    (parent: 1)    (parent: 2)    (parent: 3)
-```
-
-To go "back in time", you just walk the parent pointers. There is no special "history" data structure — history *is* the chain.
-
-### Model 2 — The Three Areas
-
-Git tracks your files in three areas. Almost every Git confusion reduces to "which area is this in?".
-
-```
-┌──────────────────┐      ┌──────────────────┐      ┌──────────────────┐
-│  Working Directory│  ──> │  Staging Area    │  ──> │  Repository      │
-│                  │      │   (Index)        │      │   (commits)      │
-│  Your actual     │      │  "Next commit"   │      │  Saved snapshots │
-│  files on disk    │      │   is being built │      │  in .git/        │
-│                  │      │                  │      │                  │
-│  git status      │      │  git add         │      │  git commit      │
-│  git diff        │      │  git restore -S  │      │  git log         │
-└──────────────────┘      └──────────────────┘      └──────────────────┘
-        ▲                                                    │
-        │              git checkout / git restore             │
-        └────────────────────────────────────────────────────┘
-```
-
-| Area | Where it lives | What's in it | Command to inspect |
-|---|---|---|---|
-| Working directory | Your actual files on disk | The files you edit | `git status`, `git diff` |
-| Staging area (index) | `.git/index` | The *next* commit, being assembled | `git diff --staged` |
-| Repository | `.git/objects` | Saved commits, the immutable history | `git log`, `git show` |
-
-Commands move changes between these areas:
-- `git add` moves changes *from* working dir *to* staging.
-- `git commit` moves changes *from* staging *to* the repository.
-- `git checkout` / `git restore` moves changes *from* the repository *back to* the working dir.
-
-That's it. Master this triangle and 90% of Git clicks.
-
-### Model 3 — Branches Are Just Sticky Notes
-
-In older VCSs, a branch was a copy of the entire project. Slow and expensive.
-
-In Git, **a branch is just a small file containing a 40-character commit hash** — a sticky note pointing at the latest commit on that line of work. That's why creating or deleting a branch in Git takes microseconds: you're just moving a sticky note.
-
-```
-       (commit)──(commit)──(commit)   ← branch "main" points here
-                              ▲
-                              │
-                          [main]   ← a sticky note
-                          
-       (commit)──(commit)              ← branch "feature" points here
-                          ▲
-                          │
-                       [feature]  ← another sticky note
-```
-
-Creating a branch = adding a sticky note. Switching branches = moving your working directory to match what the sticky note points at. Merging a branch = moving the sticky note forward.
-
-### Model 4 — Distributed = Everyone Has Everything
-
-In a centralized VCS, only the server has the full history. In Git, every clone has the complete history — every commit, every branch, every tag.
-
-```
-       GitHub (origin)
-        │  ▲
-   push  │  │  pull
-        ▼  │
-   ┌────────────┐
-   │ Your laptop │  ← has full history
-   │ (local repo)│
-   └────────────┘
-        ▲  │
-   pull  │  │  push
-        │  ▼
-   ┌────────────┐
-   │ Coworker's  │  ← also has full history
-   │   laptop    │
-   └────────────┘
-```
-
-This means:
-- You can commit, branch, merge, and explore history offline.
-- Every clone is a backup.
-- You can have multiple remotes (your fork, the upstream project, a backup server) and sync between them.
-
----
-
-## 0.9 Vocabulary You Will See Everywhere
-
-You will see these words repeatedly from Chapter 1 onward. Skim them now; bookmark this section.
-
-| Term | Plain-English meaning |
-|---|---|
-| **Repository (repo)** | A folder Git is tracking. Contains your files and a hidden `.git` directory with all the history. |
-| **Working directory** | The actual files you see and edit on disk, right now. |
-| **Staging area / index** | The "shopping cart" of changes you have selected for the next commit. |
-| **Commit** | A saved snapshot, identified by a 40-character SHA-1 hash. |
-| **Hash (SHA)** | A fingerprint of a commit. e.g. `a1b2c3d4e5...`. Short forms (`a1b2c3d`) work in most commands. |
-| **Branch** | A movable pointer to a commit. Cheap to create, cheap to delete. |
-| **`HEAD`** | A special pointer that says "you are here". Points to the current branch. |
-| **Tag** | A *fixed* pointer to a specific commit. Used for releases: `v1.0`, `v2.3.7`. |
-| **Remote** | Another Git repository you sync with. Usually named `origin`. |
-| **`origin`** | The default name Git gives to the remote you cloned from. |
-| **`upstream`** | Convention: the *original* project's remote (when you forked). |
-| **Fork** | A server-side copy of someone else's repo, owned by you. GitHub concept, not Git. |
-| **Clone** | A local copy of a repo, including all its history. |
-| **Pull request (PR)** | A proposal: "please merge my branch into yours". GitHub concept, not Git. |
-| **Merge** | Combining two branches' histories. |
-| **Merge conflict** | When two branches changed the same lines and Git cannot auto-merge. |
-| **Rebase** | Replaying commits on top of another branch. (Chapter 8.) |
-| **Diff** | A line-by-line display of what changed between two versions. |
-| **Stash** | A temporary shelf for uncommitted changes. |
-| **Reflog** | A log of where `HEAD` has been — your safety net for "I messed up". |
-| **Hooks** | Scripts that run automatically before/after Git events (e.g. pre-commit). |
-| **Blame** | Show which commit last touched each line of a file. |
-| **Bisect** | Binary-search through commits to find which one introduced a bug. |
-| **Fast-forward** | A merge where the target branch just moves forward to the source commit, no merge commit needed. |
-| **Detached HEAD** | When `HEAD` points at a commit, not a branch. Usually happens when you check out an old commit. |
-| **Submodule** | A Git repo nested inside another Git repo. |
-| **Worktree** | Multiple working directories sharing the same `.git` directory. |
-
----
-
-## 0.10 Your Turn
-
-Before moving on, take five minutes to write down — in your own words — answers to these questions. Don't peek at the chapter above.
-
-1. What problem does version control solve, in one sentence?
-2. Name three things Git stores about each commit.
-3. What is the difference between Git and GitHub?
-4. Why is Git called "distributed"? What does that buy you?
-5. What are the three areas of Git, and what command moves changes *between* them?
-
-If you can answer all five without looking, you are ready for Chapter 1. If not, re-read the relevant section — the rest of the guide depends on these foundations.
-
-**Next up: Chapter 1 — Installation & First Setup.** We will install Git on your operating system, configure your identity, set up SSH keys, and connect your local Git to your GitHub account. By the end of Chapter 1 you will be ready to make your first commit.
-
----
----
-
-
-# Chapter 1 — Installation & First Setup
-
-> **Goal of this chapter:** Get Git installed on your computer, configure your identity, set up an SSH key, sign up for GitHub, and verify everything works. By the end of this chapter, you will be ready to create your first repository in Chapter 2.
-
-This chapter is mostly setup — once it's done, you never have to do it again. Take your time, follow every step, and verify each command's output before moving to the next.
-
----
-
-## 1.1 Installing Git
-
-Git runs on Windows, macOS, and Linux. Installation differs by operating system.
-
-### Windows
-
-The recommended installer is **Git for Windows**, which includes Git itself plus **Git Bash** — a Unix-style terminal that makes Windows behave like a real development environment.
-
-1. Go to <https://git-scm.com/download/win>. The download should start automatically.
-2. Run the installer. The defaults are sensible for a beginner. **Keep all defaults** unless you have a specific reason to change them. Notable options:
-   - **Default editor** — pick VS Code if installed, otherwise Notepad++.
-   - **"Use Git from the Windows Command Prompt"** — leave at default (lets you use `git` in PowerShell too).
-   - **Line ending conversions** — leave at "Checkout Windows-style, commit Unix-style" (`core.autocrlf=true`). This avoids the dreaded `LF will be replaced by CRLF` warning.
-3. After installation, open **Git Bash** from the Start menu. You should see a Unix-style prompt:
-   ```text
-   user@machine MINGW64 ~
-   $
-   ```
-
-### macOS
-
-The easiest way on macOS is via **Homebrew** (the de-facto macOS package manager).
-
-1. If you don't have Homebrew, install it first. Open Terminal and paste:
-   ```bash
-   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-   ```
-
-2. Then install Git:
-   ```bash
-   brew install git
-   ```
-
-If you don't want Homebrew, an alternative is to install **Xcode Command Line Tools** (which bundles Git):
-
-```bash
-xcode-select --install
-```
-
-A dialog will pop up; click **Install**. Wait. Done.
-
-### Linux (Debian/Ubuntu and derivatives)
-
-```bash
-sudo apt update
-sudo apt install git
-```
-
-For Fedora / RHEL:
-
-```bash
-sudo dnf install git
-```
-
-For Arch:
-
-```bash
-sudo pacman -S git
-```
-
-### Verifying the installation
-
-Open a terminal (Git Bash on Windows, Terminal on macOS/Linux) and run:
-
-```bash
-git --version
-```
-
-You should see something like:
+Imagine you are writing a document. You write a first version and save it as `report.doc`. The next day you change a paragraph, but you are not sure you will like the change, so you save a copy as `report_v2.doc`. A week later you have this folder:
 
 ```text
-git version 2.46.0
+report.doc
+report_v2.doc
+report_v2_FINAL.doc
+report_v2_FINAL_fixed.doc
+report_v2_FINAL_fixed_real_LAST_USE_THIS.doc
 ```
 
-If you see `command not found`, Git is not in your `PATH`. On Windows, install Git for Windows; on macOS/Linux, re-check the install steps above.
+Every person who has ever worked on a computer knows this folder. It raises questions that the folder cannot answer: What exactly changed between version 2 and version 3? Who made the change that broke everything? Can I get back the paragraph I deleted on Tuesday? Which file did I send to my boss?
+
+Now scale that folder to a software project: thousands of files, ten people editing the same files on the same days, on different computers, in different countries, with a live product that customers are using. The folder-of-copies approach collapses instantly. **Version control software was invented to replace that folder**, and Git is the version control software that won.
+
+#### 2.2 What Version Control Is, Word by Word
+
+The official description of Git is that it is a "distributed version control system." Every one of those four words is a lesson, so take them one at a time.
+
+- **Version:** A version is one complete state of your files at one moment in time. If your project has 10 files and you save all of them together, that combined state is one version. Think of a version as one photograph of your entire project.
+- **Control:** Control means management with intent. You decide when a new version is created, you give it a name and a message, and you can order, compare, and restore versions at will. You control the versions; they do not control you.
+- **System:** A system means it is a real program with rules, not a habit or a convention. It stores the versions somewhere structured, verifies their integrity, and gives you commands to operate on them.
+- **Distributed:** This is the special word that separates Git from older systems, and Chapter 6 is devoted to it. The short version: in Git, every person who works on a project holds a full copy of the entire history on their own machine, not just the latest files.
+
+So, word by word: Git is a **system** for **controlling** the **versions** of your files in a way that is **distributed** among everyone who works on them.
+
+#### 2.3 What Git Is
+
+Git is a program that runs on **your** computer. You install it (Chapter 8), and it lives quietly on your machine like any other program. It has no icon, no window, and no graphical interface of its own; you talk to it by typing commands in a terminal, which is why Chapter 8 includes a terminal primer for people who have never opened one.
+
+When you make a folder a "Git project" (you will do this in Chapter 11 with the `git init` command), Git starts watching that folder and remembering every version you commit to it, storing those versions inside a hidden subfolder named `.git`. From that moment, the folder is called a **repository**: the word literally means a place where things are stored and looked after, like a repository of knowledge. A Git repository is a folder whose complete history Git stores and protects.
+
+The single most important fact about Git for a beginner is this: **Git works locally, on your machine, without the internet.** You can commit, branch, merge, and read your entire history on a plane with no Wi-Fi. GitHub is a separate thing that comes later.
+
+#### 2.4 What GitHub Is
+
+GitHub is a **website** (github.com) that stores copies of Git repositories in the cloud and adds collaboration features on top of them. If Git is the engine in your car, GitHub is a combination of the parking garage, the social club, and the delivery service around it: a place to put a copy of your repository so others can see it, download it, propose changes to it, discuss bugs in it, and build automated pipelines around it.
+
+Two analogies help beginners, and both are true:
+
+1. **Git is like a notebook; GitHub is like a library.** The notebook (Git) holds your writing and all its drafts on your desk. The library (GitHub) lets you publish a copy, let friends check it out, and receive suggested edits pasted in the margins.
+2. **Git is like Microsoft Word's track changes; GitHub is like Google Docs' sharing.** Track changes records edits locally; sharing puts the document somewhere others can access and comment on.
+
+#### 2.5 Git vs GitHub, in One Table
+
+| Question | Git | GitHub |
+| --- | --- | --- |
+| What is it? | A version control program | A hosting and collaboration website |
+| Where does it run? | On your computer | In the cloud (as a website) |
+| Do you install it? | Yes, you install it once | No, you sign up for an account |
+| Does it need internet? | No, fully offline | Yes, it is a website |
+| Who makes it? | Originally Linus Torvalds and contributors | Originally four founders; owned by Microsoft since 2018 |
+| What does it give you? | Versions, history, branches, merges | Cloud backup, sharing, pull requests, issues, automation, hosting |
+
+Saying "Git" when you mean "GitHub" is like saying "car" when you mean "parking garage." Related, but not the same thing, and people will notice.
+
+#### 2.6 Are There Alternatives?
+
+Yes, and knowing them exists sharpens your understanding. **GitLab** and **Bitbucket** are the main GitHub alternatives (they also host Git repositories and offer collaboration features; GitLab is known for strong built-in CI/CD, Bitbucket for tight integration with Atlassian tools like Jira). As for version control systems themselves, the older centralized ones you will hear about are **SVN (Subversion)** and **CVS**, and Git's sibling is **Mercurial**. You do not need any of these; Git's dominance is nearly total in new projects, which is exactly why this guide teaches it. GitHub, in turn, hosts well over 100 million developers, making it the largest code host on Earth.
+
+#### 2.7 Key Terms Preview
+
+Here are the six words you will see constantly. A full taste now; a feast later.
+
+| Term | Meaning in one line |
+| --- | --- |
+| Repository (repo) | A folder whose history Git stores |
+| Commit | A saved, named snapshot of your files at one moment |
+| Branch | A parallel line of work inside one repository |
+| Remote | A copy of your repository on another machine, usually GitHub |
+| Clone | A downloaded copy of a repository |
+| Pull request | A request to merge your branch into someone else's project |
 
 ---
 
-## 1.2 Your Identity: The First-Time Configuration
+### Chapter 3: The History of Git and GitHub
 
-Every Git commit records **who made it**. Git needs to know your name and email. This is set once and used for every commit you ever make on this machine.
+History is not decoration here. Git behaves the way it does because of the crisis it was born from, and once you know the story, several of its strangest features (branches as lightweight pointers, the obsessive speed, the fully offline design) suddenly make perfect sense.
 
-### Setting your name and email
+#### 3.1 Before Git: The Old World of Version Control
+
+Software developers have fought the "folder of copies" problem since the 1970s, and version control tools long predate Git. A quick tour of the ancestors, each of which solved part of the problem:
+
+- **RCS (Revision Control System, 1985)** kept old versions of files on your own machine. It was *local*: it could not share anything with anyone else.
+- **CVS (Concurrent Versions System, 1990)** added *sharing*: one central server held the project, and every developer connected to it to get files and submit changes. This style is called *centralized* version control.
+- **SVN (Subversion, 2000)** modernized the centralized idea and became hugely popular in the 2000s. But centralized systems had two painful weaknesses baked into their design: if the server was down or you were offline, you could not commit anything; and if the server's disk died, the entire project's history could die with it, because clients only held the latest files.
+
+Then came the project that broke all the rules: the Linux kernel.
+
+#### 3.2 The Linux Kernel and the BitKeeper Crisis
+
+In 1991, a Finnish student named **Linus Torvalds** posted a hobby project: a free operating system kernel he called Linux. By the early 2000s, Linux was one of the largest collaborative software projects on the planet, with thousands of developers contributing, and coordinating it was a serious engineering problem.
+
+From 2002, the kernel team used a commercial tool called **BitKeeper** to manage the source. BitKeeper was proprietary software, but its maker, BitMover, allowed free use by open source projects like Linux. It was also, notably, a *distributed* system, and the kernel team came to love working that way.
+
+In April 2005, the arrangement exploded. A developer working on reverse-engineering BitKeeper's protocols angered BitMover, who responded by revoking the free license for the entire kernel community. Suddenly the biggest open source project on Earth had no version control system, and its community was in genuine crisis.
+
+#### 3.3 Ten Days in April 2005
+
+Linus Torvalds decided that the kernel would not depend on anyone else's tool ever again, and that he would simply write a new one himself, designed for exactly how the kernel team worked. He started in early April 2005. Git was functional within days, hosting its own development almost immediately, and by June 2005 it was managing the actual Linux kernel source. A tool written in roughly ten days by one annoyed genius now runs the version control of the modern world.
+
+Linus designed Git around the needs of kernel development, and the design goals explain Git's personality today:
+
+- **Speed:** kernel-sized projects (tens of thousands of files, millions of lines) must be fast, so almost every Git operation is local and near-instant.
+- **Simple design:** one clear internal model (snapshots addressed by hashes, which Chapter 7 explains), instead of patchwork features.
+- **Strong support for non-linear development:** thousands of developers work in parallel branches that merge constantly, so branching had to be *cheap and instant* (you will learn it costs literally 41 bytes).
+- **Fully distributed:** no one can ever revoke the kernel's version control again, because every developer holds the entire history on their own machine.
+- **Able to handle large projects efficiently:** years of history and huge trees, stored cleverly.
+
+Even the name is a joke. "Git" is British slang for an unpleasant person. Linus quipped: *"I'm an egotistical bastard, and I name all my projects after myself. First 'Linux', now 'git'."* The joke stuck, the mascot of GitHub became the "Octocat," and today the word means version control.
+
+#### 3.4 Junio Hamano and Git's Maturity
+
+A detail professionals respect: Linus did not stay as Git's maintainer. In July 2005 he handed the project to **Junio C. Hamano**, who has led Git's development ever since, shepherding it through its 1.0 release in December 2005 and two decades of steady improvement. Git's evolution never stopped: the modern commands you will learn in this guide, `git switch` and `git restore` (Chapter 16 and Chapter 26), only arrived in 2019, for example.
+
+#### 3.5 GitHub Is Born (2008)
+
+By 2007, Git was powerful but rough, and there was no friendly place on the internet to put Git repositories. Three developers, **Tom Preston-Werner, Chris Wanstrath, and PJ Hyett** (soon joined by **Scott Chacon**), built a startup around a simple idea: Git hosting with a social layer. **GitHub launched in April 2008** with the mission "build software better, together."
+
+The idea of requesting that a project "pull" your changes existed in distributed version control culture before GitHub, but GitHub turned the **pull request** into a friendly web page with discussion, code review, and one-click merging. That single product decision, more than anything else, is why the pull request became the center of gravity of modern software collaboration, and why Chapter 23 is one of the longest chapters in this guide.
+
+#### 3.6 Microsoft Buys GitHub (2018)
+
+On June 4, 2018, Microsoft announced it was acquiring GitHub for **7.5 billion US dollars**. Many developers feared the worst; the opposite happened. Microsoft kept GitHub independent, increased investment in it, made core features free (including private repositories), and accelerated its evolution. Under Microsoft, GitHub launched **GitHub Actions** in 2019 (the automation platform you will master in Part G), continued growing past **100 million developers** (announced in 2023, still growing since), and pushed AI-assisted development with **GitHub Copilot**.
+
+#### 3.7 The Whole Story on One Timeline
+
+| Year | Event | Why it mattered |
+| --- | --- | --- |
+| 1991 | Linus Torvalds starts Linux | Creates the project that would need Git |
+| 2002 | Linux adopts BitKeeper | Kernel gets distributed version control, temporarily |
+| 2005 | BitKeeper license revoked; Linus writes Git in ~10 days | Git is born from a crisis, designed for speed and distribution |
+| 2005 | Junio C. Hamano becomes maintainer | Steady leadership that continues today |
+| 2008 | GitHub launches | Git gets a home and a social layer |
+| 2018 | Microsoft acquires GitHub for $7.5 billion | Massive investment follows; core features become free |
+| 2019 | GitHub Actions launches | Automation and CI/CD become built-in |
+| 2021 | Copilot reaches general availability | AI pair programming arrives |
+| 2023+ | Over 100 million developers | The industry standard, confirmed by numbers |
+
+#### 3.8 Why This History Matters to You
+
+Because the design goals of 2005 are the features you will thank in 2025. When `git log` is instant even in a repository with a million commits, that is the speed goal. When you commit on a plane, that is the distributed goal. When you create your tenth branch in one afternoon without thinking about cost, that is the non-linear-development goal. And when no company can ever take your history hostage, because you have the whole thing on your own laptop, that is the BitKeeper crisis, permanently answered.
+
+### Chapter 4: What Git and GitHub Give You
+
+You now know what Git and GitHub *are*. This chapter is about what they *do for you*, feature by feature, mapped to situations you will actually face. Treat it as the menu before the meal.
+
+#### 4.1 What Git Gives You
+
+**1. A time machine.** Every commit (Chapter 12) is a full snapshot of your project with a message, an author, and a timestamp. You can list them (Chapter 14), compare any two moments, and restore any file, or the entire project, to any point in history. The day you can say "make it like it was on Tuesday," you stop fearing change.
+
+**2. Parallel universes (branches).** A branch (Chapter 16) is a separate line of work inside the same repository. You can build a risky new feature in a branch while your main version stays untouched and working, then merge it in only when it is good (Chapter 17). Before Git, branches were expensive rituals; in Git they cost 41 bytes and are created instantly, which is why professionals create branches as casually as saving a file.
+
+**3. A safety net.** Git checksums every version with a cryptographic hash (Chapter 7). If anything in the history is ever corrupted or tampered with, Git knows. Combined with the reflog (Chapter 26), even "deleted" commits are usually recoverable for around 90 days.
+
+**4. Total speed, fully offline.** History, branching, merging, and searching all happen on your own machine. No network, no server, no waiting.
+
+**5. Blame and archaeology.** `git blame` (Chapter 14) tells you who last changed each line of a file, when, and in which commit, with the commit message explaining *why*. When you wonder "who wrote this and what were they thinking," Git answers with evidence instead of memory.
+
+#### 4.2 What GitHub Gives You
+
+**1. Cloud backup and access anywhere.** A pushed repository lives on GitHub's servers, so your laptop can fall in the ocean and your code survives. You can clone your work onto any machine in minutes (Chapter 22).
+
+**2. Collaboration.** The heart of GitHub is the pull request (Chapter 23): a web page where teammates see your proposed changes, comment line by line, request fixes, approve, and merge. Add Issues for bug tracking, Projects for task boards, and you have the coordination hub of a whole team.
+
+**3. Public proof of your work.** Your GitHub profile is a living portfolio. Recruiters and clients can see real code, real commits over time, and real contributions to real projects. For many self-taught developers, their GitHub profile does more work than their resume.
+
+**4. Free hosting.** GitHub Pages (Chapters 25 and 33) turns a repository into a live public website for free, with an automated pipeline.
+
+**5. Automation.** GitHub Actions (Part G) runs code on every push: tests, builds, deployments. Your project can test itself and deploy itself while you sleep.
+
+**6. Security tooling.** Dependabot warns about vulnerable dependencies, secret scanning warns about leaked passwords, and security advisories help you respond to problems (Chapter 25).
+
+**7. The home of open source.** Millions of public projects, from tiny libraries to the Linux kernel itself, accept contributions from strangers through forks and pull requests (Chapter 24). Learning that workflow makes you a citizen of the largest collaborative effort in software history.
+
+#### 4.3 Map of Fear to Feature
+
+| The day you say... | The feature that saves you |
+| --- | --- |
+| "It worked yesterday!" | History and `git diff` (Chapter 14) |
+| "I want to try something crazy" | Branches (Chapter 16) |
+| "We both edited the same file!" | Merge and conflict resolution (Chapters 17-18) |
+| "I just destroyed a file" | `git restore` and the reflog (Chapter 26) |
+| "My laptop died" | GitHub remote (Chapter 22) |
+| "Does this change break anything?" | Automated tests on push (Part G) |
+| "Who approved this change?!" | Pull request history and `git blame` |
+| "I want a website for my project" | GitHub Pages (Chapter 33) |
+
+---
+
+### Chapter 5: Why You Should Use Git and GitHub
+
+This chapter exists because a beginner who knows *why* tolerates the learning curve, and a beginner who does not, quits in Chapter 12. Here are the seven honest reasons, followed by the objections people raise.
+
+#### 5.1 Reason One: Fearlessness
+
+Without version control, your fear of breaking things makes you timid: you do not refactor, you do not experiment, you do not delete, because a mistake is unrecoverable. With version control, every experiment lives on a branch and every state is a commit away. Professionals are bold *because* they have a safety net, not despite it. Git converts "what if I break it?" into "worst case, I revert in 30 seconds."
+
+#### 5.2 Reason Two: Teamwork Without Destruction
+
+When two people edit the same folder over a shared drive, whoever saves last erases the other's work, silently. Git detects every overlap, and merge conflicts (Chapter 18), the scary thing beginners dread, are actually Git's honest way of saying "two people changed the same lines; a human must decide." That is a feature, not a bug: nothing is silently lost, ever.
+
+#### 5.3 Reason Three: Memory and Documentation
+
+Six months into a project, "why does this code skip validation?" becomes a mystery. Git answers with the commit that introduced the change, its message, its author, and its date. A project's commit history is a diary of decisions, and disciplined messages (Chapter 13) turn that diary into documentation that never goes stale, because it is attached to the exact code it describes.
+
+#### 5.4 Reason Four: It Is the Industry Standard
+
+Virtually every professional development environment uses Git. Job postings list it. Interviewers ask it (Chapter 38 has the questions). Teams assume it. Using anything else makes you the exception that must be argued for. Learning Git is not choosing a tool; it is learning the language the industry speaks.
+
+#### 5.5 Reason Five: Your Public Portfolio
+
+For students and career changers especially: GitHub is where proof lives. A profile with real projects, real commit history, and real contributions to open source outweighs a resume line saying "familiar with tools." Your green contribution squares are a visible record of consistency, and consistency is what employers screen for.
+
+#### 5.6 Reason Six: Backup and Portability
+
+"Pushed to GitHub" means your work exists in at least two places. Combined with how cheap cloning is, your development environment becomes reproducible on any machine on Earth in minutes. Writers, researchers, and data scientists increasingly use Git for exactly this reason, not for code per se.
+
+#### 5.7 Reason Seven: The Gateway to Open Source
+
+Every tool, library, and framework you will ever use is probably on GitHub, and many accept contributions. The fork-and-pull-request workflow (Chapter 24) is the front door of open source, and the first PR you get merged into a project you admire is a genuine career moment.
+
+#### 5.8 Objections, Answered Honestly
+
+**"I work alone, so I don't need it."** You will still make changes you regret, still need yesterday's version, still want your work backed up, and still want a portfolio. Solo developers benefit from four of the seven reasons above, at minimum.
+
+**"I'm not a programmer."** Git tracks *files*, not code. Writers track chapters, designers track assets, researchers track datasets and papers. The commands in this guide never ask you to program.
+
+**"It looks too hard."** The scary parts of Git (rebases, reflogs, plumbing) are the advanced 10%. Parts C and D of this guide cover the 90% used daily, and the hard parts come only after you have a foundation.
+
+---
+
+### Chapter 6: Understanding Version Control
+
+Chapter 2 gave version control a one-paragraph definition. This chapter gives you the full concept, because understanding the three *architectures* of version control systems is what makes "distributed" finally click.
+
+#### 6.1 The Goal, Restated
+
+A version control system has one job: record the states of a set of files over time, so that any state can be retrieved, compared, and restored, and so multiple people can work without destroying each other. Every design below is a different answer to "where do we keep the versions?"
+
+#### 6.2 Local Version Control
+
+The first and simplest design keeps versions on your own machine. The folder-of-copies approach is local version control done by hand, and tools like RCS (1985) did it properly, storing compact deltas of each file version in a local database.
+
+```text
+ Your computer
+ +--------------------+
+ | project files      |<---> local version database
+ +--------------------+
+```
+
+Its weakness is the word "local": if the disk dies, history dies; and only one person can use it. It solves the "folder of copies" problem and nothing else.
+
+#### 6.3 Centralized Version Control (CVCS)
+
+The 1990s answer was to put the version database on a server: CVS and later SVN. Every developer checks out files from the server and commits changes back to the server.
+
+```text
+            +------------------+
+            |  CENTRAL SERVER  |   (holds all versions)
+            +------------------+
+              ^        ^     ^
+              |        |     |
+            Alice     Bob   Carol   (each holds only
+                                     current files)
+```
+
+This solved sharing, and teams lived on it for years. But two structural flaws are baked into the design:
+
+1. **Single point of failure:** clients hold only the latest files. If the server dies, the history is gone, and the project is in crisis until the server returns.
+2. **No offline work:** to commit, you need the server, so a broken connection means a broken workflow.
+
+#### 6.4 Distributed Version Control (DVCS)
+
+Git's answer: every developer clones the entire repository, complete history included. Each copy is a full peer of the original.
+
+```text
+ Alice's laptop          Bob's laptop          Carol's laptop
+ +---------------+        +---------------+     +---------------+
+ | FULL history  |        | FULL history  |     | FULL history  |
+ +---------------+        +---------------+     +---------------+
+         ^                      ^                     ^
+         +---------- all three synchronize ----------+
+                                  |
+                          (optional hub, e.g. GitHub)
+```
+
+Notice what disappears: there is no single point of failure (any clone can restore the project), and there is no required server (you commit locally always; network only when you choose to share). Notice also that GitHub, despite hosting millions of repositories, is technically *optional* to Git itself; it is the popular hub the arrows point at, not a required master.
+
+#### 6.5 The Comparison on One Table
+
+| | Local (RCS) | Centralized (SVN) | Distributed (Git) |
+| --- | --- | --- | --- |
+| Where history lives | Your machine | One server | Every clone |
+| Needs network | Never | For almost everything | Only to share |
+| Server dies | Nothing changes | Project in danger | Nothing changes |
+| Branching | Primitive | Slow, expensive | Instant, cheap |
+| Typical use today | Historic curiosity | Legacy projects | The industry default |
+
+#### 6.6 Why Distributed Won
+
+Distributed systems turned every weakness of the centralized model into a strength, and then one more feature (cheap branching) transformed how people write software entirely. When you create your first branch in Chapter 16 and notice it takes literally less time than it took to read this sentence, you are feeling the design decision that won the version control war.
+
+---
+
+### Chapter 7: How Git Works Under the Hood
+
+This is the most important conceptual chapter in the guide. Everything after this point is easier once these five ideas are yours, and everything people find confusing about Git traces back to one of them.
+
+#### 7.1 Idea One: Snapshots, Not Diffs
+
+Older systems stored versions as chains of differences: "version 5 is version 4 plus these changes." To reconstruct a file, they replay every diff in order, which is slow for old files.
+
+Git stores each commit as a **snapshot** of your entire project. When you commit, Git takes a "photograph" of every file as it is at that moment and stores the photo. Files that did not change since the previous snapshot are not stored twice; the snapshot simply references the earlier copy (this is how Git stays efficient without sacrificing the snapshot model).
+
+```text
+  Commit 1      Commit 2      Commit 3      Commit 4
+     o   --------->  o  --------->  o  --------->  o
+   [A][B]         [A][B]         [A][B']        [A][B']
+                     ^              ^               ^
+                  B unchanged     B changed       B unchanged,
+                                   (stored once)  reuses commit 3's B
+```
+
+For you, this means: viewing, comparing, and restoring any version at any time is instant, because nothing needs to be reconstructed.
+
+#### 7.2 Idea Two: Files Live in Three Areas
+
+This is the picture to burn into your memory. On your computer, your files exist in three places, and every command you will ever learn moves files between them (or between your machine and GitHub):
+
+```text
+ +------------------+   git add    +------------------+  git commit  +------------------+
+ |  WORKING         | ------------> |  STAGING        | -----------> |  LOCAL           |
+ |  DIRECTORY       |               |  AREA           |              |  REPOSITORY      |
+ |                  |               |                 |              |                  |
+ |  The files you   |  <----------- |  The "next      |  <--------- |  The permanent   |
+ |  see and edit    | git restore   |  photo", picked |  git reset / |  album of saved  |
+ |                  |  --staged     |  by git add     |  checkout    |  snapshots       |
+ +------------------+               +------------------+              +------------------+
+                                                                             |          ^
+                                                                             | git push | git pull
+                                                                             v          |
+                                                                      +------------------+
+                                                                      |  REMOTE          |
+                                                                      |  (e.g. GitHub)   |
+                                                                      |  your cloud copy |
+                                                                      +------------------+
+```
+
+- **The working directory** is the folder you see and edit. It is "real life."
+- **The staging area** (also called the *index*) is a waiting room. `git add` places a file in the waiting room, meaning "I want this version included in the next snapshot." Why does the waiting room exist? Because it lets you commit *some* of your changes but not others: you can stage the two files you finished and leave the half-written one out of the photo.
+- **The repository** is the permanent history stored inside the hidden `.git` folder. `git commit` photographs the staging area and seals it into history.
+- **The remote** is your copy on GitHub. `git push` uploads new commits; `git pull` downloads them.
+
+One sentence to repeat to yourself for the rest of this guide: **edit in the working directory, `git add` to select, `git commit` to save, `git push` to share.**
+
+#### 7.3 Idea Three: Everything Has a Checksum
+
+Git never stores "file number 7." Every version of every file, every directory listing, and every commit gets a unique ID computed from its exact contents, using the SHA-1 hash (a 40-character string like `5f2d4e8c9a1b...`; newer Git can also use SHA-256). You will see these IDs everywhere: in `git log` output, on GitHub commit pages, and in commands like `git show`.
+
+Two magical properties follow:
+
+1. **Same content means same ID.** If you and a stranger on another continent create the same file content, Git gives it the same ID. This is why cloning and merging are so reliable: identical things are recognized as identical anywhere on Earth.
+2. **Change one byte and the ID completely changes.** This makes Git's history tamper-evident: corruption or unnoticed modification is automatically detected, because the stored ID would no longer match the content's true ID. This is why a Git repository's history is trustworthy in a way a folder of copies never can be.
+
+#### 7.4 Idea Four: The Four Objects (A Peek Inside)
+
+Deep inside `.git`, Git stores four kinds of objects, and Chapter 30 will let you hold them in your hands:
+
+- A **blob** is the content of one file (just the bytes; even the filename is not stored in it).
+- A **tree** is a directory listing: which filenames point to which blobs (and which trees, for subfolders).
+- A **commit** is a snapshot reference (a tree) plus metadata: author, date, message, and the ID of the parent commit (which is why history forms a chain).
+- An **annotated tag** is a named label attached to one commit (Chapter 21).
+
+A commit, therefore, is a very small object: "this tree, this parent, this person, this message." That is why committing is instant even in huge projects, and it is why two people can hold identical histories with identical IDs.
+
+#### 7.5 Idea Five: A Branch Is Just a Pointer
+
+Here is the secret behind Git's famous cheap branching: a branch is nothing but a tiny file containing the ID (the checksum from Idea Three) of one commit. The file is 41 bytes (40 characters plus a newline). Creating a branch writes one small file; deleting one removes it. There is no copying of code, no heavy ceremony, nothing to be afraid of.
+
+```text
+                                     o feature-login   <- a 41-byte file
+                                    /                      pointing HERE
+   o ---- o ---- o ---- o ---- o                          <- the chain of
+                                     ^                        commits
+                                     main                   (each points
+                                     ^                       to its parent)
+                                    HEAD  <- "I am on main" (HEAD points
+                                              to the current branch)
+```
+
+`HEAD` is Git's "you are here" marker: a special file that names the branch you currently have checked out. When you commit, the branch you are on (the file) is updated to point to the brand-new commit. That is all a branch "is," and when this clicks, `git branch`, `git switch`, fast-forward merges, and detached HEAD (Chapter 21) all stop being mysterious.
+
+#### 7.6 Why This Chapter Was Worth It
+
+When later chapters say "the staging area remembers the version you added, not the version on disk" (Chapter 14's `git diff`), or "rebasing replays commits onto a new parent" (Chapter 19), or "the reflog remembers where HEAD has been" (Chapter 26), they are all just combining the five ideas above. You have just learned the machinery of Git in miniature; the remaining chapters are practice with vocabulary.
+
+## Part B: Getting Set Up
+
+Part B turns your computer into a Git workstation and connects it to GitHub. Nothing here is difficult, but everything here is mandatory, and one skipped step (a wrong email, a missing SSH key) causes confusing errors much later. Follow every step, in order.
+
+### Chapter 8: Installing Git on Windows, macOS, and Linux
+
+#### 8.1 A Terminal Primer for Absolute Beginners
+
+Git is a command-line program, which means you talk to it by typing commands in a **terminal** (also called a **shell** or **command prompt**). If you have never opened one, here is the 60-second orientation:
+
+A terminal is a window where you type a command, press Enter, and the computer responds. The text that appears before your cursor, like `C:\Users\you>` on Windows or `you@MacBook ~ %` on macOS, is called the **prompt**. It means "I am ready for your command." The terminal always "is" somewhere: it has a **current directory** (the folder it is operating in), which you can print with the `pwd` command (print working directory), list with `ls` (macOS/Linux) or `dir` (Windows), and change with `cd` followed by a folder name, as in `cd Documents`. `cd ..` (two dots) means "go up to the parent folder."
+
+How you open the terminal:
+
+- **Windows:** press the Windows key, type `PowerShell`, and open it. (After installing Git, you will also have a friendlier option called **Git Bash**, explained below.)
+- **macOS:** press Command + Space, type `Terminal`, and open it.
+- **Linux:** it varies by distribution; typically press Ctrl + Alt + T, or search for "Terminal."
+
+That is all the terminal knowledge you need to start. More vocabulary arrives when you need it.
+
+#### 8.2 Installing Git on Windows
+
+1. Open your browser and go to the official download page: `https://git-scm.com/download/win`. The site detects Windows and offers the correct installer automatically. Click it to download.
+2. Run the downloaded `.exe` file. Windows may ask "Do you want to allow this app to make changes to your device?" Click **Yes**.
+3. The installer walks you through several screens. The important ones, decoded:
+   - **License screen:** click Next to accept the GNU General Public License (Git is free and open source).
+   - **Select Components:** the defaults (Windows Explorer integration, Git LFS support, file associations) are fine. Click Next.
+   - **Choosing the default editor:** the default is Vim, a powerful editor that beginners famously cannot exit. If you use (or will install) Visual Studio Code, choose **Visual Studio Code** here and future commit-message editing will open in a sane editor. You can change this later (Chapter 9).
+   - **Adjusting your PATH:** choose **"Git from the command line and also from 3rd-party software."** This is the recommended option; it puts `git` on your PATH (the list of places Windows searches for programs) so the command works everywhere, including PowerShell.
+   - **Choosing HTTPS transport backend:** leave the default (OpenSSL library).
+   - **Configuring line ending conversions:** choose **"Checkout Windows-style, commit Unix-style line endings"** (the recommended default). Chapter 9 explains what this means and why it prevents a whole category of pointless conflicts.
+   - **Terminal emulator:** keep MinTTY as the default. This gives you **Git Bash**, a small Linux-like terminal that ships with Git for Windows. Many tutorials (including this one) use Unix-style commands like `ls` and `cat`; they work perfectly in Git Bash, which is why Git Bash is recommended for following along on Windows.
+   - **Credential manager:** keep the default (Git Credential Manager). It remembers your GitHub login so you do not retype it.
+4. Finish the installer.
+5. Verify the installation. Open a new terminal (PowerShell or Git Bash; it must be a *new* window so it picks up the updated PATH) and type:
+
+```bash
+git --version   # Ask which version of Git is installed
+```
+
+Expected output looks like:
+
+```text
+git version 2.47.1
+```
+
+If you see a version number, Git is installed and working. If you see `'git' is not recognized...`, close every terminal window, reopen one, and try again; if it still fails, the PATH option in step 3 was not selected, so rerun the installer and choose the recommended option.
+
+#### 8.3 Installing Git on macOS
+
+On macOS, the easiest route is through Apple's Command Line Tools, which include Git. Open the Terminal and run:
+
+```bash
+xcode-select --install    # Ask Apple's developer tools to install themselves (includes Git)
+```
+
+A dialog appears offering to install the tools. Click **Install**, accept the license, and wait a few minutes. Then verify:
+
+```bash
+git --version             # Confirm Git is now available
+```
+
+The alternative (or the way to get the very latest Git version) is Homebrew, macOS's popular package manager. Install Homebrew by pasting the command from `https://brew.sh` into your terminal, then run:
+
+```bash
+brew install git          # Download and install the latest Git via Homebrew
+```
+
+#### 8.4 Installing Git on Linux
+
+Linux distributions install software through package managers. Use the one matching your distribution:
+
+```bash
+sudo apt update && sudo apt install git    # Debian, Ubuntu, Mint: refresh the package list, then install Git
+sudo dnf install git                       # Fedora, RHEL
+sudo pacman -S git                         # Arch Linux
+sudo apk add git                           # Alpine Linux
+```
+
+The word `sudo` means "superuser do," i.e., run this with administrator rights; installing system software requires it, and you may be asked for your password. Verify afterward:
+
+```bash
+git --version    # Confirm the installation
+```
+
+#### 8.5 Updating Git Later
+
+On macOS with Homebrew: `brew upgrade git`. On Linux: `sudo apt upgrade git` (or your equivalent). On Windows: rerun the installer from git-scm.com, or Git for Windows offers an update command inside Git Bash (`git update-git-for-windows`). Git is conservative software; a version one or two years old works fine for everything in this guide.
+
+---
+
+### Chapter 9: First-Time Configuration
+
+#### 9.1 Why Configuration Exists
+
+Every commit you make is stamped with the name and email of its author (this is how `git blame` and GitHub's contribution graphs work). Git refuses to guess your identity, so the very first configuration you must perform is telling it who you are. Configuration lives in plain text files, and Git reads settings from three levels, where the more specific level wins:
+
+| Level | Flag | File it lives in | Typical use |
+| --- | --- | --- | --- |
+| System | `--system` | one file for every user of the machine | Rarely used |
+| Global | `--global` | `~/.gitconfig` in your home folder | Your identity and preferences everywhere |
+| Local | `--local` (default) | `.git/config` inside one repository | Settings that apply to one project only |
+
+For the settings in this chapter, global is correct: you are one person with one identity.
+
+#### 9.2 The Essential Settings, Word by Word
+
+Open your terminal and run these three commands, replacing the quoted values with your own real information.
 
 ```bash
 git config --global user.name "Your Real Name"
-git config --global user.email "you@example.com"
 ```
 
-**Line by line:**
+**Anatomy of the command:**
 
-- `git config` — the command that reads/writes Git settings.
-- `--global` — write to `~/.gitconfig` (your user-level config), so it applies to every repo on this machine. Without `--global`, the setting applies only to the current repo (stored in `.git/config`).
-- `user.name` — the setting key. Use your real name (or whatever name you want on your commits). Quote it if it contains spaces.
-- `user.email` — the email. **Use the same email as your GitHub account** so GitHub can link your commits to your profile. If you want privacy, GitHub offers a `noreply` email address — see section 1.4 below.
-
-### Verifying your config
+- `git` - the program
+- `config` - the subcommand that reads or writes settings
+- `--global` - the flag meaning "write this into my personal global file, so it applies to all my repositories"
+- `user.name` - the *key* (the name of the setting); the dot notation means "the `name` key inside the `user` section"
+- `"Your Real Name"` - the *value*; the quotes keep a name with spaces as one value
 
 ```bash
-git config --global --list
+git config --global user.email "your_email@example.com"
 ```
 
-Sample output:
+Same anatomy; this sets the email stamped into every commit. **Critical detail:** use the *same email you will use for your GitHub account*. GitHub matches commits to your profile (and paints your contribution graph green) by matching this email address to your account. A mismatched email is the number one cause of "my commits don't show on my profile!" confusion.
+
+```bash
+git config --global init.defaultBranch main
+```
+
+- `init.defaultBranch` - the name Git gives to the first branch in every new repository
+- `main` - the modern standard name (GitHub's default since 2020; older tutorials say `master`)
+
+Setting this now means every new repository you create starts on `main`, matching what you will see on GitHub, avoiding the confusing "why does mine say master?" moment.
+
+One more highly recommended setting if you use Visual Studio Code:
+
+```bash
+git config --global core.editor "code --wait"
+```
+
+- `core.editor` - the editor Git opens when it wants you to write a commit message (Chapter 13)
+- `"code --wait"` - launch VS Code (`code`) and pause Git until you close the editor tab (`--wait`), so the message is captured
+
+#### 9.3 Viewing Your Settings
+
+```bash
+git config --list              # Print every setting Git currently sees, key = value
+git config --list --show-origin # Same, plus the file each setting came from (useful when debugging)
+```
+
+Sample output, decoded line by line:
 
 ```text
-user.name=Aziz Nader
-user.email=aziz@example.com
-core.editor=code --wait
+user.name=Your Real Name
+user.email=your_email@example.com
 init.defaultbranch=main
 ```
 
-You can also read the raw config file:
+The first line reports your identity's name, the second your identity's email, the third your default branch name. If `user.name` is missing, you forgot step one.
+
+#### 9.4 Line Endings (The Invisible Nuisance)
+
+Operating systems disagree about how to end a line of text: Windows marks line ends with two characters (CRLF), while macOS, Linux, and the software world at large use one (LF). Git can normalize this so mixed endings never create fake "changes" or conflicts. The rule of thumb:
 
 ```bash
-cat ~/.gitconfig
+git config --global core.autocrlf true    # On Windows: convert LF to CRLF when checking out, CRLF to LF when committing
+git config --global core.autocrlf input    # On macOS/Linux: keep LF on commit, nothing fancy on checkout
 ```
 
-Sample output:
+If Git ever prints `warning: LF will be replaced by CRLF`, that is this setting doing its job, not an error. Chapter 37 repeats this, because people panic about that warning weekly.
 
-```ini
-[user]
-    name = Aziz Nader
-    email = aziz@example.com
-[core]
-    editor = code --wait
-[init]
-    defaultBranch = main
-```
+#### 9.5 Getting Help
 
-### A few more useful global settings
+Git has built-in documentation for every command, two ways:
 
 ```bash
-# Use "main" as the default branch name. Old tutorials say "master";
-# GitHub and the wider community moved to "main" in 2020.
-git config --global init.defaultBranch main
-
-# The editor Git opens for commit messages and interactive rebase.
-# Options:
-#   "code --wait"   — VS Code (recommended if installed)
-#   "nano"          — beginner-friendly terminal editor
-#   "notepad"       — Windows Notepad
-#   "vim" / "nvim"  — power-user editors
-git config --global core.editor "code --wait"
-
-# Pull with rebase by default (cleaner history; explained in Chapter 8).
-git config --global pull.rebase true
-
-# Make "push" push the current branch only (avoids surprises).
-git config --global push.default current
-
-# Color output — on by default in modern Git, but explicit is safe.
-git config --global color.ui auto
+git help config    # Open the full manual page for `git config` in your browser or terminal viewer
+git config -h      # Print just the quick cheat-sheet of options for `git config` (the -h is short for --help summary)
 ```
 
-After all of the above, your `~/.gitconfig` should look something like:
+Any command supports both forms; try `git help commit` later. Press `q` to quit the manual viewer.
 
-```ini
-[user]
-    name = Aziz Nader
-    email = aziz@example.com
-[init]
-    defaultBranch = main
-[core]
-    editor = code --wait
-[color]
-    ui = auto
-[pull]
-    rebase = true
-[push]
-    default = current
-```
+#### 9.6 Changing Settings Later
+
+Settings are just commands repeated: run the same command with a new value to overwrite. `git config --global --unset user.email` removes a setting entirely, and `git config --global --edit` opens the whole config file in your editor, where settings appear as plain text (the `--edit` flag means "open the file directly").
 
 ---
 
-## 1.3 Creating Your GitHub Account
+### Chapter 10: GitHub Account and SSH Connection
 
-1. Go to <https://github.com/signup>.
-2. Pick a **username** carefully. It becomes your public identity: `github.com/yourusername`. Avoid throwaway names — recruiters, collaborators, and future-you will see this.
-3. Use an email you check regularly; GitHub sends security and notification emails.
-4. Choose the **Free** plan. You do not need a paid plan for any feature in this guide.
-5. Verify your email (click the link GitHub sends you). Without verification, you cannot push code.
+#### 10.1 Creating Your GitHub Account
 
-### Setting your GitHub profile
+1. Go to `https://github.com` and click **Sign up**.
+2. Enter your email, create a password, and choose a **username**. Think about the username for one extra minute: it becomes your public profile URL (`github.com/yourname`), appears in your repository URLs, and shows up on every contribution you make. Short, professional, and matching your other professional handles is ideal. Renaming later is possible but touches every URL you have ever shared.
+3. Verify your email address when GitHub sends the confirmation. Unverified accounts cannot use key features.
+4. Choose the **Free** plan when asked. Free accounts get unlimited public and private repositories, GitHub Pages, and generous Actions minutes; nothing in this guide requires payment.
 
-Spend 15 minutes on your profile — it pays off:
+#### 10.2 The Two Ways to Talk to GitHub
 
-- **Profile picture** — a clear photo or avatar. People trust faces more than default identicons.
-- **Bio** — one line: what you do, what you're learning.
-- **Pinned repositories** — pin 4–6 of your best projects. These show up at the top of your profile.
+Whenever you push or pull code, GitHub must verify you are really you. Two mechanisms exist:
 
-### (Optional) Keep your email private
+- **HTTPS + a Personal Access Token (PAT):** you use normal `https://` repository URLs and authenticate with a token (a generated password-like string) instead of your account password (GitHub stopped accepting account passwords for Git operations in 2021). Works everywhere, even behind strict firewalls, but tokens expire and need management.
+- **SSH keys:** you generate a cryptographic key pair on your computer, upload the public half to GitHub once, and from then on every push and pull is authenticated automatically, with no passwords and no expirations.
 
-By default, commits include your email address. If you don't want that public, GitHub offers a no-reply email:
+This guide uses SSH, and configures it once, now, so every later chapter "just works."
 
-1. Go to <https://github.com/settings/emails>.
-2. Tick **"Keep my email addresses private"**.
-3. Copy the email GitHub generates, e.g. `12345+aziz@users.noreply.github.com`.
-4. Use that email in your `git config`:
+#### 10.3 What SSH Keys Are, in Plain Words
 
-   ```bash
-   git config --global user.email "12345+aziz@users.noreply.github.com"
-   ```
+**SSH** (Secure Shell) is a protocol for securely logging in to remote machines. Its key-based authentication uses a pair of mathematically linked keys:
 
-5. Also tick **"Block command line pushes that expose my email"** to enforce it.
+- The **private key** (for example `~/.ssh/id_ed25519`) stays on your computer, never leaves it, and is never shown to anyone. Think of it as your house key.
+- The **public key** (the same filename plus `.pub`) is given freely to servers like GitHub. Think of it as the padlock that only your key fits.
 
-Now your commits will be linked to your GitHub profile, but your real email stays private.
+When you connect, GitHub uses the public key to issue a challenge that only someone holding the private key can answer. Your identity is proven without any password traveling anywhere. The practical consequence for you: after one setup, `git push` works forever, from every terminal, with zero prompts.
 
----
+#### 10.4 Generating Your Key Pair
 
-## 1.4 Connecting Git to GitHub: HTTPS vs SSH
-
-When you push or pull from GitHub, you have to authenticate. Two options:
-
-| | HTTPS | SSH |
-|---|---|---|
-| URL looks like | `https://github.com/you/repo.git` | `git@github.com:you/repo.git` |
-| Authentication | Username + **Personal Access Token** (passwords no longer work) | SSH key pair (public + private) |
-| Setup effort | Easy (just generate a token) | One-time setup, then never think about it again |
-| Recommendation | Good for getting started | **Recommended** — set up once, use forever |
-
-We'll set up **both**, then default to SSH because it's smoother long-term.
-
----
-
-## 1.5 Setting Up SSH Keys Step by Step
-
-An **SSH key pair** is two files: a *private key* (which stays on your computer, never shared) and a *public key* (which you give to GitHub). When you push, Git signs the request with your private key; GitHub verifies it with your public key. No password ever travels.
-
-### Step 1 — Generate a key pair
+In your terminal, run:
 
 ```bash
-ssh-keygen -t ed25519 -C "you@example.com"
+ssh-keygen -t ed25519 -C "your_email@example.com"
 ```
 
-**Line by line:**
+**Anatomy of the command:**
 
-- `ssh-keygen` — the key-generation program (ships with OpenSSH, which is installed by default on macOS/Linux and on Windows via Git Bash).
-- `-t ed25519` — key type. Ed25519 is modern, fast, and short. (Older guides use `-t rsa -b 4096`, which still works but is older tech.)
-- `-C "you@example.com"` — a comment. Convention: your email. It's just a label baked into the public key, not used for authentication.
+- `ssh-keygen` - the key generation program
+- `-t ed25519` - the `-t` flag selects the key *type*; `ed25519` is the modern, fast, secure algorithm (if some ancient system demands the older type, use `-t rsa -b 4096`)
+- `-C "your_email@example.com"` - `-C` adds a **comment**; the comment travels inside the public key purely so you can recognize which key this is on crowded servers. It does not need to be your email, but the convention is to use it
 
-You'll be prompted:
+The program now asks three questions:
 
-```text
-Generating public/private ed25519 key pair.
-Enter file in which to save the key (/home/you/.ssh/id_ed25519):
-```
+1. `Enter file in which to save the key (/home/you/.ssh/id_ed25519):` - press **Enter** to accept the default location. The `~/.ssh` folder is where all SSH tools look.
+2. `Enter passphrase (empty for no passphrase):` - a passphrase encrypts your private key so a stolen laptop's keys are useless. For a learning machine, pressing Enter twice (no passphrase) is acceptable and friction-free; security-conscious readers should type one.
+3. It then prints a small "randomart" image and the key fingerprints. Nothing to do here; it is just proof of generation.
 
-Press **Enter** to accept the default location.
+#### 10.5 Giving GitHub Your Public Key
 
-```text
-Enter passphrase (empty for no passphrase):
-```
-
-Optional but recommended: a passphrase encrypts your private key so a stolen laptop doesn't expose your key. If you set one, you'll be asked for it whenever the key is used (but you can configure an agent to remember it).
-
-### Step 2 — Start the SSH agent and add your key
+Your public key is plain text sitting in `~/.ssh/id_ed25519.pub`. Display it:
 
 ```bash
-# Start the agent (macOS/Linux; on Git Bash for Windows it's usually auto-started)
-eval "$(ssh-agent -s)"
-
-# Add your private key to the agent
-ssh-add ~/.ssh/id_ed25519
+cat ~/.ssh/id_ed25519.pub    # Print the public key to the screen (`cat` = concatenate/print a file)
 ```
 
-**Line by line:**
+You will see one long line beginning with `ssh-ed25519` and ending with your comment email. Select and copy the entire line, then:
 
-- `eval "$(ssh-agent -s)"` — starts `ssh-agent`, a background process that holds your key in memory. The `eval` runs the agent's output as a shell command, setting environment variables so `ssh` can find the agent.
-- `ssh-add ~/.ssh/id_ed25519` — loads your private key into the agent. If you set a passphrase, you'll enter it once; the agent remembers it for the session.
+1. On GitHub, click your profile photo (top right) and open **Settings**.
+2. In the left sidebar, click **SSH and GPG keys**, then **New SSH key**.
+3. **Title:** give it a name you will recognize years from now, like "My Ubuntu laptop."
+4. **Key type:** leave as the default (Authentication Key).
+5. **Key:** paste the copied line. The field should show `ssh-ed25519 ...` as a single line; if it wraps visually that is fine, but there must be no line breaks *inside* the text.
+6. Click **Add SSH key**. GitHub may ask you to confirm with your password; this is normal protection for security changes.
 
-On macOS, to make the agent remember your passphrase across reboots, edit `~/.ssh/config`:
+Note what you did *not* upload: the private key. GitHub receives only the padlock; you keep the only key.
 
-```text
-Host github.com
-  AddKeysToAgent yes
-  UseKeychain yes
-  IdentityFile ~/.ssh/id_ed25519
-```
-
-### Step 3 — Copy your public key
-
-```bash
-cat ~/.ssh/id_ed25519.pub
-```
-
-Output is one long line starting with `ssh-ed25519`:
-
-```text
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... you@example.com
-```
-
-**Copy that entire line.** (Note the `.pub` extension — that's the *public* key. The private key has no extension and never leaves your machine.)
-
-### Step 4 — Add the key to GitHub
-
-1. Go to <https://github.com/settings/keys>.
-2. Click **New SSH key**.
-3. **Title:** "Personal Laptop" or whatever describes this machine.
-4. **Key type:** Authentication Key.
-5. **Key:** paste the line you copied.
-6. Click **Add SSH key**. GitHub may ask for your password to confirm.
-
-### Step 5 — Test the connection
+#### 10.6 Testing the Connection
 
 ```bash
 ssh -T git@github.com
 ```
 
-The first time you connect, you'll see:
+**Anatomy:** `ssh` is the client program; `-T` disables requesting a remote shell session (we only want to test authentication); `git@github.com` means "connect as the user named `git` on the host `github.com`" (GitHub authenticates every Git user as the user `git`, then tells them apart by their key).
+
+The **first** time you connect, SSH has never met GitHub, so it asks:
 
 ```text
-The authenticity of host 'github.com (140.82.114.4)' can't be established.
-ED25519 key fingerprint is SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU.
-Are you sure you want to continue connecting (yes/no/[fingerprint])?
+The authenticity of host 'github.com' can be blocked... continue connecting (yes/no/[fingerprint])?
 ```
 
-Type **yes**. (This adds GitHub to your `known_hosts` file so you won't see this again.)
-
-Then you'll see:
+Type `yes` and press Enter. This records GitHub's identity in `~/.ssh/known_hosts` so you are never asked again unless it changes. Then the real result appears:
 
 ```text
-Hi aziznader! You've successfully authenticated, but GitHub does not provide shell access.
+Hi yourname! You've successfully authenticated, but GitHub does not provide shell access.
 ```
 
-That last sentence sounds scary but is correct — GitHub doesn't give you a shell, only Git access. You're in.
+**Decoded line by line:** `Hi yourname!` means GitHub recognized your key and knows which account it belongs to; `You've successfully authenticated` is the entire point of the test; `but GitHub does not provide shell access` is expected on a normal connection, because GitHub only offers Git operations, not an interactive login, and since you did not ask for a shell, everything is fine. If you saw this line, your computer and GitHub are now permanently, securely linked.
 
----
+If instead you saw `Permission denied (publickey)`, Chapter 37's troubleshooting entry walks through the three usual causes.
 
-## 1.6 Personal Access Tokens (for HTTPS)
+## Part C: Git Fundamentals
 
-If you'd rather use HTTPS instead of SSH, you need a **Personal Access Token (PAT)** because GitHub stopped accepting account passwords for Git operations in August 2021.
+Part C is the heart of daily Git use. By the end of Chapter 15 you will be able to create repositories, save versions of your work professionally, read the story of your project's history, and control exactly which files Git tracks. These five chapters cover what professional developers do 90% of the time they use Git.
 
-### Creating a PAT
+### Chapter 11: Your First Repository
 
-1. Go to <https://github.com/settings/tokens>.
-2. **Generate new token → Generate new token (classic)**.
-3. **Note:** "Git access from laptop".
-4. **Expiration:** pick 90 days or "No expiration" if you don't want to renew (less secure).
-5. **Scopes:** tick `repo` (full control of private repositories). That's enough for this guide.
-6. Click **Generate token**.
-7. **Copy the token immediately.** You won't be able to see it again after leaving the page.
+#### 11.1 What a Repository Is, Exactly
 
-### Using the PAT
+A **repository** (informally, a **repo**) is an ordinary folder that Git has been told to watch. Technically, the moment you run one command inside a folder, Git creates a hidden subfolder named `.git`, and from then on that folder is a repository: Git records the history of everything inside it (that you add) into that hidden folder. The folder with a hidden `.git` inside *is* the repository. Delete the `.git` folder and your project instantly becomes a plain folder again, with all your files intact but no history.
 
-The first time you `git push` over HTTPS, Git will prompt:
+Decide where practice projects live (this guide assumes `~/git-practice`, i.e., a folder named `git-practice` inside your home directory) and let us begin.
+
+#### 11.2 Creating a Repository with git init
+
+Open your terminal and follow along. Every command is annotated.
+
+```bash
+mkdir ~/git-practice        # `mkdir` = make directory; creates the practice folder in your home (~)
+cd ~/git-practice           # `cd` = change directory; move the terminal INTO the folder we just made
+mkdir my-first-repo         # create the folder that will become our first repository
+cd my-first-repo            # move into it
+git init                    # THE command: tell Git "start watching this folder"
+```
+
+**Anatomy of the key command:**
+
+- `git` - the program
+- `init` - the subcommand, short for *initialize*: create the hidden `.git` folder and everything a repository needs
+
+Output (recent Git versions):
 
 ```text
-Username for 'https://github.com': aziznader
-Password for 'https://aziznader@github.com': [paste your PAT here]
+Initialized empty Git repository in /home/you/git-practice/my-first-repo/.git/
 ```
 
-Git will store it (on macOS via Keychain, on Windows via Credential Manager, on Linux via `libsecret`) so you won't have to enter it again.
+**What just happened (line by line):**
 
-If Git doesn't remember it, configure credential storage explicitly:
+- `Initialized` - the setup was completed (note it says *empty*: no commits exist yet; you have a repository with no photographs in the album).
+- `empty Git repository` - what was created: a repository containing nothing.
+- `in /home/you/.../.git/` - *where* the machinery was created: inside a hidden folder named `.git` at the top of your folder.
+
+Older Git versions may instead print a `hint:` line suggesting `git branch -M main`. That hint appears when your default branch is not `main`; if you configured `init.defaultBranch main` in Chapter 9, you will not see it, and if you do see it, simply run `git branch -M main` (explained below) to rename the branch.
+
+Now prove the hidden folder exists:
 
 ```bash
-# macOS (uses Keychain)
-git config --global credential.helper osxkeychain
-
-# Windows (uses Credential Manager; default in Git for Windows)
-git config --global credential.helper manager
-
-# Linux (uses libsecret; install it if needed)
-git config --global credential.helper /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
+ls            # list visible contents (prints nothing: the folder is empty)
+ls -a         # `-a` = all, including hidden files (names starting with a dot)
 ```
 
----
+The `ls -a` output shows `.` (this folder), `..` (parent folder), and **`.git`** - the entire "repository" in one hidden package. Optionally explore inside it with `ls .git`; you will meet its contents properly in Chapter 30.
 
-## 1.7 The GitHub CLI
-
-The **GitHub CLI (`gh`)** lets you do GitHub-y things from the terminal: create repos, open pull requests, list issues, view Actions logs, etc. It complements Git but is not a replacement.
-
-### Installing `gh`
+One modern detail worth knowing: if you ever need `git init` to start on `main` without relying on config, use:
 
 ```bash
-# Windows (PowerShell or Git Bash)
-winget install --id GitHub.cli
-
-# macOS
-brew install gh
-
-# Linux (Debian/Ubuntu)
-# See https://github.com/cli/cli/blob/trunk/docs/install_linux.md for the official source
-# Quick version:
-sudo apt install gh
+git init -b main    # initialize AND name the first branch "main" directly (the -b flag sets the initial branch name)
 ```
 
-Verify:
+And if a repository was already created on an old branch name:
 
 ```bash
-gh --version
+git branch -m main    # rename the current branch to "main" (`-m` = move/rename, like renaming a file)
 ```
 
-### Authenticating `gh`
+#### 11.3 A Note on Re-Initializing
+
+Running `git init` inside an existing repository is safe. Git notices and re-initializes without touching your history. It is one of the few Git commands you cannot misuse by repeating it.
+
+#### 11.4 Cloning a Repository with git clone
+
+Creating a repository locally is one way to start; downloading an existing one is the other. `git clone` takes a repository that lives somewhere else (usually GitHub) and makes a complete local copy, hidden history included.
 
 ```bash
-gh auth login
+cd ~/git-practice                       # go back to the parent folder where we keep projects
+git clone git@github.com:octocat/Hello-World.git    # download a full copy of GitHub's classic demo repo
 ```
 
-You'll be guided through an interactive prompt:
+**Anatomy of the URL** (the address you passed to clone), piece by piece:
 
-```text
-? What account do you want to log into? GitHub.com
-? What is your preferred protocol for Git operations on this host? SSH
-? Authenticate Git with your GitHub credentials? Yes
-? How would you like to authenticate GitHub CLI? Login with a web browser
-```
-
-The last option opens a browser, gives you a one-time code, and you paste it. Done. From now on, `gh` and `git` both know who you are.
-
-Verify:
-
-```bash
-gh auth status
-```
+- `git@github.com` - the server to connect to, as the user `git`, over SSH (Chapter 10; the HTTPS form looks like `https://github.com/octocat/Hello-World.git`)
+- `:` - separator between server and path
+- `octocat` - the GitHub **account/organization** that owns the repository
+- `Hello-World` - the **repository name**
+- `.git` - conventional suffix marking this as a Git remote path (GitHub accepts the URL with or without it)
 
 Output:
 
 ```text
-github.com
-  ✓ Logged in to github.com account aziznader
-  - Active account: true
-  - Git operations protocol: ssh
-  - Token: gho_************************************
-  - Logged in to github.com account aziznader (keyring)
+Cloning into 'Hello-World'...
+remote: Enumerating objects: 13, done.
+remote: Counting objects: 100% (13/13), done.
+remote: Compressing objects: 100% (10/10), done.
+remote: Total 13 (delta 1), reused 0 (delta 0), pack-reused 0
+Receiving objects: 100% (13/13), done.
 ```
 
----
+**What just happened (line by line):** `Cloning into 'Hello-World'` announces the destination folder Git will create; `Enumerating objects` is the server listing what it has; `Counting... 100%` is the server finishing its inventory; `Compressing objects` is the server packing files for transfer; `Receiving objects: 100%` is your machine receiving and verifying everything. The result: a folder `Hello-World` that is a fully functional repository with complete history, as if you had created it yourself.
 
-## 1.8 Choosing Your Editor
-
-If you don't already have a code editor, install **Visual Studio Code** (VS Code):
-
-- <https://code.visualstudio.com/> — free, runs everywhere, and integrates beautifully with Git.
-
-After installing, open VS Code and run the command palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) → **Shell Command: Install 'code' command in PATH**. Now you can open any folder in VS Code from the terminal:
+Useful variations:
 
 ```bash
-code .                    # open current folder
-code some-file.txt       # open a file
-code .git/config         # peek at Git's config (useful for debugging)
+git clone git@github.com:octocat/Hello-World.git my-copy    # clone into a folder named "my-copy" instead of "Hello-World"
+git clone --depth 1 <url>                                    # "shallow" clone: only the latest snapshot, not full history (faster for huge projects)
 ```
 
-Tell Git to use VS Code for commit messages and interactive rebase:
+#### 11.5 Deleting a Repository
 
-```bash
-git config --global core.editor "code --wait"
-git config --global credential.helper manager   # Windows only — already default
-```
+Since a repository is just a folder plus a `.git` directory, deleting a repository means deleting that folder. For practice repositories, drag to trash or run `rm -rf my-first-repo` with care (`rm -rf` removes a folder and everything inside, recursively, without confirmation - only ever aim it at things you do not want). But wait before deleting this one: the next chapter works inside it.
 
-The `--wait` flag is critical: it makes Git pause until you close the VS Code tab before continuing. Without it, Git thinks you finished editing immediately.
+> **Try it yourself:** create a second throwaway repository, run `ls -a`, delete only its `.git` folder, then run `ls -a` again. Watch the folder "forget" it was a repository. That single experiment teaches what a repository physically is.
 
 ---
 
-## 1.9 Where to Get Help
+### Chapter 12: The Core Daily Loop
 
-You will forget commands. Everyone does. The pros just know how to look things up. Two ways:
+This is the most important chapter in the guide. The loop you learn here - check status, stage changes, commit - is the loop you will run thousands of times in your career. We go slowly, with every output decoded completely.
 
-### `git help` and `git <command> --help`
+#### 12.1 The Loop in One Picture
 
-```bash
-git help               # list of common commands
-git help commit        # full manual for `git commit`
-git commit --help      # same thing, different syntax
-git help -a            # list ALL commands (there are ~150)
-git help -g            # list concept guides (e.g. "git help tutorial")
-```
-
-The manual pages are excellent and include examples. Use them.
-
-### The Pro Git book (free online)
-
-The official, free, comprehensive Git reference is the **Pro Git book** by Scott Chacon and Ben Straub:
-
-<https://git-scm.com/book>
-
-Read it online, download the PDF, or buy the print edition. Chapters 1–5 cover 99% of what you'll ever need.
-
----
-
-## 1.10 Your Turn
-
-Verify your setup by doing the following in order. Don't skip — every step is a checkpoint.
-
-1. **Open a terminal** (Git Bash on Windows) and run:
-   ```bash
-   git --version
-   ```
-   Confirm you see a version `2.30` or higher.
-
-2. **Check your identity:**
-   ```bash
-   git config --global user.name
-   git config --global user.email
-   ```
-   Both should print the values you set. If either is empty, redo section 1.2.
-
-3. **Generate an SSH key** (if you haven't), add it to GitHub, and test:
-   ```bash
-   ssh -T git@github.com
-   ```
-   You should see the `Hi <username>!` message.
-
-4. **Install the GitHub CLI** and verify your login:
-   ```bash
-   gh auth status
-   ```
-
-5. **Install VS Code** (if you don't have a preferred editor) and configure Git to use it:
-   ```bash
-   git config --global core.editor "code --wait"
-   ```
-
-When all five checks pass, you are ready for Chapter 2. In the next chapter you will create your first real repository, make changes, stage them, commit them, and view the history — all the core mechanics of Git.
-
-**Next up: Chapter 2 — Git Fundamentals: Your First Repository.**
-
----
----
-
-
-# Chapter 2 — Git Fundamentals: Your First Repository
-
-> **Goal of this chapter:** Create your first Git repository, understand the **working directory → staging area → repository** flow, write a commit, and explore history. By the end of this chapter, you will have a working local Git repo with at least three commits and a `.gitignore` file.
-
-This is the most important chapter in the entire guide. Read it twice. Type every command. Don't move on until each step's output matches what's shown here.
-
----
-
-## 2.1 Creating a Repository: `git init`
-
-### Step 1 — Make a folder for the project
-
-```bash
-mkdir my-first-repo
-cd my-first-repo
-```
-
-**Line by line:**
-
-- `mkdir my-first-repo` — "make directory". Creates a folder named `my-first-repo` in your current location.
-- `cd my-first-repo` — "change directory". Moves into that folder.
-
-### Step 2 — Turn it into a Git repository
-
-```bash
-git init
-```
-
-Expected output:
+Recall the three areas from Chapter 7. The daily loop is just files walking through them:
 
 ```text
-Initialized empty Git repository in /Users/you/my-first-repo/.git/
+   edit files          git add          git commit
+      v                   v                 v
+ WORKING DIR  ------->  STAGING AREA  ------->  REPOSITORY
+                  git status watches all of it
 ```
 
-**What just happened?**
+#### 12.2 Making Your First Change
 
-Git created a hidden folder called `.git/` inside your project. This folder *is* the repository — everything Git knows about your project lives in there. Your actual files (the ones you edit) live in the parent folder and are *not* the repository; they are your working copy.
-
-Verify the `.git/` folder exists:
+Still inside `my-first-repo`:
 
 ```bash
-ls -a
+echo "Hello, Git!" > hello.txt    # create a file named hello.txt containing the text "Hello, Git!"
 ```
 
-Expected output (on macOS/Linux; Windows Git Bash similar):
+**Anatomy:** `echo` prints text; the `>` symbol *redirects* that printed text into a file, creating it if needed (and overwriting if it exists). So this command is "make a file with one line in it," in terminal language. You could equally create the file with any text editor.
 
-```text
-.    ..    .git
-```
-
-`-a` shows hidden files (those starting with `.`). You should see `.git`. Don't touch it manually unless you know exactly what you're doing — Chapter 3 explores it.
-
-### The full directory structure right now
-
-```
-my-first-repo/
-└── .git/                  ← the repository (Git's database)
-    ├── HEAD               ← pointer to current branch
-    ├── config             ← local Git config
-    ├── description        ← placeholder text (rarely used)
-    ├── hooks/             ← sample hook scripts
-    ├── info/              ← global gitignore patterns
-    ├── objects/           ← all the actual data (blobs, trees, commits)
-    └── refs/              ← pointers: branches (heads/), tags (tags/)
-```
-
----
-
-## 2.2 The Three Areas of Git
-
-Before making commits, internalize this picture. It is the most important diagram in the entire guide.
-
-```
-┌──────────────────────┐      ┌──────────────────────┐      ┌──────────────────────┐
-│  Working Directory   │      │  Staging Area        │      │  Repository (.git)   │
-│                      │      │   (the "index")      │      │                     │
-│  Your actual files   │      │  The next commit,    │      │  Saved commits,     │
-│  on disk — the ones  │      │  being assembled     │      │  immutable history  │
-│  you edit            │      │                      │      │                     │
-│                      │      │                      │      │                     │
-│   git status         │ ───> │   git add <file>     │ ───> │   git commit        │
-│   git diff           │      │   git restore --staged│    │   git log            │
-│                      │ <─── │                      │ <─── │                     │
-│                      │      │                      │      │                     │
-└──────────────────────┘      └──────────────────────┘      └──────────────────────┘
-```
-
-**Mental shortcut:** think of it as a meal being cooked.
-
-- **Working directory** = the ingredients on your counter, in any state.
-- **Staging area** = the tray of ingredients you've measured out for the next dish.
-- **Repository** = the dish, plated and served (cannot be un-plated).
-
-`git add` moves ingredients from counter → tray. `git commit` moves tray → plate. You can rearrange the tray as much as you want before serving.
-
----
-
-## 2.3 Checking the State: `git status`
-
-`git status` is the most-run command in Git. Run it constantly. It tells you:
-- Which branch you're on
-- What's in the working directory (modified, untracked, deleted)
-- What's in the staging area
-- What Git suggests you do next
-
-Run it now (in your fresh repo):
+#### 12.3 Checking Status: git status
 
 ```bash
-git status
+git status     # ask Git: "what is the current state of my files?"
 ```
 
-Expected output:
-
-```text
-On branch main
-
-No commits yet
-
-nothing to commit (create/copy files and use "git add" to track)
-```
-
-**Reading the output:**
-
-- `On branch main` — you are on the `main` branch. (We configured `init.defaultBranch = main` in Chapter 1.)
-- `No commits yet` — the repo has no history.
-- `nothing to commit` — there's nothing in the working directory to track.
-
-Now let's create a file and re-run `git status`:
-
-```bash
-echo "# My First Repo" > README.md
-git status
-```
-
-`echo "# My First Repo" > README.md` writes the line `# My First Repo` into a new file called `README.md`. The `>` redirects output to a file.
-
-New `git status` output:
+Output:
 
 ```text
 On branch main
@@ -1224,26 +1007,33 @@ No commits yet
 
 Untracked files:
   (use "git add <file>..." to include in what will be committed)
-        README.md
+        hello.txt
 
 nothing added to commit but untracked files present (use "git add" to track)
 ```
 
-**Reading the output:**
+**What just happened (line by line):**
 
-- `Untracked files:` — Git sees `README.md` exists, but isn't tracking it yet.
-- The line `(use "git add <file>..." to include in what will be committed)` is a hint: Git is telling you the next command to run.
+- `On branch main` - you are on the branch named `main` (Chapter 16 makes branches real; for now, note Git always tells you where you are).
+- `No commits yet` - the album is still empty; this repository has never saved a snapshot.
+- `Untracked files:` - a heading listing files Git can see but has never been told to care about.
+- `(use "git add <file>..." ...)` - a hint telling you the exact command that changes this situation.
+- `hello.txt` - the untracked file in question, indented under the heading.
+- `nothing added to commit but untracked files present` - a summary: the staging area is empty, so a commit now would save nothing; the only thing happening is that one untracked file.
 
-Notice that Git doesn't automatically track new files — you have to opt in with `git add`. This is a feature, not a bug: it prevents you from accidentally committing sensitive files like `.env`.
+The word **untracked** is precise Git vocabulary: Git sees the file in your working directory, but it is in neither the staging area nor history. Your job now is to promote it, with `git add`.
 
----
-
-## 2.4 Staging Changes: `git add`
-
-`git add` moves a change from the **working directory** to the **staging area**.
+#### 12.4 Staging: git add
 
 ```bash
-git add README.md
+git add hello.txt    # put hello.txt into the staging area ("include this file in the next snapshot")
+```
+
+**Anatomy:** `git` - the program; `add` - the subcommand that copies the current version of the named file into the staging area; `hello.txt` - the file to stage. Nothing is saved to history yet; the file is merely *selected*.
+
+Check the effect:
+
+```bash
 git status
 ```
 
@@ -1256,1276 +1046,58 @@ No commits yet
 
 Changes to be committed:
   (use "git rm --cached <file>..." to unstage)
-        new file:   README.md
+        new file:   hello.txt
 ```
 
-**Reading the output:**
+**What just happened (line by line):** the section heading changed from `Untracked files:` to `Changes to be committed:` - the file has moved from "invisible to history" to "queued for the next snapshot"; the hint line now offers the *opposite* command (how to unstage, which Chapter 26 teaches); `new file: hello.txt` reports that this file is new to the repository, which is exactly how the first appearance of any file looks.
 
-- `Changes to be committed:` — this section lists what's in the staging area, ready for the next commit.
-- `new file: README.md` — Git sees this as a brand-new file (because no previous commit contains it).
-
-### Other forms of `git add`
-
-| Command | What it does |
-|---|---|
-| `git add README.md` | Stage one specific file. |
-| `git add README.md LICENSE.txt` | Stage multiple specific files. |
-| `git add .` | Stage everything in the current directory (and below). Most common form. |
-| `git add -A` | Stage everything in the entire repo, including deletions. |
-| `git add -u` | Stage modifications and deletions, but **not** new files. |
-| `git add -p` | Stage *part* of a file (interactive). Walks you through each hunk. |
-| `git add *.md` | Stage all Markdown files (shell expands the wildcard). |
-
-### `git add -p` — the power user's friend
-
-`-p` stands for "patch". It interactively asks, for each chunk of changes, whether you want to stage it. This lets you create *clean* commits by staging only the changes that belong together.
-
-Example session:
+**The many faces of `git add`:**
 
 ```bash
-echo "line 1" >> README.md
-echo "line 2" >> README.md
-echo "line 3" >> README.md
-git add -p README.md
+git add hello.txt          # stage one specific file
+git add hello.txt notes.md # stage two (or more) specific files, space-separated
+git add .                  # stage everything in the current directory ("." means "here", and it recurses into subfolders)
+git add -A                 # stage all changes anywhere in the repository (adds, modifications, deletions)
+git add -u                 # stage all changes to files ALREADY tracked (updates modifications and deletions; ignores new files)
+git add *.txt              # stage every file ending in .txt (shell expansion picks the names before Git sees them)
 ```
 
-Git will show:
+For your first months, `git add <file>` and `git add .` are all you need. Awareness of `-A` and `-u` prevents confusion when reading other people's commands.
 
-```text
-diff --git a/README.md b/README.md
-index abc1234..def5678 100644
---- a/README.md
-+++ b/README.md
-@@ -1 +1,4 @@
- # My First Repo
-+line 1
-+line 2
-+line 3
-(1/1) Stage this hunk [y,n,q,a,d,s,e,?]? 
-```
-
-Press `?` for help:
-
-```text
-y - stage this hunk
-n - do not stage this hunk
-q - quit; do not stage this hunk or any of the remaining ones
-a - stage this hunk and all later hunks in the file
-d - do not stage this hunk or any of the later hunks in the file
-s - split the current hunk into smaller hunks
-e - manually edit the current hunk
-? - print help
-```
-
-Press `s` to split, then `y`/`n` for each piece. This is how pros make atomic commits (Chapter 11).
-
----
-
-## 2.5 Saving a Snapshot: `git commit`
+#### 12.5 Saving: git commit
 
 ```bash
-git commit -m "Initial commit: add README"
+git commit -m "Initial commit: add greeting file"
 ```
 
-Expected output:
+**Anatomy of the command, word by word:**
+
+- `git` - the program
+- `commit` - the subcommand: photograph the staging area into permanent history (from the English *to commit*: to entrust for safekeeping)
+- `-m` - a flag, short for *message*, meaning "the text following in quotes is my commit message" (without `-m`, Git opens your editor to write the message, which Chapter 13 covers)
+- `"Initial commit: add greeting file"` - the message itself: a human-readable description of why this snapshot exists
+
+Output:
 
 ```text
-[main (root-commit) 9fceb52] Initial commit: add README
+[main (root-commit) 7c9e4f2] Initial commit: add greeting file
  1 file changed, 1 insertion(+)
- create mode 100644 README.md
+ create mode 100644 hello.txt
 ```
 
-**Line by line:**
+**What just happened (line by line):**
 
-- `git commit` — the commit command. Takes everything currently in the staging area and saves it as a new snapshot in history.
-- `-m "Initial commit: add README"` — the commit message. `-m` means "use this string as the message" instead of opening your editor. Without `-m`, Git opens your editor (VS Code in our setup) for a multi-line message.
-- `[main (root-commit) 9fceb52]` — confirmation. `main` is the branch, `(root-commit)` means this is the first commit (no parent), and `9fceb52` is the short hash identifying this commit.
-- `1 file changed, 1 insertion(+)` — summary of what changed: one new file, one line added.
-- `create mode 100644 README.md` — the file was newly created. `100644` is a Unix permission (regular file, read/write for owner, read for others).
+- `[main (root-commit) 7c9e4f2]` - the commit happened on branch `main`; `(root-commit)` marks it as the very first commit in the repository's history (it has no parent - the start of the chain from Chapter 7); `7c9e4f2` is the first seven characters of this commit's unique checksum ID (Chapter 7's Idea Three). Yes, your commit now has a fingerprint; you could run `git show 7c9e4f2` with it.
+- `1 file changed, 1 insertion(+)` - the change summary: one file is different compared to the previous snapshot, one line was added.
+- `create mode 100644 hello.txt` - a new file entered history. `create mode` means "this snapshot creates this file"; `100644` is the file's permission bits (a regular, readable, writable file - Unix shorthand you may blissfully ignore until Chapter 30).
 
-### Anatomy of a good commit message
+Congratulations: your repository has history. Run `git status` again and it will now say `nothing to commit, working tree clean`, which is Git's phrase for "everything is saved; you and history agree perfectly."
 
-| Bad | Good | Why |
-|---|---|---|
-| `update` | `Add password reset flow to login page` | Specific, actionable, describes what and why |
-| `fix` | `Fix null pointer in user profile lookup` | Tells the reader exactly what was fixed |
-| `asdf` | `Refactor auth module for testability` | Searchable months later |
-| `WIP` | `Add tests for the password reset flow` | A stranger reading the log should understand |
+#### 12.6 The Second Commit: Watching Modification
 
-We'll cover commit message conventions in depth in Chapter 11. For now: **the message describes *why* the change was made, not what changed** — Git already shows what changed via `git diff`.
-
-### Multi-line commit messages
-
-For longer messages, omit `-m` and let Git open your editor:
+Edit `hello.txt` (add a second line with your editor, or `echo "Second line" >> hello.txt`, where `>>` *appends* instead of overwriting). Then:
 
 ```bash
-git commit
-```
-
-In VS Code, type a one-line summary on the first line, leave a blank line, then a paragraph explaining the change:
-
-```text
-Add password reset flow
-
-Implements the forgot-password feature end-to-end:
-- New route /password/reset
-- Email sending via the existing mailer
-- Token expiry after 1 hour
-- Tests for happy path and expired token
-```
-
-Save and close the editor. Git commits.
-
-Alternatively, multiple `-m` flags become separate paragraphs:
-
-```bash
-git commit -m "Add password reset flow" -m "Implements forgot-password end-to-end: route, email, token expiry, tests."
-```
-
----
-
-## 2.6 Anatomy of a Commit
-
-A commit is more than a snapshot of files. It is a record of six things:
-
-1. **A 40-character SHA-1 hash** (the commit's ID, computed from its contents)
-2. **A pointer to the parent commit(s)** (usually one; merge commits have two)
-3. **A tree** (the snapshot: which files exist, with which content)
-4. **Author name and email**
-5. **Author timestamp**
-6. **Committer name and email + timestamp** (usually same as author)
-7. **The commit message**
-
-You can inspect any commit with `git show`:
-
-```bash
-git show
-```
-
-Sample output (abbreviated):
-
-```text
-commit 9fceb528d4e4c5b8b3e8b7c6f5a4d3c2b1a09182c (HEAD -> main)
-Author: Aziz Nader <aziz@example.com>
-Date:   Sat Oct 5 10:32:14 2025 +0200
-
-    Initial commit: add README
-
-diff --git a/README.md b/README.md
-new file mode 100644
-index 0000000..abc1234
---- /dev/null
-+++ b/README.md
-@@ -0,0 +1 @@
-+# My First Repo
-```
-
-**Reading the output:**
-
-- `commit 9fceb52...` — the full 40-char hash. Git shows the short form (`9fceb52`) by default in most commands.
-- `(HEAD -> main)` — `HEAD` (where you are) currently points to `main`, which points to this commit.
-- `Author:` — who wrote the change.
-- `Date:` — when (in your local timezone; the raw stored value is Unix epoch).
-- `Initial commit: add README` — the message.
-- `diff --git ...` — the actual changes this commit introduced, in unified diff format. `+` lines are additions, `-` lines are deletions.
-
----
-
-## 2.7 Ignoring Files: `.gitignore`
-
-Most projects have files that should **never** be tracked:
-
-- **Secrets:** `.env`, API keys, passwords
-- **Dependencies:** `node_modules/`, `vendor/` (huge, reproducible from `package.json`)
-- **Build output:** `dist/`, `build/`, `*.o`, `*.class`
-- **OS junk:** `.DS_Store` (macOS), `Thumbs.db` (Windows)
-- **Editor configs:** `.vscode/`, `.idea/` (subjective; some teams track them)
-
-Git uses a file called `.gitignore` (in the repo root) to know what to skip.
-
-### Creating a `.gitignore`
-
-```bash
-cat > .gitignore << 'EOF'
-# .gitignore — lines starting with # are comments
-
-# Secrets
-.env
-.env.local
-*.pem
-
-# Dependencies (huge, reproducible — don't track)
-node_modules/
-vendor/
-
-# Build output
-dist/
-build/
-*.log
-
-# OS junk
-.DS_Store
-Thumbs.db
-
-# Editor / IDE
-.vscode/
-.idea/
-
-# Python example
-__pycache__/
-*.pyc
-.venv/
-
-# Exception: track this one file despite the *.log rule above
-!important.log
-EOF
-```
-
-**Reading the patterns:**
-
-- `.env` — ignores any file literally named `.env` (anywhere in the tree).
-- `node_modules/` — ignores any folder named `node_modules` (the trailing `/` means "folder only").
-- `*.log` — wildcard: any file ending in `.log`.
-- `dist/` — folder, anywhere.
-- `.DS_Store` — common macOS junk file.
-- `!important.log` — `!` *negates* a pattern, so `important.log` is tracked even though `*.log` would otherwise ignore it.
-
-### Useful `.gitignore` templates
-
-GitHub maintains a giant collection of starter `.gitignore` files for every language/framework at <https://github.com/github/gitignore>. Copy the one for your stack as a starting point.
-
-### What if I already committed a file I want to ignore?
-
-`.gitignore` only affects *untracked* files. If a file is already tracked, you must first untrack it:
-
-```bash
-git rm --cached .env             # untrack but keep on disk
-git commit -m "Stop tracking .env (added to .gitignore)"
-```
-
-`--cached` is critical — without it, `git rm` deletes the file from disk too. With `--cached`, it removes only from Git's index; the file stays on your computer.
-
----
-
-## 2.8 Viewing History: `git log` and `git show`
-
-### `git log`
-
-Lists commits, newest first:
-
-```bash
-git log
-```
-
-Sample output:
-
-```text
-commit 9fceb528d4e4c5b8b3e8b7c6f5a4d3c2b1a09182c (HEAD -> main)
-Author: Aziz Nader <aziz@example.com>
-Date:   Sat Oct 5 10:32:14 2025 +0200
-
-    Initial commit: add README
-```
-
-Useful variations:
-
-```bash
-git log --oneline              # one line per commit (short hash + message)
-git log --oneline --graph      # ASCII graph of branches/merges
-git log --oneline --graph --all  # include ALL branches
-git log -5                     # last 5 commits
-git log --stat                 # show files changed in each commit
-git log -p                     # show the actual diff of each commit
-git log --author="Aziz"        # only commits by author
-git log --since="2 weeks ago"  # only recent commits
-git log -- README.md           # only commits that touched README.md
-git log -S "function foo"      # commits that added/removed the string "function foo"
-```
-
-The most-used combination for daily work:
-
-```bash
-git log --oneline --graph --all --decorate
-```
-
-Sample output for a real project:
-
-```text
-* 9fceb52 (HEAD -> main) Add password reset tests
-* 4d2c1ab Add password reset flow
-* a1b2c3d Refactor auth module
-| * 7e8f9ab (feature/dark-mode) Add dark mode toggle
-| * 3c4d5e6 Initial dark mode styles
-|/
-* 5f6a7b8 Initial commit
-```
-
-### `git show`
-
-`git show` displays everything about a single commit: metadata + diff.
-
-```bash
-git show                    # shows the latest commit
-git show 9fceb52            # shows a specific commit by hash
-git show HEAD               # same as `git show` — HEAD is "current commit"
-git show HEAD~1             # the commit BEFORE HEAD (parent)
-git show HEAD~~             # two commits before
-git show main               # the commit at the tip of `main`
-git show README.md          # shows the latest change to README.md (file)
-```
-
----
-
-## 2.9 Seeing Exactly What Changed: `git diff`
-
-`git diff` shows line-by-line differences. There are three common forms:
-
-### 1. Working directory vs. staging area
-
-```bash
-git diff
-```
-
-Shows changes in your working directory that are **not yet staged**.
-
-### 2. Staging area vs. last commit
-
-```bash
-git diff --staged
-# or equivalently:
-git diff --cached
-```
-
-Shows changes that **are** staged but not yet committed.
-
-### 3. Any two commits
-
-```bash
-git diff HEAD~3 HEAD              # last 3 commits' worth of changes
-git diff a1b2c3d 9fceb52          # between two specific commits
-git diff main feature/login       # between two branches
-```
-
-### Reading a diff
-
-```text
-diff --git a/README.md b/README.md
-index abc1234..def5678 100644
---- a/README.md
-+++ b/README.md
-@@ -1,3 +1,4 @@
- # My First Repo
- 
-+This is a new paragraph.
- Some existing content.
-```
-
-**Reading line by line:**
-
-- `diff --git a/README.md b/README.md` — comparing two versions of `README.md`. `a/` is the old version, `b/` is the new.
-- `index abc1234..def5678 100644` — internal Git hashes for the old and new versions; `100644` is the file mode.
-- `--- a/README.md` and `+++ b/README.md` — markers showing which file is which.
-- `@@ -1,3 +1,4 @@` — a "hunk header". ` -1,3 ` means "starting at line 1 of the old version, 3 lines". ` +1,4 ` means "starting at line 1 of the new version, 4 lines".
-- ` # My First Repo` — context line (unchanged). Starts with a space.
-- `+This is a new paragraph.` — added line. Starts with `+`.
-- `-Some old line.` — deleted line. Starts with `-` (not in this example).
-
-### Word-level diff (for prose)
-
-For text files where line diffs are too coarse:
-
-```bash
-git diff --word-diff
-```
-
-Shows additions as `{+added+}` and deletions as `{-removed-}` inline.
-
----
-
-## 2.10 A Second and Third Commit
-
-Let's make two more commits to build up a real history.
-
-```bash
-echo "" >> README.md
-echo "This is a project I'm building while learning Git." >> README.md
-git status
-git add README.md
-git commit -m "Add project description to README"
-```
-
-Output of the commit:
-
-```text
-[main 4d2c1ab] Add project description to README
- 1 file changed, 2 insertions(+)
-```
-
-And a third:
-
-```bash
-mkdir src
-echo 'console.log("Hello, Git!");' > src/index.js
-git add src/index.js
-git commit -m "Add hello-world entry point"
-git log --oneline
-```
-
-`git log --oneline` now shows:
-
-```text
-4d2c1ab Add hello-world entry point
-a1b2c3d Add project description to README
-9fceb52 Initial commit: add README
-```
-
-You now have a real, three-commit Git repository. This is the foundation everything else builds on.
-
----
-
-## 2.11 Your Turn
-
-Do this exercise on your own machine. Don't skip it — the next chapter assumes you've done it.
-
-1. Create a new repo called `git-practice` in your home folder.
-
-2. Create a `README.md` with one line: `# Git Practice`.
-
-3. Initialize Git and make your first commit: `Initial commit`.
-
-4. Add a `.gitignore` with these contents:
-   ```
-   *.log
-   .env
-   .DS_Store
-   ```
-
-5. Create a file `notes.txt`, write something in it, and commit it: `Add personal notes`.
-
-6. Modify `README.md` (add a line), check `git status`, stage only the README, and commit: `Expand README with description`.
-
-7. Run `git log --oneline --graph --all` and confirm you see three commits.
-
-8. Run `git show HEAD` and read the output. Identify the hash, the author, the date, the message, and the diff.
-
-9. Create a file `secret.env` with content `PASSWORD=hunter2`. Verify with `git status` that it appears as untracked. Add `.env` to your `.gitignore`. Verify with `git status` again — it should disappear from untracked files. (Note: `*.env` would also work; `.env` only matches files literally named `.env`. Adjust to taste.)
-
-10. Bonus: stage *part* of a file with `git add -p`. Create a file `multiline.txt` with 5 lines, modify 3 of them, and use `git add -p` to stage only 2.
-
-When all ten steps pass, you have graduated from "never used Git" to "uses Git locally". Chapter 3 takes you inside `.git/` to understand *how* Git stores everything — which makes branching and merging feel natural rather than magical.
-
-**Next up: Chapter 3 — Git Internals: What's Actually Inside `.git`.**
-
----
----
-
-
-# Chapter 3 — Git Internals: What's Actually Inside `.git`
-
-> **Goal of this chapter:** Demystify the `.git/` directory. Understand blobs, trees, commits, and refs. By the end, branching and merging in Chapter 4 will feel obvious — they're just moving pointers around.
-
-This chapter is **optional for everyday use** but **essential for true understanding**. You can use Git for years without knowing what's in `.git/`, but every confusing Git error will remain confusing until you do.
-
----
-
-## 3.1 The `.git/` Directory Tour
-
-In your repo, run:
-
-```bash
-ls -la .git/
-```
-
-You'll see something like:
-
-```text
-total 64
-drwxr-xr-x   10 you  staff   320 Oct  5 10:32 .
-drwxr-xr-x    4 you  staff   128 Oct  5 10:35 ..
--rw-r--r--    1 you  staff    23 Oct  5 10:32 HEAD
--rw-r--r--    1 you  staff   137 Oct  5 10:32 config
--rw-r--r--    1 you  staff    73 Oct  5 10:32 description
-drwxr-xr-x   14 you  staff   448 Oct  5 10:32 hooks
--rw-r--r--    1 you  staff   178 Oct  5 10:32 index          ← staging area
-drwxr-xr-x    3 you  staff    96 Oct  5 10:32 info
-drwxr-xr-x    4 you  staff   128 Oct  5 10:32 logs
-drwxr-xr-x    3 you  staff    96 Oct  5 10:32 objects        ← all the data
-drwxr-xr-x    4 you  staff   128 Oct  5 10:32 refs          ← branches & tags
-```
-
-| Path | Purpose |
-|---|---|
-| `HEAD` | A single line: the branch you're currently on. |
-| `config` | This repo's local config (overrides `~/.gitconfig`). |
-| `description` | Placeholder used by old GitWeb; ignore. |
-| `hooks/` | Sample hook scripts (Chapter 8). |
-| `index` | Binary file: the staging area. |
-| `info/` | Global excludes (like `.gitignore` but for you only). |
-| `logs/` | The **reflog**: where `HEAD` has been. Safety net. |
-| `objects/` | All blobs, trees, commits. The actual database. |
-| `refs/` | Pointers: branches (`refs/heads/`) and tags (`refs/tags/`). |
-
----
-
-## 3.2 Three Kinds of Objects
-
-Git stores **three types of objects** in `.git/objects/`:
-
-1. **Blob** — the content of a file (just the bytes; not even the file name).
-2. **Tree** — a directory listing (file names + permissions + blob hashes, or sub-tree hashes).
-3. **Commit** — a snapshot of a tree, plus metadata (parent, author, message).
-
-Each object is identified by a 40-character SHA-1 hash of its content. **Hashing the same content always produces the same hash**, which is how Git deduplicates and detects corruption.
-
-### Object 1: the Blob
-
-A blob is the content of a file at one moment. Let's see one.
-
-```bash
-git hash-object README.md
-```
-
-Output (a 40-char hash):
-
-```text
-9fceb528d4e4c5b8b3e8b7c6f5a4d3c2b1a09182c
-```
-
-`git hash-object` computes what hash Git *would* give the file if you added it. The actual blob object is stored in `.git/objects/9f/ceb528d4e4c5b8b3e8b7c6f5a4d3c2b1a09182c` (first 2 chars = folder, remaining 38 = file name; this shards the objects to avoid one giant directory).
-
-To see the contents of any object:
-
-```bash
-git cat-file -p 9fceb52
-```
-
-Output (the file's content):
-
-```text
-# My First Repo
-```
-
-`-p` means "pretty-print". For a blob, that's just the content.
-
-### Object 2: the Tree
-
-A tree is a directory. It lists the files and subdirectories in that directory, with their hashes.
-
-```bash
-git cat-file -p main^{tree}
-```
-
-`main^{tree}` is Git syntax for "the tree object that the commit at the tip of `main` points to".
-
-Sample output:
-
-```text
-100644 blob 9fceb528d4e4c5b8b3e8b7c6f5a4d3c2b1a09182c    README.md
-040000 tree 4b825dc642cb6eb9a060e54bf8d69288fbee4904    src
-```
-
-Reading each line:
-- `100644` — file mode (regular file, rw-r--r--).
-- `040000` — directory mode.
-- `blob` / `tree` — object type.
-- `9fceb52...` — the SHA-1 of the blob (or sub-tree).
-- `README.md` / `src` — the name in this directory.
-
-So a tree is just a list of `(mode, type, hash, name)` tuples.
-
-### Object 3: the Commit
-
-```bash
-git cat-file -p HEAD
-```
-
-Sample output:
-
-```text
-tree 4b825dc642cb6eb9a060e54bf8d69288fbee4904
-parent a1b2c3d4e5f6789012345678901234567890abcd
-author Aziz Nader <aziz@example.com> 1728114734 +0200
-committer Aziz Nader <aziz@example.com> 1728114734 +0200
-
-Add password reset tests
-```
-
-Reading line by line:
-- `tree ...` — the top-level tree of this snapshot.
-- `parent ...` — the commit this one builds on. (Merge commits have two `parent` lines.)
-- `author ...` — who wrote the change, and when (Unix timestamp + timezone).
-- `committer ...` — who applied the commit (usually same as author; differs on rebases/cherry-picks).
-- Blank line.
-- The commit message.
-
-### How they fit together
-
-```
-   Commit (HEAD)
-     │
-     ├─── tree (root)
-            ├─── blob (README.md content)
-            ├─── tree (src/)
-            │      └── blob (src/index.js content)
-            └─── blob (LICENSE content)
-```
-
-A commit points to a tree, the tree points to blobs (and sub-trees), blobs hold the actual file content. **Branches are just files containing a commit hash. Tags are similar.** That's the whole model.
-
----
-
-## 3.3 Hashes, Short Hashes, and `rev-parse`
-
-Every Git object has a 40-character SHA-1 hash. You almost never type the full hash — Git accepts any unambiguous prefix.
-
-```bash
-git show 9fceb52          # 8 chars — fine
-git show 9fceb            # 5 chars — usually fine, may be ambiguous
-git show 9f               # 2 chars — too short, ambiguous
-```
-
-To get a hash from a friendly name:
-
-```bash
-git rev-parse HEAD         # full 40-char hash of HEAD
-git rev-parse main         # hash of the commit at the tip of main
-git rev-parse main~3       # hash of main's great-grandparent
-```
-
-`HEAD~3` is shorthand for "three commits before HEAD". `~` walks first parents; `^` walks any parent (relevant for merge commits which have multiple parents — `HEAD^2` is the second parent).
-
----
-
-## 3.4 Branches and Tags Are Just Files
-
-A **branch** is a file in `.git/refs/heads/` containing a commit hash.
-
-```bash
-cat .git/refs/heads/main
-```
-
-Output:
-
-```text
-4d2c1ab9d4e4c5b8b3e8b7c6f5a4d3c2b1a09182c
-```
-
-That's it. The entire existence of `main` is this 41-byte file. Creating a branch = creating a similar file. Switching branches = changing which file `HEAD` points to.
-
-A **tag** is the same idea, but in `.git/refs/tags/`. The difference: tags don't move (by convention), branches do.
-
-There's also `HEAD`:
-
-```bash
-cat .git/HEAD
-```
-
-Output:
-
-```text
-ref: refs/heads/main
-```
-
-`HEAD` is a pointer to a *branch*. (In "detached HEAD" state, it points directly to a commit hash.)
-
-### Why this matters
-
-Once you internalize that **branches are 41-byte files**, several "mysterious" Git behaviours become obvious:
-
-- **Branching is instant.** You're writing a 41-byte file. No copying.
-- **Deleting a branch is instant.** Just `rm` the file.
-- **Switching branches is fast.** Just update `HEAD` and rewrite the working directory.
-- **`main` is not special.** It's a branch like any other. (It's just the conventional default name.)
-- **You can rename branches freely.** It's just renaming a file. (Use `git branch -m old new`.)
-
----
-
-## 3.5 The Index (Staging Area)
-
-The staging area is a binary file at `.git/index`. You don't read it directly — you use `git add`, `git status`, `git diff --staged` — but it's worth knowing what's in it.
-
-Conceptually, the index is a list of `(path, mode, blob-hash)` tuples for every file that would be in the next commit. When you run `git add README.md`, Git:
-
-1. Computes the blob hash of `README.md`'s current content.
-2. Stores the blob in `.git/objects/` if it's not already there.
-3. Updates the index entry for `README.md` to point at that blob.
-
-When you commit, Git builds a tree from the index, wraps it in a commit object, and updates the current branch.
-
-### Peeking at the index
-
-```bash
-git ls-files                  # list all tracked files
-git ls-files -s               # list with mode, hash, stage (verbose)
-```
-
-Sample `-s` output:
-
-```text
-100644 9fceb528d4e4c5b8b3e8b7c6f5a4d3c2b1a09182c 0    README.md
-100644 8baef1b4abc414c5d8b3e8b7c6f5a4d3c2b1a0918 0    src/index.js
-```
-
-The middle column is the blob hash. If you see `1` or `2` in the last column instead of `0`, you have an unresolved merge conflict (Chapter 4).
-
----
-
-## 3.6 The Reflog: Your Safety Net
-
-Git records every place `HEAD` has been in a log called the **reflog**. This is what makes Git so safe — even "lost" commits can usually be recovered.
-
-```bash
-git reflog
-```
-
-Sample output:
-
-```text
-4d2c1ab HEAD@{0}: commit: Add hello-world entry point
-a1b2c3d HEAD@{1}: commit: Add project description to README
-9fceb52 HEAD@{2}: commit (initial): Initial commit: add README
-```
-
-Each line: `<commit-hash> <ref-position>: <action>: <message>`.
-
-`HEAD@{0}` is *now*. `HEAD@{1}` is *one operation ago*. And so on.
-
-### Recovering a "deleted" commit
-
-Suppose you accidentally `git reset --hard HEAD~1` (we'll cover this in Chapter 7). You "lost" the most recent commit. But the reflog still has it:
-
-```bash
-git reflog
-# 9fceb52 HEAD@{0}: reset: moving to HEAD~1
-# 4d2c1ab HEAD@{1}: commit: Add hello-world entry point   ← the "lost" commit
-```
-
-To recover:
-
-```bash
-git reset --hard 4d2c1ab     # move HEAD back to the lost commit
-```
-
-The commit isn't deleted by `reset` — only the branch pointer moves. The commit object is still in `.git/objects/`. It will be truly deleted only when Git runs **garbage collection** (typically after 30 days of being unreferenced). Until then, it's recoverable.
-
----
-
-## 3.7 Garbage Collection
-
-Git periodically compresses unreferenced objects and deletes them. This is `git gc`.
-
-```bash
-git gc                       # clean up now
-git gc --aggressive          # more thorough, slower
-git gc --prune=now           # delete unreachable objects immediately
-```
-
-You almost never need to run this manually. Git runs it automatically when:
-- The number of loose objects exceeds a threshold.
-- After `git pull` and certain other commands.
-
-The reason: garbage collection makes the repo smaller and faster, but it permanently deletes unreferenced commits. Until `gc` runs, **everything is recoverable via the reflog**.
-
----
-
-## 3.8 Packfiles (How Git Stores History Efficiently)
-
-If Git stored every version of every file as a separate blob, large repos would explode. Git periodically packs many objects into a single **packfile** (`.git/objects/pack/*.pack`) with delta compression: only the differences between versions are stored.
-
-You don't need to understand packfiles to use Git, but knowing they exist explains why `du -sh .git` is often *much smaller* than the sum of all your file changes.
-
-```bash
-git count-objects -v
-```
-
-Sample output:
-
-```text
-count: 87
-size: 1240
-in-pack: 5234
-packs: 3
-size-pack: 8920
-prune-packable: 0
-garbage: 0
-size-garbage: 0
-```
-
-`count` is loose objects; `in-pack` is objects inside packfiles. Most mature repos have the majority of objects in packs.
-
----
-
-## 3.9 Putting It Together: A Walkthrough
-
-Let's trace what happens when you edit a file, stage it, and commit. Every step corresponds to a real change in `.git/`.
-
-1. You edit `README.md`. **Working directory only.** No `.git` changes.
-
-2. You run `git add README.md`. Git:
-   - Hashes the file content → blob hash, e.g. `def5678...`.
-   - Stores the blob in `.git/objects/de/f5678...`.
-   - Updates the index entry for `README.md` to point at this blob.
-
-3. You run `git commit -m "Update README"`. Git:
-   - Builds a tree from the index → tree hash.
-   - Builds a commit object pointing at that tree, with the parent = current `HEAD`'s commit, the author info, the message.
-   - Stores the commit object.
-   - Updates `.git/refs/heads/main` to the new commit hash.
-   - Updates `.git/logs/HEAD` (the reflog) with the new entry.
-
-4. `git push` (we'll cover in Chapter 5). Git:
-   - Computes which commits the remote is missing.
-   - Bundles them (and their blobs/trees) into a packfile.
-   - Sends the packfile over the wire.
-   - The remote unpacks and updates its own `refs/heads/main`.
-
-This is *the entire mental model of Git*. Every command from here on is a high-level wrapper around these primitives.
-
----
-
-## 3.10 Your Turn
-
-1. Open your `git-practice` repo from Chapter 2. Run `ls -la .git/` and identify each entry (HEAD, config, objects/, refs/, index).
-
-2. Run `git cat-file -p HEAD` and identify the tree, parent, author, committer, and message.
-
-3. Run `git cat-file -p HEAD^{tree}` to see the top-level tree. Note the blobs (files) and trees (subdirectories).
-
-4. Take the hash of one of the blobs (e.g. the README blob hash from the tree listing). Run `git cat-file -p <hash>` and confirm you see the file content.
-
-5. Run `git ls-files -s` and look at the index. Notice that the hashes there match the tree's blob hashes.
-
-6. Make two more commits, then run `git reflog`. Confirm you can see every operation you did.
-
-7. Run `git rev-parse HEAD` and `git rev-parse main`. They should be identical (because `HEAD` points to `main`).
-
-8. Open `.git/refs/heads/main` in a text editor (or `cat` it) and confirm the hash matches.
-
-If you completed all 8 steps, you have x-ray vision into Git. Branching will now feel natural.
-
-**Next up: Chapter 4 — Branching and Merging.** We'll create branches, switch between them, merge them, and (gasp) hit our first merge conflict — and resolve it without panic.
-
----
----
-
-
-# Chapter 4 — Branching and Merging
-
-> **Goal of this chapter:** Master branches — Git's most powerful feature. Create, switch, rename, delete branches. Merge them. Hit and resolve merge conflicts. By the end, you'll know what "git checkout -b feature/dark-mode" *means*, not just what it *does*.
-
-This chapter is where Git starts to pay off. Branches transform version control from "I have history" to "I have parallel universes of my project, and I can move between them at will".
-
----
-
-## 4.1 What Is a Branch?
-
-In Chapter 3 we saw the truth: **a branch is a 41-byte file containing a commit hash**. That's it. No copy of the files. No "branch folder". Just a pointer to the latest commit on that line of work.
-
-Visually:
-
-```
-   (C1) ── (C2) ── (C3)                  ← commits
-                       ▲
-                       │
-                     [main]              ← branch "main" points to C3
-```
-
-When you commit on `main`, Git:
-1. Creates commit C4 with parent = C3.
-2. Moves the `main` pointer forward to C4.
-
-```
-   (C1) ── (C2) ── (C3) ── (C4)
-                               ▲
-                               │
-                             [main]
-```
-
-That's all "moving forward on main" means.
-
-A **second branch** is just another pointer:
-
-```
-   (C1) ── (C2) ── (C3) ── (C4)            ← main
-                    │
-                    └─ (C3') ── (C3'')      ← feature
-                                 ▲
-                                 │
-                              [feature]
-```
-
-C3' and C3'' are commits on `feature` whose parent is C3 (the point where `feature` branched off). `main` keeps marching forward independently.
-
----
-
-## 4.2 Why Branches Change Your Life
-
-Branches let you try things without fear. Real examples:
-
-- **"I want to refactor the auth module, but I'm not sure it'll work."** → Make a `refactor/auth` branch. If it works, merge. If not, delete the branch; `main` is untouched.
-- **"I'm halfway through a feature and there's a production bug."** → Stash or commit your work on `feature/login`, switch to `main`, branch off `hotfix/prod-crash`, fix, merge, deploy, switch back to `feature/login` and continue.
-- **"Two of us are working on the same project."** → Alice on `feature/cart`, Bob on `feature/search`. Both branch from `main`. Merge both back when done.
-
-Without branches, you'd be emailing ZIPs of "the version that has the new login but not the cart changes". With branches, this is automatic.
-
----
-
-## 4.3 Creating and Switching Branches
-
-### Listing branches
-
-```bash
-git branch
-```
-
-Output:
-
-```text
-* main
-```
-
-The `*` marks the current branch. (You're on `main` because that's the default.)
-
-### Creating a branch (without switching)
-
-```bash
-git branch feature/dark-mode
-```
-
-`git branch <name>` creates the branch pointer at the current commit but **does not switch to it**. You're still on `main`.
-
-```bash
-git branch
-```
-
-Output:
-
-```text
-* main
-  feature/dark-mode
-```
-
-### Switching to a branch
-
-There are two equivalent commands:
-
-```bash
-git checkout feature/dark-mode        # classic syntax (still works everywhere)
-git switch feature/dark-mode          # modern syntax (Git 2.23+, clearer intent)
-```
-
-After either:
-
-```bash
-git branch
-```
-
-Output:
-
-```text
-  main
-* feature/dark-mode
-```
-
-### Create-and-switch in one step
-
-```bash
-git checkout -b feature/dark-mode      # classic
-git switch -c feature/dark-mode         # modern (-c for "create")
-```
-
-Both create the branch *and* switch to it. This is what you'll do 90% of the time.
-
-**Reading the command:**
-
-- `git switch` — switch branches.
-- `-c feature/dark-mode` — `c` for "create". Creates the branch before switching.
-
-### Naming branches
-
-Conventions vary by team, but common patterns:
-
-| Pattern | Example | When to use |
-|---|---|---|
-| `feature/<short-name>` | `feature/password-reset` | New feature work |
-| `bugfix/<short-name>` | `bugfix/login-crash` | Bug fix |
-| `hotfix/<short-name>` | `hotfix/prod-memory-leak` | Urgent production fix |
-| `chore/<short-name>` | `chore/upgrade-dependencies` | Maintenance, no user-facing change |
-| `docs/<short-name>` | `docs/api-reference` | Documentation only |
-| `release/<version>` | `release/2.1.0` | Preparing a specific release |
-
-Use `/` to group. Use `-` (kebab-case) for multi-word names. Avoid spaces and uppercase.
-
----
-
-## 4.4 `HEAD`: Where You Are Right Now
-
-`HEAD` is a special pointer that says "you are here". Normally `HEAD` points to a branch (which points to a commit):
-
-```
-HEAD ─→ refs/heads/main ─→ commit C4
-```
-
-When you commit, Git updates the branch `HEAD` points to (so `main` moves to C5, and `HEAD` transitively does too).
-
-When you `git checkout <commit-hash>` (not a branch), `HEAD` points directly at that commit:
-
-```
-HEAD ─→ commit C2  (no branch involved)
-```
-
-This is called **detached HEAD** state. It's not dangerous, but any commits you make here are not on any branch and will be "lost" when you switch away (until you create a branch from them). Git will warn you:
-
-```text
-You are in 'detached HEAD' state. You can look around, make experimental
-changes and commit them, and you can discard any commits you make in this
-state without impacting any branches by switching back to a branch.
-```
-
-To recover from detached HEAD after making commits you want to keep:
-
-```bash
-git branch save-my-work      # create a branch at this commit
-git switch main              # safely switch away
-```
-
-Now `save-my-work` is a regular branch with your commits.
-
----
-
-## 4.5 Deleting and Renaming Branches
-
-### Deleting a branch (after merging)
-
-```bash
-git switch main
-git branch -d feature/dark-mode       # -d for "delete (safe)"
-```
-
-`-d` (lowercase) refuses to delete if the branch hasn't been merged — it's a safety check.
-
-```text
-error: The branch 'feature/dark-mode' is not fully merged.
-If you are sure you want to delete it, run 'git branch -D feature/dark-mode'.
-```
-
-### Forcing deletion
-
-```bash
-git branch -D feature/dark-mode        # -D for "force delete"
-```
-
-Use `-D` when you abandoned the branch and don't care about its commits.
-
-### Renaming a branch
-
-```bash
-git branch -m feature/dark-mode feature/theme-switch
-```
-
-`-m` for "move" (like `mv`). Renames the branch in place. If you've already pushed the old name to GitHub, you'll need to delete the remote branch and push the new one (Chapter 5).
-
-### Renaming the branch you're currently on
-
-```bash
-git branch -m new-name       # renames the current branch to "new-name"
-```
-
----
-
-## 4.6 Merging
-
-Merging brings changes from one branch into another. Two kinds of merge:
-
-### 1. Fast-forward merge
-
-When the target branch is a direct descendant of the source (no diverging commits), Git just moves the pointer forward.
-
-Setup:
-
-```bash
-git switch main
-git checkout -b feature/add-favicon      # branch off main
-echo "<link rel='icon' href='/favicon.ico'>" >> index.html
-git add index.html
-git commit -m "Add favicon link"
-git switch main
-```
-
-State before merge:
-
-```
-(C1) ── (C2) ── (C3)                       ← main
-                    │
-                    └── (C4 favicon)       ← feature/add-favicon
-```
-
-Now merge:
-
-```bash
-git merge feature/add-favicon
-```
-
-Output:
-
-```text
-Updating a1b2c3d..4d2c1ab
-Fast-forward
- index.html | 1 +
- 1 file changed, 1 insertion(+)
- create mode 100644 index.html
-```
-
-State after merge:
-
-```
-(C1) ── (C2) ── (C3) ── (C4 favicon)       ← main
-                                          ↑
-                                  feature/add-favicon (still here)
-```
-
-`main` just moved forward. No merge commit was created. Git calls this a **fast-forward merge**.
-
-### 2. Three-way merge (when histories diverged)
-
-When both branches have new commits since they diverged, Git creates a **merge commit** with two parents.
-
-Setup:
-
-```bash
-git switch main
-git checkout -b feature/footer
-echo "<footer>© 2025</footer>" >> index.html
-git add index.html
-git commit -m "Add footer"
-
-git switch main
-echo "<!-- main branch change -->" >> index.html
-git add index.html
-git commit -m "Update index.html on main"
-```
-
-State:
-
-```
-(C1) ── (C2) ── (C3) ── (C5 main update)        ← main
-                    │
-                    └── (C4 footer)              ← feature/footer
-```
-
-Now merge:
-
-```bash
-git switch main
-git merge feature/footer
-```
-
-Git tries to merge. If no conflict (changes were in different parts of the file), it opens your editor for a merge commit message:
-
-```text
-Merge branch 'feature/footer'
-```
-
-Save and close. New state:
-
-```
-(C1) ── (C2) ── (C3) ── (C5 main update) ── (C6 merge commit)   ← main
-                    │                            ┌────┘
-                    └── (C4 footer) ─────────────┘
-```
-
-`C6` is the **merge commit** — it has *two* parents: `C5` (from main) and `C4` (from feature/footer).
-
-Output:
-
-```text
-Merge made by the 'ort' strategy.
- index.html | 1 +
- 1 file changed, 1 insertion(+)
-```
-
-### Force no fast-forward (always create a merge commit)
-
-```bash
-git merge --no-ff feature/footer
-```
-
-`--no-ff` ensures a merge commit is created even when a fast-forward would be possible. This preserves the "this came from a feature branch" history, which many teams prefer.
-
----
-
-## 4.7 Merge Conflicts: The Complete Walkthrough
-
-A **merge conflict** happens when two branches changed the *same lines* of the *same file* in incompatible ways. Git cannot decide which version wins, so it pauses and asks you.
-
-### Setting up a conflict
-
-```bash
-git switch main
-git checkout -b conflict-practice
-
-# Edit the same line in two different ways
-echo "Version A" > greeting.txt
-git add greeting.txt
-git commit -m "Set greeting to Version A"
-
-git switch main
-echo "Version B" > greeting.txt
-git add greeting.txt
-git commit -m "Set greeting to Version B"
-
-# Now try to merge conflict-practice into main
-git merge conflict-practice
-```
-
-Output:
-
-```text
-Auto-merging greeting.txt
-CONFLICT (add/add): Merge conflict in greeting.txt
-Automatic merge failed; fix conflicts and then commit the result.
-```
-
-### What's in the file now?
-
-```bash
-cat greeting.txt
-```
-
-Output:
-
-```text
-<<<<<<< HEAD
-Version B
-=======
-Version A
->>>>>>> conflict-practice
-```
-
-Reading the markers:
-
-- `<<<<<<< HEAD` — start of "our" side (the branch you're on, `main`).
-- `Version B` — the content on `main`.
-- `=======` — the divider.
-- `Version A` — the content from `conflict-practice`.
-- `>>>>>>> conflict-practice` — end of "their" side.
-
-### Resolving the conflict
-
-Edit the file to the final desired content. You can pick one side, the other, both, or something new. Remove all the `<<<<<<<`, `=======`, `>>>>>>>` markers.
-
-For example, change it to:
-
-```text
-Version A and B combined
-```
-
-Save the file.
-
-### Marking as resolved
-
-```bash
-git add greeting.txt
 git status
 ```
 
@@ -2533,310 +1105,1005 @@ Output:
 
 ```text
 On branch main
-All conflicts fixed but you are still merging.
-  (use "git commit" to conclude merge)
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   hello.txt
 
-Changes to be committed:
-        modified:   greeting.txt
+no changes added to commit (use "git add" and/or "git commit -a")
 ```
+
+**What just happened (line by line):** `Changes not staged for commit:` is a new section - this file is *tracked* (it is in history) but its *current version* is not in the staging area; the two hints give you both exits (stage it, or discard it); `modified: hello.txt` names the state. Notice Git is not alarmed: a modified tracked file is normal everyday life. Stage and commit again:
 
 ```bash
-git commit
+git add hello.txt                      # select the new version
+git commit -m "Add a second line to the greeting"   # save snapshot number two
 ```
 
-Git opens your editor with a default message:
+#### 12.7 The Status Sections at a Glance
 
-```text
-Merge branch 'conflict-practice'
-```
+`git status` output always sorts your files into up to three sections, and reading them fluently is a genuine professional skill:
 
-Save and close. The merge is complete.
+| Section heading | Meaning | How to advance it |
+| --- | --- | --- |
+| `Changes to be committed:` | In staging; will be in next commit | `git commit` |
+| `Changes not staged for commit:` | Tracked file, modified on disk | `git add` it |
+| `Untracked files:` | New file Git has never been told about | `git add` it |
 
-### Aborting a merge
-
-If you don't want to deal with the conflict right now:
+#### 12.8 The Famous Shortcut
 
 ```bash
-git merge --abort
+git commit -am "Update greeting"    # stage-and-commit every TRACKED modified file in one step
 ```
 
-Returns you to the pre-merge state. The working directory is clean again.
+The `-a` flag (all) auto-stages modifications and deletions of tracked files before committing. It saves typing, with one sharp edge: it silently ignores **new** (untracked) files. Beginners have lost uncommitted new files to this assumption. Use it when you know every changed file belongs in the commit; otherwise stage deliberately.
 
-### Tools that make conflicts easier
+#### 12.9 Common Misconceptions, Cleared Now
 
-For simple conflicts, edit the file directly. For complex conflicts with many files:
+- **Saving in your editor is not committing.** Ctrl+S writes the file to disk (the working directory). Until you `git add` and `git commit`, history knows nothing.
+- **Committing is not pushing.** Commits live on your machine. Uploading them to GitHub is `git push`, taught in Chapter 22, and this distinction matters daily.
+- **You must re-stage after editing.** Staging records one version of the file. Edit after adding, and the new edits are unstaged again; stage again before committing.
 
-- **`git mergetool`** — opens a visual merge tool (configurable; common ones: VS Code, Meld, KDiff3, Beyond Compare).
-- **VS Code** — has built-in 3-way merge UI when you open a conflicted file. Click "Accept Current", "Accept Incoming", or "Accept Both" right above each conflict block.
-
-```bash
-git config --global merge.tool code
-git config --global mergetool.code.cmd 'code --wait $MERGED'
-```
-
-Then `git mergetool` opens VS Code.
-
-### Tips for resolving conflicts calmly
-
-1. **Don't panic.** Git hasn't lost anything; the conflict markers show you both versions.
-2. **Read the diff.** Understand *what* each side wanted before deciding.
-3. **Talk to your teammate.** If the conflict is on a teammate's branch, ask them which version they intended.
-4. **Run the tests after resolving.** A merge that compiles is not the same as a merge that works.
-5. **Commit small branches.** Long-lived branches accumulate conflicts. Short branches rarely conflict.
+> **Try it yourself:** make three small files, stage only two, commit, and run `git status`. See the third waiting in `Untracked files:`. Then add and commit it as a second commit. You have just exercised the full loop.
 
 ---
 
-## 4.8 Branch Naming Conventions
+### Chapter 13: Writing Great Commit Messages
 
-Conventions vary, but these are widely accepted:
+#### 13.1 Why Messages Matter
 
-| Prefix | Purpose | Example |
-|---|---|---|
-| `feature/` | New functionality | `feature/password-reset` |
-| `bugfix/` or `fix/` | Bug fix | `fix/login-redirect-loop` |
-| `hotfix/` | Urgent production fix | `hotfix/prod-crash-2025-10` |
-| `chore/` | Maintenance, no user-facing change | `chore/upgrade-react` |
-| `docs/` | Documentation only | `docs/api-reference-update` |
-| `refactor/` | Code restructuring, no behaviour change | `refactor/extract-auth-service` |
-| `experiment/` | Trying something out | `experiment/serverless-version` |
-| `release/` | Preparing a release | `release/2.1.0` |
+A commit without a message is a photograph without a caption: someday you will stare at a list of fifty snapshots all saying `update` and understand nothing. Commit messages are letters to your future self and your teammates; six months from now, the message is often the *only* clue to why code changed. Treat every message as the answer to: "if someone saw only the list of changes, what one line would explain *why* I made them?"
 
-Include a ticket number if your team uses a tracker:
+#### 13.2 The Format of a Good Message
 
 ```text
-feature/PROJ-123-password-reset
+Add login rate limiting
+
+Users were being locked out by brute-force attempts targeting
+the auth endpoint. This commit adds a 5-attempts-per-minute
+limit per account, with a clean 429 response.
+
+The limit is stored in Redis so it works across all app servers.
 ```
 
-This makes the branch auto-link to the Jira ticket in many tools.
+The rules this example follows, and why:
 
----
+- **Subject line under about 50 characters, in the imperative mood:** "Add login rate limiting" reads as an instruction ("this commit will: add rate limiting"), not a diary entry. Compare "added some stuff for login" - vague, past-tense, no information.
+- **A blank line between subject and body** when a body exists; tools rely on it.
+- **Body wrapped at about 72 characters**, so the text is readable in every terminal and on GitHub.
+- **The body explains what and why, never how.** The code diff already shows how. The message answers the questions the diff cannot: what motivated this, what problem existed, what the intended effect is.
 
-## 4.9 Branching Workflows Used by Teams
+#### 13.3 Conventional Commits: Messages That Machines Can Read
 
-Different teams structure their branches differently. Three common patterns:
+Most professional teams adopt **Conventional Commits**, a standard that prefixes the subject with a *type* (and optionally a *scope*):
 
-### 1. GitHub Flow (simplest)
+```text
+feat(auth): add password reset flow
+fix(cart): stop double-charging on refresh
+docs: rewrite installation steps in README
+```
 
-- One long-lived branch: `main`.
-- All work happens on short-lived feature branches.
-- Each feature branch → PR → merge to `main`.
-- `main` is always deployable.
+**Anatomy:** the *type* declares the kind of change; the optional *scope* in parentheses narrows it to a part of the system; a colon separates prefix and description. The standard types you will use constantly:
 
-Best for: small teams, web apps that deploy continuously.
+| Type | Meaning |
+| --- | --- |
+| `feat` | A new feature for the user |
+| `fix` | A bug fix for the user |
+| `docs` | Documentation only |
+| `style` | Formatting, whitespace, no logic change |
+| `refactor` | Code change that neither fixes a bug nor adds a feature |
+| `test` | Adding or changing tests |
+| `chore` | Maintenance: tooling, configs, dependencies |
+| `perf` | Performance improvement |
+| `ci` | Changes to CI/CD configuration |
 
-### 2. Git Flow (more structured)
+Why teams accept this discipline: automation reads it. Tools generate changelogs from `feat` commits, release numbers bump from `fix`/`feat` types, and reviewers know what they are about to read before opening the diff. When you reach Chapter 23 and 31, you will see pull requests and pipelines built around exactly this convention.
 
-- Two long-lived branches: `main` (production) and `develop` (next release).
-- Feature branches off `develop`.
-- `release/x.y.z` branches for release prep.
-- `hotfix/` branches off `main` for urgent production fixes, merged back to both `main` and `develop`.
+#### 13.4 Letting the Editor Write the Message
 
-Best for: products with versioned releases (mobile apps, desktop software).
-
-### 3. Trunk-Based Development
-
-- Everyone commits directly to `main` (or very short-lived branches).
-- Feature flags hide unfinished work from users.
-- Continuous deployment.
-
-Best for: mature teams with strong CI/CD, deploying many times per day.
-
-**Recommendation for beginners:** start with **GitHub Flow**. It's the simplest and works for 95% of projects.
-
----
-
-## 4.10 Visualizing Branches
-
-### ASCII in the terminal
+Omitting `-m` opens the editor you configured in Chapter 9:
 
 ```bash
-git log --oneline --graph --all --decorate
+git commit          # open the configured editor to write a full multi-line commit message
 ```
 
-Sample output:
+The editor shows commented hints at the bottom (lines starting with `#` are ignored). Write your subject, blank line, body, save, close - the commit completes. This is how you write the rich messages from section 13.2.
+
+#### 13.5 Fixing the Last Commit: git commit --amend
+
+Two amending situations, both safe *only before you have pushed* (Chapter 22; amending a pushed commit rewrites history and confuses everyone else, which Chapter 19 explains in depth):
+
+```bash
+git commit --amend -m "better message"     # replace the last commit's message with a corrected one
+git add forgotten-file                     # stage the file you forgot...
+git commit --amend --no-edit               # ...and fold it into the last commit, keeping the same message
+```
+
+**Anatomy:** `--amend` means "modify the most recent commit instead of creating a new one." Conceptually, Git creates a new snapshot containing the staged changes plus the last commit, and points the branch at it; the old commit quietly retires. `--no-edit` says "reuse the existing message."
+
+#### 13.6 Atomic Commits: The Habit of Professionals
+
+An **atomic commit** is one commit for one logical change. "Add search box UI" and "Fix search API pagination bug" are two logical changes; commit them separately, even though you finished both at 2 a.m. The discipline pays forward into almost every advanced technique in this guide: a clean history can be reverted commit-by-commit when something breaks (Chapter 26), cherry-picked onto release branches (Chapter 27), and bisected to find exactly which change broke the build (Chapter 27). Mixed-up histories make all three of those operations painful, so the habit starts now, with your next commit.
+
+### Chapter 14: Inspecting History with log, show, and diff
+
+Saving history is half of Git; reading it back fluently is the other half. This chapter teaches the three inspection commands you will use every single day: `git log` to see *which* snapshots exist, `git show` to examine *one* snapshot, and `git diff` to see *exactly what text changed* between two moments.
+
+#### 14.1 git log: The Story of Your Project
+
+With two or more commits in `my-first-repo`, run:
+
+```bash
+git log    # print the repository's commit history, newest first
+```
+
+Output:
 
 ```text
-* 9fceb52 (HEAD -> main) Merge branch 'feature/footer'
-|\
-| * 4d2c1ab Add footer
-* | a1b2c3d Update index.html on main
+commit 9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b (HEAD -> main)
+Author: Your Real Name <your_email@example.com>
+Date:   Mon Oct 6 10:14:22 2025 +0200
+
+    Add a second line to the greeting
+
+commit 7c9e4f2a1b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e
+Author: Your Real Name <your_email@example.com>
+Date:   Mon Oct 6 10:02:47 2025 +0200
+
+    Initial commit: add greeting file
+```
+
+**What just happened (line by line), for the first commit entry:**
+
+- `commit 9a8b7c6...` - the commit's full unique checksum ID (Chapter 7). This is the handle by which you can request this snapshot in other commands.
+- `(HEAD -> main)` - decoration: `HEAD` (your "you are here" pointer) is on `main`, and this is the commit it points to. On the second entry the decoration is absent - HEAD is not there.
+- `Author:` - who made the commit; the name and email come from your Chapter 9 configuration, which is why that chapter insisted you set them.
+- `Date:` - when, with timezone.
+- A blank line, then the commit message, indented.
+- Older entries follow, separated by blank lines, newest first, walking the parent chain (Chapter 7's Idea Four).
+
+**Quitting the viewer:** if history is long, `git log` opens a scrollable pager. Press `q` to quit, the spacebar to page down, and `/something` to search for text. Everyone's first week includes ten minutes stuck in this pager; you have now skipped those.
+
+#### 14.2 The log Flags Worth Memorizing
+
+```bash
+git log --oneline      # one line per commit: short ID + message (the 7-char ID is plenty: collision odds are astronomically small)
+git log -n 3           # show only the 3 most recent commits (any number works)
+git log --stat         # append each commit's changed-file summary and insertion/deletion counts
+git log -p             # append each commit's full text diff (patch mode)
+git log --graph --all --decorate --oneline   # draw branches, all branches, with names, compact (addictive once you branch)
+git log --author="Real Name"   # filter by author
+git log --grep="login"         # filter by message content
+git log --since="2 weeks ago"  # filter by time
+git log -- hello.txt           # show only the commits that touched hello.txt
+git log --follow -- hello.txt  # same, but keep following the file across renames
+```
+
+Sample `--oneline --graph --all` output for a repo with a branch (Chapter 16 will make this picture real for you):
+
+```text
+* 3f2a1b4 (feature-color) Change page to dark theme
+| * 9c8d7e6 (HEAD -> main) Fix typo on homepage
 |/
-* 5f6a7b8 Initial commit
+* 5e4f3a2 Add homepage
+* 7c9e4f2 Initial commit: add greeting file
 ```
 
-Reading:
-- `*` is a commit.
-- `|`, `\`, `/` show the branching/merging structure.
-- `(HEAD -> main)` shows where pointers are.
+Each `*` is a commit; the vertical lines show which history each commit belongs to; `(HEAD -> main)` marks where you stand; the merge point of the two lines is where `feature-color` diverged from `main`.
 
-### Pretty log alias
+#### 14.3 Referring to Commits: HEAD and Its Relatives
 
-Many people alias this:
-
-```bash
-git config --global alias.lg "log --oneline --graph --all --decorate"
-```
-
-Now `git lg` gives you the pretty graph.
-
-### Browser visualisation
-
-GitHub.com shows branch graphs at **Insights → Network** for any repo. Easier to read for big histories.
-
----
-
-## 4.11 Cherry-Picking a Commit
-
-Sometimes you want one specific commit from another branch, not the whole branch:
-
-```bash
-git switch main
-git cherry-pick <commit-hash>
-```
-
-`git cherry-pick` takes the changes from a single commit and applies them to your current branch as a new commit. Useful for:
-- Backporting a bug fix to a release branch.
-- Pulling a single commit you want without merging a long branch.
-
-Note: the new commit has a different hash than the original (because it has a different parent and timestamp).
-
----
-
-## 4.12 Your Turn
-
-1. In your `git-practice` repo, create a branch `feature/credits`. Add a file `CREDITS.md` with your name. Commit. Switch back to `main`.
-
-2. Verify with `git log --oneline --graph --all` that `feature/credits` has a commit `main` doesn't.
-
-3. Merge `feature/credits` into `main`. Verify it's a fast-forward merge (because `main` hasn't moved since the branch was created).
-
-4. Now create two branches from `main`: `feature/a` and `feature/b`. On each, modify the *same line* of `notes.txt` differently. Commit on each. Switch back to `main`, merge `feature/a` (should succeed). Merge `feature/b` — you should get a conflict.
-
-5. Resolve the conflict by combining both changes (e.g. write "Feature A and Feature B" on the conflicting line). `git add` the file, then `git commit` to finish the merge.
-
-6. Inspect the merge commit with `git show HEAD`. Notice the `Merge:` line showing two parent hashes.
-
-7. Create a third branch `feature/c` with a single commit, then cherry-pick that commit onto `main` without merging the whole branch.
-
-8. Delete the merged branches with `git branch -d`. Confirm only `main` remains.
-
-If all steps worked, you have graduated from "I can use Git locally" to "I can use Git like a developer". Next, we connect your local work to GitHub.
-
-**Next up: Chapter 5 — Remotes and Publishing to GitHub.**
-
----
----
-
-
-# Chapter 5 — Remotes and Publishing to GitHub
-
-> **Goal of this chapter:** Connect your local repository to GitHub. Push commits up. Pull commits down. Clone existing repos. Understand what "remotes" are. By the end, your code will be visible on github.com and you'll know how to sync between machines.
-
-Until now, everything has lived on your computer. That's powerful, but it misses the point of Git: collaboration. In this chapter, you'll connect your local repo to a remote — usually GitHub — and learn the dance of pushing and pulling.
-
----
-
-## 5.1 What Is a Remote?
-
-A **remote** is another Git repository that yours knows about. Typically it's a server (GitHub, GitLab, your company's server), but it can be any Git repo — even one on a USB stick.
-
-Your local repo can have multiple remotes. By convention, the main one is called `origin`. If you've **forked** a project, you'll typically have:
-- `origin` — your fork (which you can push to).
-- `upstream` — the original project (which you can pull from but not push to).
-
-Listing remotes:
-
-```bash
-git remote -v
-```
-
-`-v` for "verbose" — shows URLs. Sample output for a fresh local repo:
+Commands accept commit IDs, but also a family of relative names you will use constantly:
 
 ```text
-(empty)
+HEAD       the commit you are currently standing on
+HEAD~1     one commit before HEAD (its parent)
+HEAD~2     two commits before HEAD
+7c9e4f2    any full or abbreviated commit ID works the same way
+main       the tip (latest commit) of branch main
 ```
 
-No remotes yet. Let's add one.
+So `git show HEAD~1` means "show me the snapshot before this one," a phrase you will type weekly.
+
+#### 14.4 git show: Examine One Snapshot
+
+```bash
+git show            # show the newest commit: its message plus its diff
+git show HEAD~1     # show the commit before it
+git show 7c9e4f2    # show any commit by ID
+git show HEAD:hello.txt    # show the CONTENT of hello.txt as it was in that snapshot (note the colon syntax)
+```
+
+`git show` is the microscope: one commit, its author, its message, and precisely what changed in it.
+
+#### 14.5 git diff: Reading Change Like a Professional
+
+`git diff` is the command professionals run most, and its output is the classic "wall of confusing symbols" for beginners. After this section it will read like a sentence. The three questions `git diff` answers, each with its own form:
+
+```bash
+git diff                 # Q1: "What have I edited on disk that is NOT staged yet?" (working directory vs staging area)
+git diff --staged        # Q2: "What is staged that is NOT committed yet?" (staging area vs last commit; --cached is the older synonym)
+git diff HEAD            # Q3: "What will differ, on disk or staged, from my last commit?" (everything vs last commit)
+git diff 7c9e4f2 9a8b7c6  # compare two commits directly
+git diff main feature-color  # compare the tips of two branches
+git diff --stat          # skip the text; show a per-file change summary table only
+```
+
+Now, the crucial part - reading the output. Modify `hello.txt` (change the second line), and run `git diff`:
+
+```text
+diff --git a/hello.txt b/hello.txt
+index 3b18e51..d86c691 100644
+--- a/hello.txt
++++ b/hello.txt
+@@ -1,2 +1,2 @@
+ Hello, Git!
+-Second line
++Second line, edited for clarity
+```
+
+**What just happened (line by line):**
+
+- `diff --git a/hello.txt b/hello.txt` - the header: a diff between two versions of `hello.txt`. The `a/` version is the "old side"; `b/` is the "new side." (Mentally: a = before, b = before-you-know.)
+- `index 3b18e51..d86c691 100644` - internal bookkeeping: the checksums (Chapter 7 again) of the old and new blob objects, and the permission mode. You will never need to read this line consciously.
+- `--- a/hello.txt` - the minus side is the older version.
+- `+++ b/hello.txt` - the plus side is the newer version.
+- `@@ -1,2 +1,2 @@` - the *hunk header*, the line everyone squints at. It says: in the old file, starting at line 1, 2 lines are shown; in the new file, starting at line 1, 2 lines are shown. Every `@@` header announces "here is one block of context where changes live."
+- ` Hello, Git!` - a *context line* (one leading space): unchanged text printed so you know where you are in the file.
+- `-Second line` - a minus line: text as it was in the old version. Red on GitHub and in terminals.
+- `+Second line, edited for clarity` - a plus line: the replacement text in the new version. Green on GitHub and in terminals.
+
+That is the entire secret code: **minus lines existed before, plus lines exist after, `@@` counts where.** Every diff you ever read - from Git, GitHub, or code review - is just these five elements repeated.
+
+#### 14.6 git blame: Who Changed This Line
+
+```bash
+git blame hello.txt     # print every line of the file, each prefixed with: commit ID, author, date, line number
+git blame -L 5,10 app.js    # only lines 5 through 10
+```
+
+Sample line of output:
+
+```text
+9a8b7c6 (Your Real Name 2025-10-06 10:14:22 +0200 2) Second line, edited for clarity
+```
+
+**Decoded:** commit `9a8b7c6` last touched this line; `Your Real Name` on that date and time; it is line `2` of the file; then the line's text. Despite its name, blame is an archaeology tool, not an accusation tool; the commit message behind that ID usually explains *why* (`git show 9a8b7c6`). Teams with healthy cultures say "blame the commit, never the committer."
+
+#### 14.7 git shortlog: Counting Contributions
+
+```bash
+git shortlog -sn    # list each author with their commit count, sorted; quick "who is most active here" view
+```
+
+A surprisingly honest tool for understanding unfamiliar open source projects in ten seconds.
 
 ---
 
-## 5.2 Creating a Repository on GitHub
+### Chapter 15: The .gitignore File
 
-There are two ways to start: from the GitHub website, or from the `gh` CLI.
+#### 15.1 The Problem: Not Everything Belongs in History
 
-### Method 1: GitHub website
+Real projects produce files that must never be committed: folders of installed dependencies (`node_modules` can hold tens of thousands of files that are rebuilt from a manifest anyway), build output (`dist/`, `*.o` files), secret configuration (`.env` files holding database passwords and API keys - leaking these is a genuine security incident), logs, cache, and operating-system junk (macOS's `.DS_Store`, Windows' `Thumbs.db`). Git happily tracks all of it unless you teach it otherwise, and the teaching tool is a file named, with charming literalness, `.gitignore`.
 
-1. Go to <https://github.com/new>.
-2. **Repository name:** `my-first-repo` (must be unique in your account, can have hyphens).
-3. **Description:** optional one-liner.
-4. **Public or Private:** pick Public for this exercise.
-5. **Initialize with README:** **leave unchecked**. We already have files locally; checking this creates a `README.md` on GitHub, which means our local and remote histories are unrelated — we'd have to merge them (doable but confusing for the first time).
-6. **.gitignore:** pick "Node" if you want one; we already have ours.
-7. **License:** pick "MIT License" if you want one; otherwise leave None.
-8. **Create repository**.
+#### 15.2 Creating the File
 
-GitHub shows you a page with commands for connecting an existing local repo:
+Create a plain text file named exactly `.gitignore` (dot included; it is a "hidden" file by convention) at the top of your repository, and commit it like any other file, so teammates inherit the same rules. Its content is a list of *patterns*: one pattern per line, each describing files to ignore.
+
+#### 15.3 The Pattern Language, Rule by Rule
+
+```text
+# a comment: lines starting with # are ignored          <- comments explain rules to humans
+node_modules/     # any directory named node_modules, at any depth (trailing slash = "must be a directory")
+*.log             # * matches any characters, so this is every file ending in .log, anywhere
+build/            # every directory named build, at any depth
+/build            # only the build directory at the REPO ROOT (leading slash anchors the pattern to the top)
+!important.log   # the ! negation: DO track this one file, even though *.log above says ignore it
+docs/**/*.pdf     # ** matches any depth of directories: all PDFs anywhere under docs/
+temp?             # ? matches exactly ONE character: temp1, tempA, but not temp12
+.DS_Store         # macOS junk file, by exact name
+.env              # secrets live here: this single rule has prevented a thousand security incidents
+```
+
+Rules worth internalizing:
+
+- **Order matters for negation:** a later `!` rule can re-include what an earlier rule excluded (but a directory excluded wholesale cannot have files re-included inside it).
+- **Ignored means "untracked-new."** If a file is already tracked (already committed), `.gitignore` does not retroactively erase it. To stop tracking an already-committed file while keeping it on disk:
+
+```bash
+git rm --cached settings.local.json    # remove the file from Git's index (history of future snapshots) but keep it in your working directory
+git commit -m "chore: stop tracking local settings"
+```
+
+`--cached` is the crucial flag: without it, `git rm` deletes the file from disk too.
+
+- **Global ignores** exist for junk you never want in any project (`.DS_Store` for everyone, editor folders): `git config --global core.excludesFile ~/.gitignore_global`, then list those patterns in that file once.
+
+#### 15.4 A Real .gitignore for a Node.js Project
+
+```text
+# Dependencies: reinstalled with `npm install`, never committed
+node_modules/
+
+# Build output: generated by the build step, rebuilt on demand
+build/
+dist/
+
+# Secrets and local configuration: MACHINE-specific, DANGEROUS to share
+.env
+.env.local
+*.pem
+
+# Logs and caches
+*.log
+npm-debug.log*
+.cache/
+
+# Operating system junk
+.DS_Store        # macOS folder metadata
+Thumbs.db        # Windows thumbnail cache
+
+# Editor junk
+.vscode/          # per-person editor state (some teams commit chosen shared settings with ! rules)
+*.swp             # Vim swap files
+.idea/            # JetBrains editor state
+```
+
+#### 15.5 Finding Ready-Made Ignore Files
+
+You do not write these from scratch. GitHub maintains a famous repository of templates (search "github gitignore" - it lists hundreds of languages and tools; copy `Node.gitignore` or `Python.gitignore` as a starting point), and the site gitignore.io generates combined files ("generate one for Node + VS Code + macOS" in one click). Also, Chapter 22 will show GitHub offering to add one automatically when you create a repository.
+
+#### 15.6 Checking What Is Ignored
+
+```bash
+git status --ignored           # show ignored files too, under an "Ignored files:" section
+git check-ignore -v hello.txt  # ask Git which rule (file, line number, pattern) decides a file's fate
+```
+
+`git check-ignore -v` output like `.gitignore:2:*.log	build/debug.log` decodes to: "the file `.gitignore`, line 2, pattern `*.log`, is why `build/debug.log` is ignored." Indispensable when a file mysteriously refuses to be tracked.
+
+> **Try it yourself:** create a `.gitignore` with `*.log`, make `a.log` and `important.log` plus a `!important.log` rule after the first, run `git status`, and verify only `a.log` is ignored. Then create a file, commit it, ignore its pattern, and watch Git keep tracking it - then fix it with `git rm --cached`.
+
+## Part D: Branching and Merging
+
+Branching is the feature that made Git famous. In this part you will create parallel lines of work, weave them back together, survive the legendary merge conflict, learn to rewrite history safely with rebase, park unfinished work in a stash, and mark releases with tags. Everything here builds directly on Chapter 7's "a branch is just a pointer" idea.
+
+### Chapter 16: Branches
+
+#### 16.1 What You Already Know
+
+From Chapter 7: a branch is a 41-byte pointer to one commit; `HEAD` is a pointer to the branch you are on; committing advances the branch you are on. If you truly own those three sentences, everything in this chapter is just vocabulary. If you skimmed Chapter 7, this paragraph is your invitation to return.
+
+Practically, a branch is a *label you give to a line of work*. Develop a feature on its own branch, and your `main` version stays untouched and stable the whole time; if the experiment fails, delete the branch and `main` never knew. This is why professionals branch for almost every change, even alone.
+
+#### 16.2 Seeing and Creating Branches
+
+Inside `my-first-repo`:
+
+```bash
+git branch            # list local branches (a plain list, with one marker)
+```
+
+Output:
+
+```text
+* main
+```
+
+**What just happened:** there is exactly one branch, `main`, and the `*` (asterisk) marks the branch you are currently on. Remember `HEAD` from Chapter 7: the starred branch is simply where HEAD points.
+
+```bash
+git branch feature-greeting    # create a new branch named feature-greeting (pointing at the same commit as main)
+```
+
+**Anatomy:** `git branch` + a name = create a pointer with that name. Note what did *not* happen: your files did not change, and you did not *move* to the new branch. Creating a branch and switching to it are separate actions (two commands, or one flag, next).
+
+#### 16.3 Switching Branches
+
+```bash
+git switch feature-greeting    # move yourself (HEAD) onto the feature-greeting branch
+```
+
+Output:
+
+```text
+Switched to branch 'feature-greeting'
+```
+
+Your working directory now reflects that branch. Nothing visibly changed, because both branches point at the same commit - but edit a file, commit, and switch back, and the change will *vanish and reappear* as you switch. That vanishing act is not magic: switching branches rewrites your working directory files to match the snapshot of the branch you switch to. (Commit or stash your changes before switching, or Git will either carry uncommitted changes along or refuse to switch to protect you - the refusal message is Chapter 37's "local changes would be overwritten" entry.)
+
+Two forms you must know:
+
+```bash
+git switch -c feature-greeting    # create AND switch in one step (the -c flag means "create first, then switch")
+git switch -                      # switch to the PREVIOUS branch you were on (hyphen, like `cd -`)
+```
+
+**A note on `git checkout`:** older tutorials (and millions of veterans) use `git checkout -b feature-greeting` to create-and-switch. `checkout` is the old multi-purpose command; in 2019 Git split its duties into the safer, clearer `switch` (for branches) and `restore` (for files, Chapter 26). Both work everywhere; this guide teaches the modern pair, so you can read the classics.
+
+#### 16.4 The Full Branch Cycle, Live
+
+Let us run one complete, realistic cycle in the practice repo, with every step annotated.
+
+```bash
+git switch main                          # start from main (our stable line)
+git switch -c feature-color              # create + switch to a new line of work
+echo "color: dark" > theme.txt           # create a new file on this branch
+git add theme.txt                        # stage it
+git commit -m "feat: add dark theme file"    # commit it (now feature-color is 1 commit ahead of main)
+git log --oneline                        # verify: your new commit is on top; (HEAD -> feature-color)
+git switch main                           # go back to main...
+ls                                        # ...and see theme.txt is GONE (it exists only on the other branch)
+git switch feature-color                 # come back...
+ls                                        # ...and theme.txt is back. Same folder, two realities.
+git branch -v                            # list branches with each one's latest commit ID and message
+```
+
+Sample `git branch -v` output:
+
+```text
+  feature-color 3f2a1b4 feat: add dark theme file
+* main          9a8b7c6 Add a second line to the greeting
+```
+
+**Decoded:** each line is a branch, its tip commit's short ID, and that commit's message; the `*` says you are currently on `main` - which is *behind* `feature-color` by one commit. The two branches are two labels on the same timeline, one pointing one commit later.
+
+#### 16.5 Renaming and Deleting Branches
+
+```bash
+git branch -m feature-color feature-dark-theme    # rename a branch (-m, like renaming a file)
+git branch -m main-work                            # with ONE name: rename the branch you are ON
+git branch -d feature-dark-theme                   # delete the branch (-d = delete, but only if its work is merged)
+git branch -D experiment-gone-wrong               # delete FORCEFULLY, even if unmerged (-D = uppercase = override safety)
+```
+
+The `-d` vs `-D` distinction is Git protecting you: `-d` refuses to delete a branch whose commits are not reachable from another branch (i.e., deleting would lose work); `-D` says "I am certain, delete anyway." If you ever `-D` by mistake, the reflog (Chapter 26) can usually recover it - remember that Git almost never truly loses committed work.
+
+Branch names should be lowercase, hyphenated, and descriptive of intent: `feature/login-form`, `fix/cart-total`, or the compact `feat/login-form` you will see in the wild. Vague names like `stuff`, `test2`, and `john-branch` are how merge lists become archaeology puzzles.
+
+#### 16.6 Why "Branches Are Cheap" Matters
+
+Some older systems took seconds (or minutes) to copy the whole project per branch; Git takes microseconds to write one pointer. The cultural consequence: professionals branch *constantly and casually* - one branch per feature, per bugfix, per experiment, per typo. Do not ration branches; you have an unlimited supply. The only rule is: `main` stays healthy, work happens on branches (formalized in Chapter 23 as GitHub Flow).
+
+---
+
+### Chapter 17: Merging Branches
+
+#### 17.1 What Merging Means
+
+Two branches have grown apart; **merging** combines their work into one. You merge *into* the branch you are standing on: sit on `main`, run `git merge feature-dark-theme`, and Git weaves the feature's commits into main's line. The golden setup sentence: **"To merge X into Y, first switch to Y, then merge X."**
+
+#### 17.2 The Simple Case: Fast-Forward
+
+The simplest merge happens when your current branch has *not moved* since the other branch was created. Restore the practice setup (`feature-color` exists, one commit ahead of `main`), then:
+
+```bash
+git switch main                    # stand on the branch we merge INTO
+git merge feature-color             # pull feature-color's work into main
+```
+
+Output:
+
+```text
+Updating 9a8b7c6..3f2a1b4
+Fast-forward
+ theme.txt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 theme.txt
+```
+
+**What just happened (line by line):** `Updating 9a8b7c6..3f2a1b4` names the two endpoints of the operation (old tip of main, tip of feature); `Fast-forward` is the interesting word: main had no new commits of its own, so Git did not need to *combine* anything - it simply slid the `main` pointer forward to the feature's commit. A diagram of what happened:
+
+```text
+ BEFORE merge                                AFTER merge
+
+ o---o---o  feature-color                    o---o---o  feature-color
+         \                                           \
+          o  main (behind)                            o  main (MOVED FORWARD to here)
+```
+
+- `theme.txt | 1 +` - the change summary: one file, one added line.
+- `create mode 100644 theme.txt` - the file entered main's history, same wording as Chapter 12.
+
+#### 17.3 The Interesting Case: Three-Way Merge
+
+When *both* branches have new commits (the common real case), there is no simple "slide forward"; Git must combine two divergent timelines, and it creates a new commit that has **two parents**.
+
+Set it up: commit a change on `main` (e.g., `echo "note" > notes.md`, add, commit), and commit another change on `feature-color` (e.g., add a second line to `theme.txt`, add, commit). Now:
+
+```bash
+git switch main                # merge INTO main
+git merge feature-color        # combine the divergent histories
+```
+
+Git opens your editor with a pre-filled message:
+
+```text
+Merge branch 'feature-color'
+```
+
+Keep that message (save and close). Output:
+
+```text
+Merge made by the 'ort' strategy.
+ theme.txt | 1 +
+ 1 file changed, 1 insertion(+)
+```
+
+**What just happened (line by line):** the editor opened because a *merge commit* was being created and Git insisted it have a message; the default message simply names what was merged into what - that is the convention. `Merge made by the 'ort' strategy` says Git used its standard recursive three-way merge algorithm (the name of the internal strategy is trivia; "ort" is just its codename). The summary lines list what the merge brought in. The history now looks like this:
+
+```text
+ o---o---M   main    (M = merge commit, TWO parents)
+  \      \
+   o---o--/  feature-color
+```
+
+The merge commit `M` points back to *both* the previous tip of `main` and the tip of `feature-color`, so history records not only the changes but the *shape* of the collaboration.
+
+#### 17.4 Forcing the Merge Commit: --no-ff
+
+Some teams dislike invisible fast-forwards (they erase the evidence that a feature branch existed) and configure the habit:
+
+```bash
+git merge --no-ff feature-color    # "--no-ff" = "no fast-forward": ALWAYS create a merge commit, even when a slide would do
+```
+
+The resulting history shows explicit `Merge branch 'feature-color'` nodes for every feature - a readable changelog-shaped history at the cost of more commits. Teams choose per taste; now you can read both.
+
+#### 17.5 After the Merge: Cleanup
+
+```bash
+git branch -d feature-color    # the merged branch is now redundant; -d works because its work is reachable from main
+```
+
+Deleting a *merged* branch deletes only the label, never the commits: they are now part of main's history. The branch pointer itself was just a sticky note, exactly as Chapter 7 promised.
+
+#### 17.6 Two Everyday Merge Verbs
+
+```bash
+git merge --abort    # mid-merge panic button: restore everything to the pre-merge state (invaluable during conflicts)
+git merge main        # run from a FEATURE branch: brings main's latest work into your feature (keeping it current)
+```
+
+The second form is the courtesy merge you will do dozens of times: keeping your feature branch up to date with main so the final merge is small and boring. Boring merges are the goal; Chapter 18 handles the day a merge refuses to be boring.
+
+---
+
+### Chapter 18: Merge Conflicts: The Complete Walkthrough
+
+#### 18.1 What a Conflict Actually Is
+
+A conflict is Git saying, with total honesty: *"You changed line X of file F in branch A, and someone (or you, on another branch) changed line X of file F in branch B. I can combine histories, but I cannot combine intents. A human must decide the text."* Conflicts are not errors, corruption, or punishment - they are the price of Git never silently choosing for you. Learn this chapter calmly once, and conflicts lose their terror permanently.
+
+#### 18.2 Building a Real Conflict, Step by Step
+
+We will manufacture a small conflict in the practice repo and resolve it completely.
+
+```bash
+git switch main                                  # start on main
+echo "Welcome to my site" > page.txt             # create page.txt with one greeting line
+git add page.txt                                # stage it
+git commit -m "feat: add welcome page"           # commit on main
+git switch -c feature-headline                  # new branch from here
+echo "Welcome to my AWESOME site" > page.txt     # on the branch, change THE SAME LINE
+git add page.txt                                 # stage
+git commit -m "feat: punchier headline"          # commit on the feature branch
+git switch main                                  # back to main...
+echo "Welcome to my humble site" > page.txt      # ...and change THE SAME LINE, differently
+git add page.txt                                 # stage
+git commit -m "feat: humble headline"            # commit on main
+```
+
+Now main and feature-headline have each changed the one line of `page.txt` to different text. The histories diverged with two incompatible intents for the same line. Merge:
+
+```bash
+git merge feature-headline       # attempt the weave
+```
+
+Output:
+
+```text
+Auto-merging page.txt
+CONFLICT (content): Merge conflict in page.txt
+Automatic merge failed; fix conflicts and then commit the result.
+```
+
+**What just happened (line by line):**
+
+- `Auto-merging page.txt` - Git tried to combine the file automatically (it can and does merge most changes silently).
+- `CONFLICT (content): Merge conflict in page.txt` - the specific spot where automatic combination is impossible: content conflict, in this file.
+- `Automatic merge failed; fix conflicts and then commit the result.` - your instruction manual for the next minutes, in one sentence: fix, then commit. Git has not crashed; it has paused, waiting for you.
+
+#### 18.3 Reading the Battlefield: status and the File
+
+```bash
+git status
+```
+
+The relevant part of the output:
+
+```text
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+        both modified:   page.txt
+```
+
+**Decoded:** `You have unmerged paths` - the merge is paused mid-flight; the two hints are the two exits (finish it, or abort it); `both modified: page.txt` is the conflict category: *both* branches modified this file. Other categories exist (`deleted by them`, `added by us`, and friends) but they are rarer and the resolution process is identical: inspect, decide, `git add`.
+
+Now the famous part. Open `page.txt` in your editor:
+
+```text
+<<<<<<< HEAD
+Welcome to my humble site
+=======
+Welcome to my AWESOME site
+>>>>>>> feature-headline
+```
+
+**The conflict markers, line by line - memorize these five roles:**
+
+- `<<<<<<< HEAD` - begins the section, and names the *first* side: HEAD, i.e., the branch you are standing on (main). The lines below it are *your current branch's version*.
+- `Welcome to my humble site` - main's version of the contested lines.
+- `=======` - the dividing line between the two contenders (seven equals signs, exactly).
+- `Welcome to my AWESOME site` - the *incoming* branch's version (the branch being merged in).
+- `>>>>>>> feature-headline` - ends the section, naming the second side: the branch being merged.
+
+Neither line, and no marker, is allowed to survive into the final file. You resolve a conflict by *editing the file into the version that should exist in the future*.
+
+#### 18.4 Resolving: Your Four Choices
+
+Edit `page.txt`. You have four legitimate resolutions, and picking among them is a *human* decision, not a Git one:
+
+1. **Keep yours:** delete the markers, the other side, keep `Welcome to my humble site`.
+2. **Keep theirs:** delete markers and your side, keep `Welcome to my AWESOME site`.
+3. **Combine into something new:** the classic team answer - delete the markers and write a third, best line, e.g., `Welcome to my awesome and humble site`.
+4. **Keep nothing:** delete both lines entirely (sometimes the right call).
+
+Suppose you choose the combined third option; the final file is:
+
+```text
+Welcome to my awesome and humble site
+```
+
+No markers, no sides - just the version that should exist going forward. Save the file.
+
+#### 18.5 Completing the Merge
+
+```bash
+git add page.txt        # tell Git: "page.txt is now resolved as staged" (add marks a conflict RESOLVED)
+git status              # verify: no more "Unmerged paths"; instead "All conflicts fixed but you are still merging"
+git commit              # complete the merge; the editor opens with the default message "Merge branch 'feature-headline'" - keep it, save, close
+```
+
+Output:
+
+```text
+[main 6d7e8f9] Merge branch 'feature-headline'
+```
+
+The merge commit is created, the branch timelines are woven, and `git log --oneline --graph` will show you the diamond shape of a resolved divergence. Then the usual cleanup:
+
+```bash
+git branch -d feature-headline    # the feature branch's work is merged; remove the sticky note
+```
+
+#### 18.6 The Panic Button
+
+At any point before you `git add` the resolved files:
+
+```bash
+git merge --abort    # cancel the entire merge and restore the repository to its pre-merge state, exactly
+```
+
+`--abort` is not defeat; professionals use it to escape a messy situation, re-read the code, and try the merge again with fresh eyes. There is also `git checkout --ours page.txt` ("resolve this file by taking *my current branch's* whole version") and `--theirs` (take the *incoming* version wholesale) - powerful for whole-file decisions, hazardous for subtle ones, and confusingly named under pressure, so many people prefer editing by hand, as above, or configuring a merge tool (`git config merge.tool kdiff3` style setups; VS Code's built-in three-pane conflict UI is excellent and free).
+
+#### 18.7 Preventing Conflicts (Culture, Not Commands)
+
+Four habits prevent most conflicts before they happen: **merge or rebase from main often** (small overlaps never accumulate); **keep branches short-lived** (a branch merged within days has almost no room to diverge); **talk before editing the same region** (the vast majority of conflicts are two teammates who did not know); and **agree on formatting** (many "conflicts" are just tabs-vs-spaces and line-ending noise; shared formatting tools and the Chapter 9 line-ending settings eliminate them). None of these are commands. All of them are more valuable than any command in this chapter.
+
+### Chapter 19: Rebasing
+
+#### 19.1 The Problem Rebasing Solves
+
+Your feature branch is three days old. Meanwhile, teammates kept committing to `main`. Your history now looks like a fork that keeps drifting away from the road. You *could* merge main into your branch (Chapter 17.6), but that creates extra merge commits, and after several rounds, history looks like a plate of spaghetti. **Rebase** is the alternative: it makes your branch *appear* to have been created *now*, on top of the latest main, with a clean straight line.
+
+#### 19.2 What Rebase Literally Does
+
+`git rebase main` (run from your feature branch) does the following, conceptually: it finds the commits that exist on your branch but not on main (your "own" commits), temporarily *lifts them off*, moves your branch's starting point to the tip of main, and *replays your commits one by one* on top of it, as if you had written them just now.
+
+```text
+ BEFORE rebase                          AFTER rebase
+
+           o---o---o  feature                  o'---o'---o'  feature
+          /              \                    /
+ o---o---o---o---o  main    becomes    o---o---o---o---o  main
+              ^                                     ^
+     (feature "hung" from          (feature now "hangs" from the
+      an OLD point of main)         NEWEST point of main; o' are
+                                    COPIES of o with new IDs)
+```
+
+The technical subtlety hidden in that apostrophe: the replayed commits are *new commits with new checksums* (Chapter 7's Idea Three: any change to content changes the ID). The work is identical; the objects are new. This subtlety is the entire reason the Golden Rule below exists.
+
+#### 19.3 Doing It
+
+```bash
+git switch feature-color      # stand on the branch you want to re-base
+git fetch origin               # make sure you know the latest main (Chapter 22)
+git rebase main                # replay this branch's commits on top of main's tip
+```
+
+Typical output:
+
+```text
+Successfully rebased and updated refs/heads/feature-color.
+```
+
+Now your branch contains both main's latest work and your own, in one straight line. When you eventually merge the branch into main, the merge is a boring fast-forward (Chapter 17.2), which is the entire aesthetic goal of rebase.
+
+#### 19.4 Rebase Conflicts
+
+Because rebase replays your commits *one at a time*, a conflict during rebase is smaller and more local than a merge conflict: you resolve it for *one commit*, then continue. The flow:
+
+```bash
+git rebase main                       # a conflict stops the replay
+# ...edit the conflicted file(s), exactly as in Chapter 18...
+git add the-fixed-file.txt            # mark resolution
+git rebase --continue                 # proceed to replaying the NEXT commit
+git rebase --skip                      # (rarely) skip a commit that turned out empty
+git rebase --abort                     # bail out entirely: restore everything to the pre-rebase state, exactly
+```
+
+`--abort` here is as reliable as in merges: no half-rebased state survives.
+
+#### 19.5 Merge vs Rebase: The Honest Comparison
+
+| | `git merge main` into your branch | `git rebase main` onto your branch |
+| --- | --- | --- |
+| History shape | True, with merge commits | Linear, as if written in order |
+| Commit IDs | All preserved | Your own commits get NEW IDs |
+| Risk during operation | One conflict session | Conflicts possibly once per replayed commit |
+| Rewrite of history? | No | Yes (of your branch only, ideally) |
+| Best for | Sharing work immediately; public branches | Cleaning your private branch before a pull request |
+
+Both commands exist; mature developers use both, on purpose: rebase to tidy a private branch, merge to integrate public work.
+
+#### 19.6 The Golden Rule of Rebasing
+
+**Never rebase a branch that other people already have copies of.** If a branch exists only on your laptop, rebasing it changes nothing for anyone else, and you should tidy it freely. But if teammates have the branch or it has been pushed and pulled by others, rebasing rewrites commit IDs: your collaborators still hold the old IDs, so their history and yours become parallel universes, producing the "I have changes you don't have forever" class of merge nightmares. The rule in one breath: **rebase your private work; merge shared work.**
+
+#### 19.7 Interactive Rebase: Rewriting Your Own History Before Showing It
+
+The power-user form of rebase lets you edit your *own* recent commits before opening a pull request:
+
+```bash
+git rebase -i HEAD~4    # "-i" = interactive; operate on my last 4 commits
+```
+
+Your editor opens Git's to-do list:
+
+```text
+pick 1a2b3c4 feat: add login form
+pick 5d6e7f8 fix typo
+pick 9a0b1c2 docs: update README
+pick 3e4f5a6 feat: add logout button
+```
+
+**Decoded, and the verbs you can write:** lines run oldest (top) to newest (bottom). Replace `pick` with a verb to change that commit's fate, save, and close:
+
+| Verb | Effect |
+| --- | --- |
+| `pick` | keep the commit as-is |
+| `reword` | keep the change, edit its commit message |
+| `edit` | pause here so you can modify the commit's content |
+| `squash` | melt this commit INTO the one above it, combining messages |
+| `fixup` | melt into the one above, discarding this message (the "oops typo" absorber) |
+| `drop` | delete the commit entirely |
+
+The classic use: you have four commits of which two are cleanup noise. Change the second to `fixup` (absorbing the typo fix into the login form), maybe `reword` another, save - and your pull request now shows *two clean commits instead of four messy ones*. This is the professional's "present your work, not your process" move. Golden Rule applies with full force: interactive rebase only on commits nobody else has seen.
+
+#### 19.8 One Config That Tidies Everything
+
+```bash
+git config --global pull.rebase true    # make `git pull` rebase your local commits on top of fetched ones instead of creating a merge commit
+```
+
+With this, day-start syncs produce straight histories automatically. (Reversible with `git config --global pull.rebase false`.) Some prefer `pull.rebase` left alone and to choose per situation with `git pull --rebase`; both camps are healthy.
+
+---
+
+### Chapter 20: Stashing
+
+#### 20.1 The Scenario
+
+You are halfway through a feature - files open, changes half-made, nothing committable (committing half-work would violate the atomic-commit principle from Chapter 13) - when an urgent bug lands on your desk, and the fix belongs on `main`, not your feature branch. You need a clean working directory *now*. This is exactly what `git stash` was invented for: **stash = put your unfinished changes in a drawer, clean the desk, come back later.**
+
+#### 20.2 Saving the Drawer: git stash
+
+On your feature branch with uncommitted changes:
+
+```bash
+git stash         # save current uncommitted changes (tracked files) and clean the working directory
+```
+
+Output:
+
+```text
+Saved working directory and index state WIP on feature-color: 3f2a1b4 feat: add dark theme file
+```
+
+**What just happened (line by line):** `Saved working directory and index state` - both your unstaged edits *and* things you had staged are preserved; `WIP on feature-color:` - it was saved on this branch (WIP = Work In Progress); `3f2a1b4 feat: ...` - the commit you were on when stashing. Your working directory is now *clean*: `git status` will report `nothing to commit, working tree clean`, and you can switch branches freely to fix the urgent bug.
+
+The useful variants:
+
+```bash
+git stash -u                          # also stash UNTRACKED new files (the -u flag = --include-untracked; the brand-new file you had just created)
+git stash push -m "half-finished color logic"   # save with a label you will recognize tomorrow (push is the explicit modern spelling)
+```
+
+#### 20.3 The Drawer Is a Stack
+
+Stashes stack; each gets an index:
+
+```bash
+git stash list     # show all stashes
+```
+
+Output:
+
+```text
+stash@{0}: On feature-color: half-finished color logic
+stash@{1}: WIP on main: 9a8b7c6 Add a second line to the greeting
+```
+
+**Decoded:** `stash@{0}` (read: "stash at position zero") is the *most recent* one; `stash@{1}` the one under it - a stack, newest on top, exactly like `HEAD~1` counts backward. The `On feature-color:` part records which branch you stashed on; the description is your `-m` label.
+
+#### 20.4 Getting Work Back: pop vs apply
+
+```bash
+git stash pop      # apply the newest stash (stash@{0}) AND remove it from the stack
+git stash apply    # apply the newest stash but KEEP it in the stack (safe: re-applyable)
+git stash apply stash@{1}    # apply a specific older stash by index
+git stash pop stash@{0}      # pop a specific stash
+```
+
+The pop-vs-apply choice is about confidence: `pop` assumes the apply will work perfectly and the stash will never be needed again; `apply` keeps the drawer contents until you explicitly `git stash drop stash@{0}` (removes one) or `git stash clear` (empties the drawer, unrecoverably). When a pop lands on code that changed since the stash, you can get conflicts (marked exactly like Chapter 18's); resolve them, `git add`, and the stash is applied.
+
+#### 20.5 The Full Realistic Session
+
+```bash
+# (on feature-color, mid-work, urgent bug arrives)
+git stash push -m "half-finished color logic"    # clear the desk
+git switch main                                   # go where the bugfix belongs
+git switch -c fix/login-crash                     # fix on a branch, even urgent fixes
+# ...fix, add, commit, push, merge the fix (Chapters 16-17 or 23)...
+git switch feature-color                          # return to the feature
+git stash list                                    # confirm the stash is waiting
+git stash pop                                     # resume exactly where you were
+```
+
+That is the whole skill: five commands, one clean save-and-return. Stashes are not forever, though: they survive branch switches but live only in your local repository, are easy to forget, and do not travel on push. The rule of thumb professionals follow: **stash is for hours, branches are for days, commits are for anything longer.**
+
+---
+
+### Chapter 21: Tagging
+
+#### 21.1 What a Tag Is
+
+A tag is a *permanent, named pointer* to one commit - most often the commit of a release. Where branches move (they advance with every commit), tags stand still forever. "v1.0.0" is not a place that moves; it is a monument at a specific spot in history. Teams use tags to mark the exact commit that became each shipped version, and GitHub turns tags into Releases (Chapter 25).
+
+#### 21.2 Lightweight vs Annotated Tags
+
+```bash
+git tag v1.0.0                              # LIGHTWEIGHT: just a pointer, a private bookmark
+git tag -a v1.0.0 -m "First stable release"  # ANNOTATED: a full Git object with tagger, date, and message
+```
+
+**Anatomy of the annotated form:** `git tag` - the tagging command; `-a` - *annotate*, meaning "create a real tag object" (not just a pointer); `v1.0.0` - the tag's name; `-m "..."` - the tag's message, same flag-grammar as commit messages. The annotated tag stores *who* tagged, *when*, *why* - and can be cryptographically signed. The universal recommendation is exactly this: **use lightweight tags for temporary local notes; always use annotated tags for anything you will share.**
+
+#### 21.3 Working with Tags
+
+```bash
+git tag                       # list all tags (alphabetically, so v1.10 sorts before v1.2 - a classic surprise)
+git tag -l "v1.*"             # list only tags matching the pattern (l = list)
+git show v1.0.0               # inspect: shows the tag object (tagger, message) AND the commit it points to
+git tag -a v1.1.0 9a8b7c6 -m "Maintenance release"   # tag a PAST commit by ID, not the current one
+git tag -d v1.0.0             # delete a LOCAL tag (-d = delete)
+```
+
+#### 21.4 The Push Surprise: Tags Do Not Travel Alone
+
+`git push` (Chapter 22) sends commits and branches, **but not tags** - you push tags explicitly:
+
+```bash
+git push origin v1.0.0        # push one specific tag
+git push origin --tags         # push every local tag at once
+git push origin --delete v1.0.0    # delete a tag from the REMOTE (GitHub)
+```
+
+Why the design? Tags are announcements ("this is a release"), not work in progress, so Git makes you announce deliberately.
+
+#### 21.5 Versioning Like an Adult: Semantic Versioning
+
+Tag names usually follow **SemVer** (semver.org), a three-number promise: `MAJOR.MINOR.PATCH`, bumped by exactly one part per release:
+
+- **PATCH** (1.0.**0** to 1.0.**1**): bug fixes only; nothing new, nothing broken.
+- **MINOR** (1.**0**.1 to 1.**1**.0): new features, backward compatible; existing users can upgrade safely.
+- **MAJOR** (**1**.1.0 to **2**.0.0): breaking changes; users may need to change their own code.
+
+So "we went from 2.4.1 to 3.0.0" is a complete sentence in SemVer: *something broke on purpose*.
+
+#### 21.6 Visiting a Tag: Detached HEAD, Demystified
+
+```bash
+git switch --detach v1.0.0    # check out the exact snapshot of the tag (see the code AS RELEASED)
+```
+
+You are now in **detached HEAD** state: HEAD (Chapter 7) is no longer riding on a branch pointer; it is pinned directly to one commit. That is all "detached" means: *not attached to a branch*. It is completely safe for looking around (`git log`, running the old version, `git diff v1.0.0 main` to see everything since the release). One rule: do not commit here - commits made with no branch pointing at them are hard to find afterward (reflog rescues them, Chapter 26, but why suffer). To leave, switch back to a branch:
+
+```bash
+git switch main     # re-attach HEAD to a branch; the monument stays where it was
+```
+
+> **Try it yourself:** tag your current practice repo `v1.0.0`, make another commit, then `git diff v1.0.0 main` - a complete "what changed since the release" report in one command. That diff is the backbone of writing release notes.
+
+## Part E: GitHub and Collaboration
+
+Everything so far has lived on your machine. Part E connects your work to GitHub: uploading repositories, downloading updates, collaborating through pull requests, contributing to other people's projects, and a tour of GitHub's power features. After Part E, you are, without exaggeration, using Git the way professional teams do.
+
+### Chapter 22: Remotes: push, pull, and fetch
+
+#### 22.1 What a Remote Is
+
+A **remote** is a named shortcut to a copy of your repository that lives somewhere else - usually a repository on GitHub. Your local repository and the remote each hold a *complete* repository (Chapter 6: distributed); they synchronize by exchanging commits. The conventional name for your main remote is `origin`, but that is only a convention, like naming your dog Dog: the name means nothing special to Git, and you will later meet a second common name, `upstream`, in Chapter 24.
+
+```text
+   your laptop                        GitHub
+ +---------------+    git push      +---------------+
+ | local repo    | --------------> | origin repo   |
+ | (your edits)  | <-------------- | (shared copy) |
+ +---------------+    git pull      +---------------+
+                        /\
+                 your teammates' laptops
+                 push and pull the same way
+```
+
+#### 22.2 Creating Your Repository on GitHub
+
+This section assumes you created the practice repo below in earlier chapters; the identical steps apply to any project you will ever upload.
+
+1. On github.com, click the **+** icon (top right) and choose **New repository**.
+2. Fill in the fields, each decoded:
+   - **Repository name:** `my-first-repo` (will appear in your URL; lowercase-hyphenated is the convention).
+   - **Description:** optional one-liner shown under the name.
+   - **Public / Private:** Public means anyone can *view* the code (only you and invited collaborators can *change* it); Private means only you. You can flip this later in Settings.
+   - **Add a README file:** **leave it unchecked** for this walkthrough. If GitHub creates a README now, the remote will contain a commit your local copy does not have, and your first push will be rejected with the "unrelated histories" error (Chapter 37 has the full story). For the same reason, skip the **.gitignore** and **license** dropdowns for now - we want an empty remote.
+3. Click **Create repository**. GitHub shows a page of suggested commands - which is exactly what the next section teaches, properly.
+
+#### 22.3 Connecting: git remote add
+
+Back in your terminal, inside `my-first-repo`:
 
 ```bash
 git remote add origin git@github.com:yourname/my-first-repo.git
-git branch -M main
-git push -u origin main
 ```
 
-Copy these — we'll use them next.
+**Anatomy of the command, word by word:**
 
-### Method 2: GitHub CLI
+- `git` - the program
+- `remote` - the subcommand for managing remotes (add, rename, remove, show)
+- `add` - register a new one
+- `origin` - the *name* we are giving this remote (purely a local label; a bookmark name)
+- `git@github.com:yourname/my-first-repo.git` - the *address* of the remote: SSH form (Chapter 10); the HTTPS form is `https://github.com/yourname/my-first-repo.git`
 
-If you've authenticated `gh` (Chapter 1), creating a remote repo from the terminal is one command:
+Verify the connection:
 
 ```bash
-gh repo create my-first-repo --public --source=. --remote=origin --push
-```
-
-**Reading the command:**
-
-- `gh repo create my-first-repo` — name on GitHub.
-- `--public` — visibility.
-- `--source=.` — use the current local directory as the source.
-- `--remote=origin` — name the new remote `origin`.
-- `--push` — push immediately.
-
-If it works, you'll see:
-
-```text
-✓ Created repository yourname/my-first-repo on github.com
-✓ Added remote "origin"
-✓ Pushed commits to the "main" branch
-```
-
-Skip to section 5.4 — you're done.
-
----
-
-## 5.3 Linking Your Local Repo: `git remote add`
-
-If you used Method 1 (created an empty repo on GitHub), you need to link your local repo to it manually.
-
-```bash
-git remote add origin git@github.com:yourname/my-first-repo.git
-```
-
-**Line by line:**
-
-- `git remote add` — adds a new remote.
-- `origin` — the local nickname for this remote. Convention: always `origin` for the primary.
-- `git@github.com:yourname/my-first-repo.git` — the SSH URL (recommended; Chapter 1 set this up).
-
-The HTTPS equivalent:
-
-```bash
-git remote add origin https://github.com/yourname/my-first-repo.git
-```
-
-Verify:
-
-```bash
-git remote -v
+git remote -v    # -v = verbose: list remotes with their addresses
 ```
 
 Output:
@@ -2846,5115 +2113,1878 @@ origin  git@github.com:yourname/my-first-repo.git (fetch)
 origin  git@github.com:yourname/my-first-repo.git (push)
 ```
 
-The same URL appears twice because Git distinguishes "fetch" (download from) and "push" (upload to). Most of the time they're the same.
+**Decoded:** your repository now knows one remote named `origin` at that address, usable for both fetching (downloading) and pushing (uploading). Related housekeeping: `git remote rename origin github` renames it; `git remote remove origin` forgets it (nothing on GitHub is affected); `git remote set-url origin <new-url>` changes the address - this is how you switch an old HTTPS remote to SSH.
 
-### Changing a remote URL
-
-If you need to switch from HTTPS to SSH (or vice versa):
+#### 22.4 The First Push
 
 ```bash
-git remote set-url origin git@github.com:yourname/my-first-repo.git
+git push -u origin main    # upload your commits to GitHub, and remember the connection
 ```
 
-### Renaming a remote
+**Anatomy of the command, word by word:**
 
-```bash
-git remote rename origin upstream      # rename "origin" to "upstream"
-```
+- `git push` - upload local commits to a remote
+- `-u` - short for `--set-upstream`: "and link my local `main` to the remote's `main` for the future" (once set, plain `git push` knows where to go - this is why you type this long form once per branch, ever)
+- `origin` - the remote to push to (by bookmark name)
+- `main` - the local branch to push
 
-### Removing a remote
-
-```bash
-git remote remove origin
-```
-
----
-
-## 5.4 Uploading Your Work: `git push`
-
-```bash
-git push -u origin main
-```
-
-**Line by line:**
-
-- `git push` — upload local commits to a remote.
-- `-u` (or `--set-upstream`) — tells Git to remember that `main` locally tracks `main` on `origin`. You only do this once per branch; afterwards, plain `git push` and `git pull` work without arguments.
-- `origin` — the remote name.
-- `main` — the branch name.
-
-First-time output:
+Output:
 
 ```text
-Enumerating objects: 12, done.
-Counting objects: 100% (12/12), done.
-Delta compression using up to 8 threads
-Compressing objects: 100% (8/8), done.
-Writing objects: 100% (12/12), 1.34 KiB | 1.34 MiB/s, done.
-Total 12 (delta 1), reused 0 (delta 0), pack-reused 0
+Enumerating objects: 10, done.
+Counting objects: 100% (10/10), done.
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (10/10), 1.05 KiB | 1.05 MiB/s, done.
+Total 10 (delta 2), reused 0 (delta 0), pack-reused 0
 To github.com:yourname/my-first-repo.git
  * [new branch]      main -> main
-branch 'main' set up to track 'origin/main'.
+branch 'main' set up to track remote branch 'main' from 'origin'.
 ```
 
-**Reading the output:**
+**What just happened (line by line):** `Enumerating/Counting/Compressing/Writing objects` - Git packaging and uploading the repository's internal objects (Chapter 7's blobs and trees); `To github.com:...` - the destination; `* [new branch] main -> main` - a branch was created on the remote, arrow-style: local `main` went *to* remote `main`; `branch 'main' set up to track...` - the `-u` link was recorded. Refresh the GitHub page: your commits, files, and history are now on the internet.
 
-- `Enumerating objects: 12` — Git counted 12 objects (commits, trees, blobs) to send.
-- `Compressing objects: 100%` — Git packed them.
-- `* [new branch] main -> main` — the remote created a new branch `main` to match yours.
-- `branch 'main' set up to track 'origin/main'` — future `git push`/`pull` on `main` will know what to do.
+Two quiet concepts in that output deserve names. **Remote-tracking branches** are your local copies of the remote's branch positions, named `origin/main` (read: "what main looked like on origin, as of my last contact"). After the push, `origin/main` equals your `main`. And **tracking** is the `-u` relationship that lets `git status` report "Your branch is up to date with 'origin/main'" and plain `git push`/`git pull` work with no arguments.
 
-### Subsequent pushes
+#### 22.5 The Download Side: fetch and pull
 
-After `-u` is set, just:
+The two commands that bring remote work down, and the difference professionals care about:
 
 ```bash
-git push
+git fetch origin       # download everything new from origin, update origin/* markers... and CHANGE NOTHING ELSE
+git pull               # download (fetch) and then MERGE the downloaded commits into your current branch
 ```
 
-That's it. Pushes any new local commits on the current branch to its tracked remote branch.
+`git fetch` is the *look before you leap* command: it updates your `origin/main` marker and downloads the objects, but leaves your working files and your branches untouched. You can then inspect (`git log main..origin/main` lists "what they have that I don't"), compare, or merge when you choose. `git pull` is the *leap* itself: fetch plus immediate merge (or rebase, if you configured `pull.rebase` in Chapter 19) into whatever branch you are on. Both are correct; fetching first is how you keep calm with many teammates.
 
----
-
-## 5.5 Downloading Changes: `git fetch` and `git pull`
-
-Two commands download from a remote. They differ subtly but importantly.
-
-### `git fetch` — download but don't merge
-
-```bash
-git fetch
-```
-
-Downloads new commits from the remote into a separate area (`origin/main`, etc.), but **does not change your working directory or `main`**. Your local `main` is untouched.
-
-Use `git fetch` when you want to see what changed before deciding to merge.
-
-```bash
-git fetch
-git log origin/main --oneline      # see what's on the remote
-git diff main origin/main          # see the diff
-git merge origin/main              # merge when ready
-```
-
-### `git pull` — fetch + merge
-
-```bash
-git pull
-```
-
-Equivalent to `git fetch` followed by `git merge origin/main` (or `git rebase origin/main` if you set `pull.rebase=true` in Chapter 1). Updates your working directory immediately.
-
-```bash
-git pull
-```
-
-Sample output (after a web edit on GitHub):
+Sample `git pull` output when a teammate pushed work:
 
 ```text
 remote: Enumerating objects: 5, done.
-remote: Counting objects: 100% (5/5), done.
-remote: Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
-Unpacking objects: 100% (3/3), 718 bytes | 179.00 KiB/s, done.
+...
 From github.com:yourname/my-first-repo
-   9fceb52..4d2c1ab  main        -> origin/main
-Updating 9fceb52..4d2c1ab
+   9a8b7c6..5e4f3a2  main       -> origin/main
+Updating 9a8b7c6..5e4f3a2
 Fast-forward
- README.md | 2 ++
- 1 file changed, 2 insertions(+)
+ notes.md | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 notes.md
 ```
 
-**Reading the output:**
+**Decoded:** the `From github.com:...` block is the fetch half (note `main -> origin/main`: your marker of the remote's position moved); `Updating 9a8b7c6..5e4f3a2 / Fast-forward` is the merge half - Chapter 17.2's simplest merge, because you had no local work they lacked. If you *did* have local commits, this half would be a three-way merge (or a rebase), and could even conflict (Chapter 18).
 
-- `From github.com:yourname/my-first-repo` — fetching from your remote.
-- `9fceb52..4d2c1ab main -> origin/main` — your local view of remote `main` (`origin/main`) updated from `9fceb52` to `4d2c1ab`.
-- `Updating 9fceb52..4d2c1ab` — your local `main` is being updated too.
-- `Fast-forward` — your `main` had no diverging commits, so it just moved forward.
+#### 22.6 The Daily Sync Rhythm
 
-### When to use which
+The push-pull rhythm of a working day, distilled: **`git pull` when you sit down** (start from everyone's latest), **work in commits** (Chapters 12-13), **`git push` when a unit is done** (share and back up). If push is ever rejected with `! [rejected] ... (fetch first)`, it means the remote has commits you lack: pull first (resolving anything that arises), then push again. Chapter 37 covers that moment in full, because it happens to everyone on day one.
 
-- `git fetch` — you want to look before you leap. Useful in collaborative repos where someone else might have pushed something unexpected.
-- `git pull` — you trust the remote and just want to be up to date. Most common for solo work.
+#### 22.7 Authentication, Revisited
+
+Your Chapter 10 SSH setup is what makes the pushes above just work. Two facts for completeness: HTTPS-URL repositories authenticate with a **Personal Access Token** (Settings -> Developer settings -> Personal access tokens; it functions as a password, so treat it like one and give it the narrowest permissions), and credential managers (Git Credential Manager on Windows, the `osxkeychain` helper on macOS) can remember HTTPS tokens so both styles become invisible after first use.
+
+> **Try it yourself:** clone your own repository into a second folder (`git clone git@github.com:yourname/my-first-repo.git roundtrip-test`), make a commit there, push, then return to your original folder, `git fetch`, and run `git log main..origin/main` - you are watching your two copies synchronize, which is the entire distributed model in four commands.
 
 ---
 
-## 5.6 Downloading a Whole Project: `git clone`
+### Chapter 23: The Pull Request Workflow
 
-`git clone` downloads a remote repo and all its history to your computer, in one command. Used when you want to start working on an existing project.
+#### 23.1 What a Pull Request Is
 
-```bash
-git clone git@github.com:yourname/my-first-repo.git
-```
+A **pull request** (PR) is a web page on GitHub that says: *"Here is a branch of work; here is the branch it should be merged into; please review it, discuss it, test it, and merge it."* It is not a Git command - it is a GitHub feature layered on Git, and it is the center of modern collaboration: every change to a professional codebase, at thousands of companies, arrives as a pull request. The name decodes literally: you are *requesting* that the maintainers *pull* your changes into their project.
 
-This creates a folder `my-first-repo/` in your current directory, with all files and full history, and `origin` set to the cloned URL.
+#### 23.2 GitHub Flow: The Workflow You Already Almost Know
 
-Sample output:
+The PR workflow sits on everything from Parts C and D, adding exactly two new moves (push a branch; click buttons on GitHub):
 
 ```text
-Cloning into 'my-first-repo'...
-remote: Enumerating objects: 24, done.
-remote: Counting objects: 100% (24/24), done.
-remote: Compressing objects: 100% (16/16), done.
-remote: Total 24 (delta 4), reused 22 (delta 2), pack-reused 0
-Receiving objects: 100% (24/24), 4.55 KiB | 1.51 MiB/s, done.
-Resolving deltas: 100% (4/4), done.
+ 1. main is always healthy and deployable
+ 2. git switch -c feature/xyz-name    <- new branch for one unit of work
+ 3. commit early, commit well          <- Chapters 12-13
+ 4. git push -u origin feature/xyz-name   <- NEW: publish the branch
+ 5. Open a pull request on GitHub       <- NEW: propose, review, discuss
+ 6. Squash-merge when approved          <- the work joins main, one clean commit
 ```
 
-### Cloning into a specific folder
+Rule 1 is why the workflow works: because `main` is never broken, any emergency is small. Everything else exists to protect rule 1.
+
+#### 23.3 A Complete Pull Request, Start to Finish
+
+In `my-first-repo`:
 
 ```bash
-git clone git@github.com:yourname/my-first-repo.git my-folder
+git switch main          # always branch from the latest main
+git pull                 # sync: start from what everyone else sees
+git switch -c feature/footer       # branch for the unit of work
+echo "Made with Git" > footer.txt   # the "feature": one new file
+git add footer.txt                 # stage
+git commit -m "feat: add footer note"   # commit (Conventional, atomic, from Chapter 13)
+git push -u origin feature/footer  # publish the branch to GitHub (the -u dance, once per branch)
 ```
 
-Creates `my-folder/` instead of `my-first-repo/`.
-
-### Cloning a specific branch
-
-```bash
-git clone -b develop git@github.com:yourname/repo.git
-```
-
-Checks out the `develop` branch after cloning.
-
-### Shallow clone (just the latest commit)
-
-For huge repos where you don't need history:
-
-```bash
-git clone --depth 1 git@github.com:torvalds/linux.git
-```
-
-Downloads only the latest commit. Saves gigabytes on big repos. Useful for CI; not recommended if you need history.
-
----
-
-## 5.7 Fork vs Clone
-
-People confuse these. Important distinction:
-
-| | Clone | Fork |
-|---|---|---|
-| What it does | Downloads a copy to your computer | Creates a copy on GitHub under your account |
-| Where it happens | Locally | On github.com |
-| Permissions needed | Read access (public repos: anyone) | Read access (same) |
-| Can you push back? | Only if you have write access to the original | Yes — to your fork; then PR to original |
-| Git concept? | Yes | No, GitHub-specific |
-
-Typical open-source flow:
-
-1. **Fork** `octocat/Spoon-Knife` on github.com → `yourname/Spoon-Knife` (your copy on GitHub).
-2. **Clone** your fork locally → `my-first-repo/` (your copy on your laptop).
-3. Make changes locally, commit, **push to your fork** (`origin`).
-4. Open a **pull request** from `yourname/Spoon-Knife` to `octocat/Spoon-Knife`.
-
-We'll cover step 4 in Chapter 6.
-
-### Forking from the CLI
-
-```bash
-gh repo fork octocat/Spoon-Knife --clone
-```
-
-Forks on GitHub and clones locally in one step.
-
----
-
-## 5.8 When Push Is Rejected
-
-Sometimes you'll see this:
-
-```bash
-git push
-```
-
-```text
-To github.com:yourname/my-first-repo.git
- ! [rejected]            main -> main (fetch first)
-error: failed to push some refs to 'github.com:yourname/my-first-repo.git'
-hint: Updates were rejected because the remote contains work that you do
-hint: not have locally. ...
-```
-
-**What it means:** someone (possibly you, on another machine, or via GitHub's web editor) pushed commits to `origin/main` that you don't have locally. Git refuses to overwrite them.
-
-**Fix:** pull first, then push.
-
-```bash
-git pull
-# (resolve any conflicts if prompted)
-git push
-```
-
-`git pull` will either fast-forward (if your local and remote commits are independent), or create a merge commit (if they diverged). After pulling, your local `main` includes the remote's commits, so the push will succeed.
-
----
-
-## 5.9 Tracking Branches
-
-When you `git push -u origin main`, Git sets up a **tracking relationship**: your local `main` "tracks" `origin/main`. This lets `git push` and `git pull` work without arguments.
-
-To see all tracking relationships:
-
-```bash
-git branch -vv
-```
-
-Output:
-
-```text
-* main          9fceb52 [origin/main] Merge branch 'feature/footer'
-  feature/x     a1b2c3d Add experimental feature
-```
-
-`[origin/main]` shows that `main` tracks `origin/main`. `feature/x` has no tracking branch (you'd need `git push -u origin feature/x` to set one).
-
----
-
-## 5.10 Pushing and Pulling Tags
-
-Tags (covered in Chapter 8) need explicit pushing:
-
-```bash
-git push origin v1.0          # push one tag
-git push origin --tags         # push all tags
-```
-
-`git pull` does not pull tags by default in older Git versions; modern Git (2.20+) does. To be safe:
-
-```bash
-git fetch --tags
-```
-
----
-
-## 5.11 Your Turn
-
-1. Create a new repo on GitHub called `my-first-repo` (or use `gh repo create`).
-
-2. Connect your local `git-practice` repo from earlier chapters to it:
-
-   ```bash
-   git remote add origin git@github.com:yourname/my-first-repo.git
-   git branch -M main     # ensure branch is called "main" (in case it was "master")
-   git push -u origin main
-   ```
-
-3. Open the repo on github.com. Verify you can see all your commits and files.
-
-4. On github.com, click the pencil icon on `README.md`, add a line, and commit the change directly on GitHub.
-
-5. Back in your terminal:
-
-   ```bash
-   git fetch
-   git log origin/main --oneline -3      # see the new commit on the remote
-   git diff main origin/main             # see what changed
-   git pull                              # merge it into your local main
-   ```
-
-6. Make a new commit locally and push it. Verify on github.com that it appears.
-
-7. Try to push when there's an upstream change. Edit `README.md` on github.com, then locally edit a different line, commit, and `git push`. You should get the "rejected" error. Run `git pull` then `git push` to resolve.
-
-8. Clone your own repo into a *different* folder (simulating a second machine):
-
-   ```bash
-   cd ..
-   git clone git@github.com:yourname/my-first-repo.git my-first-repo-copy
-   cd my-first-repo-copy
-   git log --oneline     # confirm you have full history
-   ```
-
-9. Make a commit in the copy, push it, switch back to the original, and pull. Now both copies are in sync — you've simulated working from two machines.
-
-If all 9 steps worked, your local repo and GitHub are wired up correctly. Chapter 6 teaches you the professional collaboration workflow: issues, pull requests, code review.
-
-**Next up: Chapter 6 — The GitHub Collaboration Workflow.**
-
----
----
-
-
-# Chapter 6 — The GitHub Collaboration Workflow
-
-> **Goal of this chapter:** Master the social side of Git — issues, pull requests, code reviews, branch protection. By the end, you can collaborate on a project with a team or contribute to open source.
-
-Git is the engine; this chapter is the steering wheel. Most professional Git work is not "commit and push" — it's "open an issue, branch, push, open a PR, get reviewed, address feedback, merge". This is the loop.
-
----
-
-## 6.1 The Golden Loop
-
-Almost all collaborative Git work follows this pattern:
-
-```
-  ┌──────────────────────────────────────────────────────────┐
-  │                                                          │
-  │   1. Open an issue (describe what needs to be done)       │
-  │                  ↓                                       │
-  │   2. Create a branch off main                            │
-  │                  ↓                                       │
-  │   3. Make commits on the branch                          │
-  │                  ↓                                       │
-  │   4. Push the branch to your fork (or origin)            │
-  │                  ↓                                       │
-  │   5. Open a pull request                                 │
-  │                  ↓                                       │
-  │   6. Code review: address feedback with more commits     │
-  │                  ↓                                       │
-  │   7. CI runs tests automatically                          │
-  │                  ↓                                       │
-  │   8. Merge the PR into main                              │
-  │                  ↓                                       │
-  │   9. Delete the branch                                   │
-  │                  ↓                                       │
-  │  10. Close the issue (auto-closed if PR says "closes #N")│
-  │                                                          │
-  └──────────────────────────────────────────────────────────┘
-```
-
-We'll walk through each step.
-
----
-
-## 6.2 Issues: Your Project's To-Do List
-
-An **issue** is a thread on github.com for tracking anything: a bug, a feature request, a question, a discussion.
-
-### Opening an issue
-
-1. Go to your repo on github.com → **Issues** tab → **New issue**.
-2. **Title:** one-line summary ("Login button doesn't work on Safari").
-3. **Body:** describe what happened, what you expected, steps to reproduce, screenshots.
-4. Labels (if any): `bug`, `enhancement`, `good first issue`, etc.
-5. **Submit new issue**.
-
-GitHub assigns it a number (e.g. `#42`). You can reference it from commits and PRs.
-
-### Issue templates
-
-Many repos have issue templates — pre-filled forms for bug reports, feature requests, etc. They live in `.github/ISSUE_TEMPLATE/`. To create one for your repo:
-
-```bash
-mkdir -p .github/ISSUE_TEMPLATE
-cat > .github/ISSUE_TEMPLATE/bug-report.md << 'EOF'
----
-name: Bug report
-about: Report a bug
-title: "[BUG] "
-labels: bug
-assignees: ''
----
-
-## Describe the bug
-A clear description of what the bug is.
-
-## To reproduce
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '...'
-3. See error
-
-## Expected behavior
-What you expected to happen.
-
-## Screenshots
-If applicable, add screenshots.
-
-## Environment
- - OS: [e.g. macOS 14]
- - Browser: [e.g. Chrome 118]
- - Version: [e.g. 1.2.3]
-EOF
-```
-
-Now when someone opens an issue, they'll see this template.
-
-### From the CLI
-
-```bash
-gh issue create --title "Login button broken on Safari" --body "Steps: ..."
-gh issue list
-gh issue view 42
-gh issue close 42
-```
-
----
-
-## 6.3 Pull Requests in Depth
-
-A **pull request** (PR) is a proposal: "please merge my branch into yours". It's not a Git concept — it's a GitHub feature. But it's the heart of professional Git collaboration.
-
-### Anatomy of a PR
-
-A PR contains:
-- A **source branch** (your feature work).
-- A **target branch** (usually `main`).
-- A **title** (one-line summary).
-- A **description** (what changed, why, how to test).
-- A **diff** of all commits.
-- A **discussion thread** for review comments.
-- **CI checks** (tests run automatically).
-- **Reviewers** assigned.
-- **Status** (open / merged / closed).
-
-### Opening a PR
-
-After pushing your branch:
-
-#### From the web
-
-GitHub shows a yellow banner: "Compare & pull request". Click it. Fill in title and description, assign reviewers, and **Create pull request**.
-
-#### From the CLI
-
-```bash
-gh pr create --title "Add password reset flow" --body "Closes #42"
-```
-
-This opens a PR from your current branch to `main` on `origin`. `--body "Closes #42"` auto-closes issue #42 when the PR merges.
-
-### PR description template
-
-A good PR description is a small document. Common structure:
+GitHub now shows a yellow banner on your repository page: **"feature/footer had recent pushes - Compare & pull request"**. Click it (or open the Pull requests tab and click New pull request). The PR creation page has anatomy worth decoding line by line:
+
+- **base: main <- compare: feature/footer** - the direction of the merge, displayed left to right: the *base* is where work is going; *compare* is the branch carrying the work. Read the whole page as the sentence "merge compare into base."
+- **Title:** becomes the merge commit message - use the same discipline as Chapter 13: `feat: add footer note`.
+- **Description:** the room to explain *what and why* (not how - the diff shows how). A good template:
 
 ```markdown
-## What does this PR do?
-Implements the password reset flow end-to-end.
+## What
+Adds a footer note to the repository.
 
-## Why is it needed?
-Users currently cannot recover forgotten passwords (issue #42).
+## Why
+The repository should show it is maintained with Git, for the tutorial readers.
 
-## How was it tested?
-- Added 12 unit tests covering all branches of `resetPassword()`.
-- Manual test: requested reset for `test@example.com`, verified email arrived, clicked link, set new password, logged in successfully.
+## How I tested
+Ran the site locally; footer appears on every page.
 
-## Screenshots
-![reset-flow](https://example.com/screenshot.png)
-
-## Checklist
-- [x] Tests pass
-- [x] Code follows style guide
-- [x] Documentation updated
-- [x] No new linting warnings
+Closes #3
 ```
 
-To make this appear by default for every PR in your repo, add a file `.github/PULL_REQUEST_TEMPLATE.md` with the template content.
+The last line is a magic spell: `Closes #3` links the PR to Issue #3 (Chapter 25), and merging the PR *automatically closes the issue*. The recognized keywords are close/closes/closed, fix/fixes/fixed, and resolve/resolves/resolved, always followed by the issue number.
 
-### Listing and viewing PRs
+- **Reviewers** (sidebar): people whose approval you want before merge; they are notified.
+- **Assignees:** who is doing the work (usually you; for solo PRs, unused).
+- **Labels, milestone, projects:** taxonomy for teams; optional.
+- **Draft pull request** (dropdown on the create button): opens the PR marked as work-in-progress, blocking accidental merges until you click "Ready for review."
+
+Click **Create pull request**.
+
+#### 23.4 The Review
+
+Your reviewer opens the PR and sees: the description, the *Files changed* tab (every diff, rendered in the red/green language of Chapter 14.5, line-commentable), and the *Checks* tab (Part G: your automated tests will report here). The reviewer can leave line comments (each starting a thread), reply to threads, and finally submit a review with one of three verdicts: **Comment** (observations, no verdict), **Approve** (green light), or **Request changes** (red light with required fixes). The author pushes additional commits to the same branch - the PR updates automatically, because a PR tracks a *branch*, not a snapshot - and the cycle continues until an approval.
+
+Review etiquette, learned once: small PRs get good reviews (beyond ~400 changed lines, review quality collapses); review comments critique the *code*, never the *person* ("this loop might be slow with large lists" not "you wrote this badly"); and respond to every comment, even if only with "done" or a thoughtful disagreement - silence is how code review culture dies.
+
+#### 23.5 Merging: The Three Strategies
+
+The green **Merge pull request** button is a dropdown with three strategies, and now you can understand all three from Part D alone:
+
+| Button | What it creates | History looks like |
+| --- | --- | --- |
+| **Merge** | A true merge commit (two parents, Chapter 17.3) | preserved graph, explicit merge nodes |
+| **Squash and merge** | ALL the PR's commits melted into ONE new commit on main | one clean commit per PR - most teams' default |
+| **Rebase and merge** | The PR's commits replayed onto main, keeping their count | linear, no merge commit, new commit IDs (Chapter 19) |
+
+For feature work, **squash and merge** is the modern default: whatever mess the exploration produced, `main` sees exactly one well-named commit (`feat: add footer note (#4)`) - GitHub appends the PR number automatically. Use plain **merge** when the individual commits are meaningful (a sequence worth preserving), and **rebase and merge** when you curated the commits yourself with Chapter 19.7.
+
+#### 23.6 After the Merge: The Ritual Nobody Teaches You
+
+After merging, the ritual that closes the loop:
 
 ```bash
-gh pr list                    # open PRs in your repo
-gh pr list --state closed     # recently merged/closed
-gh pr view 42                 # view PR #42
-gh pr view 42 --web           # open it in the browser
-gh pr checkout 42             # check out the PR's branch locally (for testing)
-gh pr diff 42                 # see the diff
+git switch main               # return to main
+git pull                      # download the merged work (note: your local main now has the squash commit)
+git branch -d feature/footer  # delete the local branch (its work is now IN main, so -d succeeds)
 ```
 
----
+On GitHub, the merge page offers **Delete branch** - say yes (branches are disposable; the PR page preserves the history forever, even after branch deletion). Your `origin/feature/footer` marker disappears after the deletion synchronizes. The workflow is complete: main grew one unit of reviewed work, and nothing dirty touched it at any point.
 
-## 6.4 Code Review
+> **Try it yourself:** run the full loop twice - two tiny features, two PRs (you can approve and merge your own PRs in your own repositories; teams configure how many approvals are required). The second time, notice how mechanical it has already become. That muscle memory is the deliverable of this chapter.
 
-A PR is reviewed by other developers before merging. Their job: catch bugs, suggest improvements, share knowledge, ensure the code fits the project.
+### Chapter 24: Forking and Open Source Contributions
 
-### Commenting on a PR
+#### 24.1 Fork, Clone, Branch: Three Words That Finally Stop Blurring
 
-On the github.com PR page:
-- **Files changed** tab shows the diff line-by-line.
-- Hover any line → **+** icon → add an inline comment.
-- Comments can be **single** (just a note) or part of a **review**.
+- A **clone** is a local copy of a repository (Chapter 11).
+- A **branch** is a parallel line inside one repository (Chapter 16).
+- A **fork** is *your personal server-side copy of someone else's GitHub repository*, made by clicking one button on GitHub.
 
-### Submitting a review
+The situation a fork solves: you cannot push to `octocat/Spoon-Knife` (it is not yours), but you want to change it. Clicking **Fork** gives you `yourname/Spoon-Knife` - a full copy under your account that you *can* push to. From that fork, you open a pull request *back* to the original. The photocopier analogy holds: fork = photocopy the whole book into your own library; branch = a bookmark within one copy; the PR = a letter to the original author saying "here are pages to replace."
 
-A reviewer submits one of:
-- **Comment** — feedback without blocking merge.
-- **Approve** — looks good, merge it.
-- **Request changes** — must be addressed before merging.
+#### 24.2 The Complete Open Source Workflow
 
-### Addressing feedback
+Every open source contribution on Earth follows these steps. Practice them now on GitHub's official practice repository, `octocat/Spoon-Knife`, which exists purely for this rehearsal.
 
-When a reviewer asks for changes:
-1. Checkout the PR's branch locally (or use `gh pr checkout 42`).
-2. Make the requested changes.
-3. Commit and push to the same branch.
+**Step 1 - Fork.** Visit `github.com/octocat/Spoon-Knife` and click **Fork** (top right). Seconds later you are looking at `github.com/yourname/Spoon-Knife`. You now "own" a copy you cannot break and cannot harm.
+
+**Step 2 - Clone your fork** (not the original!):
 
 ```bash
-git switch feature/password-reset
-# ... edit, address feedback ...
-git add .
-git commit -m "Address review feedback: extract validation logic"
-git push
+cd ~/git-practice                                   # where you keep projects
+git clone git@github.com:yourname/Spoon-Knife.git   # clone YOUR fork (you can push here)
+cd Spoon-Knife                                       # enter the project
 ```
 
-The PR automatically updates with your new commits. The reviewer re-reviews.
-
-### Merge, squash, or rebase?
-
-When merging a PR, GitHub offers three strategies:
-
-| Strategy | What it does | When to use |
-|---|---|---|
-| **Merge commit** | Creates a merge commit joining your branch into main. Preserves all individual commits. | When commits are meaningful and well-organised. |
-| **Squash and merge** | Combines all your commits into one new commit on main. | When your branch has many tiny "fix typo" / "address feedback" commits you don't want in main's history. |
-| **Rebase and merge** | Replays your commits onto main without a merge commit. Linear history. | When you want a clean, linear history and your commits are well-organised. |
-
-For most projects: **squash and merge** is the most beginner-friendly default.
-
----
-
-## 6.5 Contributing to Someone Else's Repository
-
-To contribute to a repo you don't have write access to (e.g. open source):
-
-### Step 1: Fork on github.com
-
-Go to the repo → **Fork** (top right). GitHub creates a copy under your account: `yourname/their-repo`.
-
-### Step 2: Clone your fork
+**Step 3 - Connect the original as a second remote named upstream:**
 
 ```bash
-git clone git@github.com:yourname/their-repo.git
-cd their-repo
-```
-
-### Step 3: Add the original as `upstream`
-
-```bash
-git remote add upstream https://github.com:original-owner/their-repo.git
-git remote -v
+git remote add upstream git@github.com:octocat/Spoon-Knife.git   # register the ORIGINAL under the name "upstream"
+git remote -v                                                       # verify your two remotes
 ```
 
 Output:
 
 ```text
-origin    git@github.com:yourname/their-repo.git (fetch)
-origin    git@github.com:yourname/their-repo.git (push)
-upstream  https://github.com:original-owner/their-repo.git (fetch)
-upstream  https://github.com:original-owner/their-repo.git (push)
+origin    git@github.com:yourname/Spoon-Knife.git (fetch)
+origin    git@github.com:yourname/Spoon-Knife.git (push)
+upstream  git@github.com:octocat/Spoon-Knife.git (fetch)
+upstream  git@github.com:octocat/Spoon-Knife.git (push)
 ```
 
-You push to `origin` (your fork). You pull from `upstream` (the original) to stay in sync.
+**Decoded:** `origin` is your fork (where you push); `upstream` is the original (where you fetch updates from, and where you will send a PR). The names are pure convention, but *universal* convention - every tutorial, teammate, and blog post uses exactly these two names for exactly these two roles.
 
-### Step 4: Keep your fork current
-
-Periodically:
+**Step 4 - Branch, work, commit** (everything you already know):
 
 ```bash
-git switch main
-git fetch upstream
-git merge upstream/main       # or: git rebase upstream/main
-git push origin main          # update your fork on github.com
+git switch -c docs/fix-readme-typo     # a small, well-named branch
+# ...edit README.md, fixing the typo you found...
+git add README.md                      # stage
+git commit -m "docs: fix typo in README installation section"   # a perfect little commit
 ```
 
-### Step 5: Branch, commit, push to your fork
+**Step 5 - Push to your fork:**
 
 ```bash
-git switch -c docs/improve-readme
-# ... edit README ...
-git commit -am "Improve README installation section"
-git push -u origin docs/improve-readme
+git push -u origin docs/fix-readme-typo    # -u dance, once per branch, to YOUR fork
 ```
 
-### Step 6: Open the PR on github.com
+**Step 6 - Open the pull request against the ORIGINAL.** Visit `github.com/yourname/Spoon-Knife`; GitHub's banner offers **"Compare & pull request"**. Verify the direction carefully - GitHub pre-fills it, but read it as a sentence - this time it is inverted from Chapter 23: **base repository: octocat/Spoon-Knife (base branch: main) <- head repository: yourname/Spoon-Knife (compare: docs/fix-readme-typo)**: you are requesting that *octocat's* project *pull* from *your* fork. Write the description (what, why, tested how), and click **Create pull request**. Maintainers of that project will review it. On a practice repo nothing further happens; on real projects, the discussion cycle of Chapter 23.4 plays out.
 
-Go to your fork on github.com → **Compare & pull request**.
+#### 24.3 Keeping Your Fork Current
 
-**Critical detail:** check the base and head at the top of the PR form:
-- **base repository:** `original-owner/their-repo`
-- **base:** `main`
-- **head repository:** `yourname/their-repo`
-- **compare:** `docs/improve-readme`
-
-This means: "merge from my fork's `docs/improve-readme` branch into the original repo's `main`".
-
-### Step 7: Address feedback
-
-If reviewers ask for changes, push more commits to the same branch:
+Weeks later, the original project has moved; your fork is stale. Two ways to update, same result:
 
 ```bash
-git switch docs/improve-readme
-# ... edit ...
-git commit -am "Address review feedback"
-git push
+git fetch upstream                  # download the original's latest state
+git switch main                      # update your local main...
+git merge upstream/main               # ...by merging the original's main into it
+git push origin main                 # push the refreshed main to your fork
 ```
 
-The PR updates automatically. No need to open a new one.
+Or on GitHub itself: your fork's page now has a **Sync fork** button that does the same thing server-side. Either way, always branch *from a fresh main*, so your PRs carry only your change and none of your staleness.
+
+#### 24.4 Etiquette That Gets Your PRs Merged
+
+Open source culture has unwritten rules, and they are learnable: **read the project's README and CONTRIBUTING.md first** (many projects specify branch naming, commit style, or test requirements; ignoring these is the fastest route to a closed PR); **claim an issue before fixing it** ("I'll take this" on the issue thread prevents two strangers duplicating each other); **small PRs win** (one fix per PR, always); **match the project's code style and add tests** if tests exist; **be patient and responsive** (maintainers are volunteers; reply to review comments with fixes, pushed to the same branch). For your first contribution ever, search repos by the label **"good first issue"** (maintainers flag intentionally-easy entry points) or contribute to **documentation** - it is real, valued work with a famously low barrier and famously high merge rate.
 
 ---
 
-## 6.6 Keeping a Fork Up to Date
+### Chapter 25: GitHub Power Features
 
-After you've had a fork for a while, it falls behind the original. To sync:
+This chapter is a guided tour of the rest of GitHub - each feature gets exactly what a working practitioner needs: what it is, when to reach for it, and the two or three clicks that operate it.
 
-```bash
-git switch main
-git fetch upstream
-git merge upstream/main
-git push origin main
-```
+#### 25.1 Issues: The To-Do List of Everything
 
-Or with `gh`:
+An **issue** is a tracked conversation about one problem or task. Click the **Issues** tab, then **New issue**, and you get a title, a description (Markdown: headings, lists, code fences - it is a README in miniature), and a sidebar for: **labels** (`bug`, `enhancement`, `good first issue`, `wontfix`... taxonomy and filtering), **assignees** (who owns it), **milestones** (due-date groupings like `v1.1.0`), and **projects** (Kanban boards, next section). Issues do three magic tricks: commits mentioning `#12` show up in the issue's timeline; `git commit -m "fix: handle empty input (#12)"` cross-links the commit; and merging a PR whose description says `Closes #12` auto-closes the issue (Chapter 23.3's magic spell). Teams also create **issue templates** (a `.github/ISSUE_TEMPLATE/` folder in the repo) so every bug report arrives with structured questions. Habits: search existing issues before filing ("is it already known?"), one issue = one topic, and include reproduction steps.
 
-```bash
-gh repo sync yourname/their-repo --source original-owner/their-repo
-```
+#### 25.2 Projects: The Kanban Board
 
----
+**Projects** turn issues and PRs into a board: columns like `To do / In progress / Review / Done`, with cards you drag between them, each card backed by an issue or PR (or a raw note). Projects can be enabled to auto-move: an issue moves to Done when its PR merges. This is lightweight project management living inside your repository, which is why tiny teams run entire products with GitHub alone and no other tooling.
 
-## 6.7 Code Review Etiquette
+#### 25.3 Wiki and Documentation
 
-Code review is a social activity. Some norms:
+Every repository has a **Wiki** tab: a multi-page documentation site (again Markdown, with page history - it is itself a mini Git repository you can clone). Uses vary: the README holds the "front page" (what, install, quickstart) while long-form docs, tutorials, and design decisions live in the wiki. Many projects instead keep docs in a `docs/` folder for versioned review via PRs - same goal, different flavor.
 
-### For reviewers
+#### 25.4 Gists: The Snippet Drawer
 
-- **Be kind.** Comment on the code, not the person. "This could be simplified by…" not "Why did you do this?".
-- **Be specific.** Vague: "this is bad". Useful: "this loop is O(n²); using a Set for `seen` would make it O(n)".
-- **Distinguish must-fix from nice-to-have.** Use prefixes: `[must]`, `[nit]`, `[question]`, `[praise]`.
-- **Praise good code.** Especially from juniors. A `praise` comment boosts morale.
-- **Ask, don't tell.** "Have you considered using X?" instead of "Use X".
-- **Approve promptly when ready.** Don't block merges with optional nits.
+A **gist** (gist.github.com) is a mini-repository for a single text snippet: a script, a config file, a SQL query. Secret gists (the default) are unlisted-but-shareable by URL; public gists are forkable like repositories. Every gist is a full Git repo: clone it, version it, embed it. Use it when the answer to "where do I put this one file?" is not "a whole repository."
 
-### For authors
+#### 25.5 Releases: Shipping Officially
 
-- **Self-review before requesting reviewers.** Read your own diff. Catch the obvious stuff first.
-- **Write a good PR description.** Reviewers shouldn't have to guess your intent.
-- **Keep PRs small.** A 50-line PR gets reviewed in 5 minutes. A 500-line PR sits for days.
-- **Respond to every comment.** Either fix it, push back politely, or mark as "will do in a follow-up".
-- **Don't take feedback personally.** Reviewers are improving the code, not attacking you.
+A **Release** (Releases sidebar section, or from the tags page) is a tag (Chapter 21) dressed for the public: title (`v1.2.0`), curated release notes (a generated diff link plus your prose describing what changed), and **binary attachments** (installers, archives) - the download page of serious projects. **Draft releases** let you prepare notes while the tag does not exist yet; publishing the release creates the tag. GitHub also auto-generates release notes from Conventional Commits (Chapter 13.3) with the "Generate release notes" button - the robots reading your discipline paying dividends.
 
----
+#### 25.6 GitHub Pages: Free Hosting
 
-## 6.8 Protecting Branches and Team Settings
+**GitHub Pages** serves a repository as a live website at `https://yourname.github.io/repo/` - free, no server, no billing, with automatic HTTPS. The instant way: Settings -> Pages -> set Source to your `main` branch - GitHub publishes the repository's HTML files. The professional way (build step, custom domains, full control) is the Actions-based deployment you will build in Chapter 33. There is also the special personal-site form: a repository named exactly `yourname.github.io` publishes to `https://yourname.github.io` itself - the classic free portfolio homepage.
 
-To prevent accidents, GitHub lets you **protect branches**. Common rules:
-- Disallow direct pushes to `main` (force PRs).
-- Require PR reviews before merge (e.g. at least 1 approval).
-- Require CI to pass before merge.
-- Disallow force-pushes.
-- Require linear history (no merge commits).
+#### 25.7 Actions: The Preview
 
-### Setting up a branch protection rule
+**GitHub Actions** (Part G) runs software for you on GitHub's computers when events happen: push, PR, schedule, manual trigger. If you have seen small badges in READMEs like `build | passing`, you have seen Actions output. Everything from "run my tests on every push" to "deploy my site on merge" - three full chapters start at Chapter 31.
 
-1. Repo → **Settings** → **Branches** → **Add branch protection rule**.
-2. **Branch name pattern:** `main`.
-3. Tick:
-   - **Require a pull request before merging** (set required approvals to 1 or 2).
-   - **Require status checks to pass** (pick your CI workflow).
-   - **Require branches to be up to date before merging**.
-   - **Do not allow bypassing the above settings**.
-4. **Create**.
+#### 25.8 Security Features
 
-Now nobody — not even you, the repo owner — can push directly to `main`. All changes go through PRs.
+Four names worth knowing: **Dependabot** scans dependencies (your `package.json`, `requirements.txt`...) against vulnerability databases and opens PRs proposing safe upgrades (Settings -> Security); **secret scanning** alerts when it detects leaked API keys even in old commits; **CodeQL** analyzes code itself for vulnerability patterns (free for public repos); and **security advisories** give you a private channel to fix and announce a vulnerability responsibly. For a beginner the actionable habit is simpler: never commit secrets (Chapter 15), and turn on Dependabot in Settings.
 
-### From the CLI
+#### 25.9 Insights
+
+The **Insights** tab is a free analytics suite for the repo: **Contributors** (commit graphs per person), **Traffic** (views and clones over time - the internet discovering your project), **Commits/Code frequency** (when the project is alive), and **Pulse** (a weekly digest of activity). The Traffic page in particular is quietly addictive once your project is public.
+
+#### 25.10 The GitHub CLI: GitHub in Your Terminal
+
+The **`gh``** tool (cli.github.com) puts GitHub in the terminal, eliminating the biggest friction of PR life - browser round-trips. Install it, then:
 
 ```bash
-gh api -X PUT repos/yourname/repo/branches/main/protection \
-  -F required_pull_request_reviews.required_approving_review_count=1 \
-  -F required_pull_request_reviews.dismiss_stale_reviews=true \
-  -F enforce_admins=false \
-  -F restrictions= \
-  -F required_linear_history=true
+gh auth login                      # connect it to your account (guided; choose SSH and your Chapter 10 key)
+gh repo create my-new-repo --public --source=. --push    # create a GitHub repo FROM the current folder and push, one command
+gh pr create --fill                 # open a PR from the current branch, auto-filling title/description from commits
+gh pr status                        # show PRs for this branch: yours, needing your review
+gh pr checkout 12                   # download and check out a collaborator's PR branch locally, for testing
+gh issue list --label "good first issue"   # browse work from the terminal
 ```
 
-The CLI is powerful but verbose; the web UI is usually easier.
+Each flag above is decodable with skills you own: `--source=.` means "the repository is the current directory," `--push` means "push immediately after creating," `--fill` means "fill the PR form from my commit messages." The single most-loved feature is `gh pr checkout` - reviewing a PR locally, in your editor, is a different experience from reviewing in a browser.
 
----
+#### 25.11 Copilot, Briefly
 
-## 6.9 GitHub Pages: A Free Website From Your Repo
+**GitHub Copilot** is GitHub's AI pair programmer: it suggests code and entire functions in your editor, and increasingly answers questions about your repository. It is a paid product with a limited free tier. Whatever your stance on AI assistance, its existence does not change this guide's truth: Copilot writes lines; *you* are still the one who must understand repositories, branches, commits, and pull requests - the machinery this guide teaches, and the machinery your team will judge you by.
 
-GitHub Pages is a free static-site hosting service. It serves files from a repo as a website at `https://yourname.github.io/repo-name/`.
+## Part F: Advanced Git
 
-### Quick setup
+Part F is the part people ask for in job interviews and in emergencies. You will learn to undo *anything* (including "deleted" work), to perform surgical operations on single commits, to automate quality checks with hooks, to type 60% less with aliases, to combine repositories with submodules, and finally to open the `.git` folder and understand every file inside it.
 
-1. Repo → **Settings** → **Pages**.
-2. **Source:** Deploy from a branch.
-3. **Branch:** `main` / `/(root)` → **Save**.
-4. Wait ~1 minute.
-5. Visit `https://yourname.github.io/repo-name/`.
+### Chapter 26: Undoing Anything in Git
 
-If you have an `index.html` in your repo root, it's served as the homepage.
+#### 26.1 The Truth First
 
-### Personal site
+Git's reputation for mercilessness is unearned, and the reason is architectural: a commit is an object in a database, not a file in a folder. Deleting a file from your working directory does not delete its committed snapshot; even "undoing" a commit usually just moves a pointer, leaving the commit object recoverable by the **reflog** (section 26.7) for around 90 days. The honest failure modes are only two: never-committed work (truly gone with `--hard` or `git clean`), and pushed-and-rewritten history (a social problem, not a technical one). Everything else is recoverable. Now, systematically, from the smallest undo to the largest.
 
-Every GitHub account gets one personal site at `https://yourname.github.io/`. Create a repo named **exactly** `yourname.github.io` and push an `index.html`:
+#### 26.2 Level One: Discard Uncommitted Changes in One File
+
+You edited a file, the edit is wrong, and you want the file back the way it was at the last commit/staging:
 
 ```bash
-git clone git@github.com:yourname/yourname.github.io.git
-cd yourname.github.io
-echo "<h1>Hello, world!</h1>" > index.html
-git add index.html
-git commit -m "Initial homepage"
-git push
+git restore page.txt    # discard working-directory changes to this file, restoring the staged version
 ```
 
-Visit `https://yourname.github.io/` in a minute.
+The modern command is `git restore` (2019); the old spelling you will see everywhere is `git checkout -- page.txt` (identical effect). The double dash means "what follows is a file path, not a branch name" - necessary because old `checkout` handled both. This is a destructive command (uncommitted edits are gone), so run it only when you mean it.
 
----
+#### 26.3 Level Two: Unstage a File
 
-## 6.10 Your Turn
-
-This is the most important exercise in the guide. You will simulate the full collaboration loop end-to-end.
-
-1. Create a new repo on github.com called `pr-practice`.
-
-2. Clone it locally:
-
-   ```bash
-   git clone git@github.com:yourname/pr-practice.git
-   cd pr-practice
-   ```
-
-3. Create an `index.html` with basic HTML. Commit and push to `main`.
-
-4. On github.com, **open an issue**: "Add an About section" — describe what you want.
-
-5. Locally, **create a branch** `feature/about-section`. Add an `<section id="about">` to `index.html`. Commit.
-
-6. Push the branch: `git push -u origin feature/about-section`.
-
-7. On github.com, **open a pull request** from `feature/about-section` → `main`. In the description, write `Closes #1` (assuming the issue is #1).
-
-8. **Self-review your diff.** Read every line. Imagine you're a reviewer who didn't write it.
-
-9. **Merge the PR** (using "Squash and merge" if available).
-
-10. On github.com, verify the issue was **auto-closed** by the merge.
-
-11. Locally:
-
-    ```bash
-    git switch main
-    git pull
-    git branch -d feature/about-section      # delete the local branch
-    ```
-
-12. (Optional) On github.com, set up branch protection on `main` requiring a PR. Try to push directly to `main` — you should be blocked.
-
-13. (Optional) Create a second PR to add a CSS file. This time, **request a review from yourself** (or a friend) before merging. Add a review comment on a specific line of the diff.
-
-If you completed all 13 steps, you have done the full professional Git/GitHub workflow that engineers do every day. You can collaborate.
-
-**Next up: Chapter 7 — Undoing Things and Disaster Recovery.** Even pros make mistakes. This chapter shows you how to undo them — sometimes hours later, sometimes after pushing — without losing work.
-
----
----
-
-
-# Chapter 7 — Undoing Things and Disaster Recovery
-
-> **Goal of this chapter:** Recover from any mistake — without losing work. Unstage changes, discard changes, undo commits, undo merges, recover "deleted" branches, fix a force-push disaster. By the end, Git errors will make you calm, not panicked.
-
-The single most important fact in Git: **almost nothing is ever truly lost.** Commits live in `.git/objects/` until garbage collection runs (default: 30 days after they become unreferenced). The reflog records every place `HEAD` has been. This chapter is your toolkit for getting back anything.
-
----
-
-## 7.1 The Safety-Net Mindset
-
-Before we start, internalize this:
-
-1. **Calm down.** The data is almost certainly still there.
-2. **Stop typing destructive commands.** Don't `rm -rf`, don't `git reset --hard` blindly. Think first.
-3. **Check the reflog.** `git reflog` shows every place `HEAD` has been. Your "lost" commit is probably there.
-4. **Commit before you fix.** If you have changes in your working directory that you might lose, `git stash` them first (section 7.7).
-
----
-
-## 7.2 Unstaging: `git restore --staged`
-
-You `git add`-ed a file you didn't mean to stage. You want to remove it from the staging area but keep the changes in your working directory.
+You ran `git add` on something prematurely; the file is staged but uncommitted:
 
 ```bash
-git restore --staged README.md
-# older equivalent (still works):
-git reset HEAD README.md
+git restore --staged page.txt    # remove the file from the STAGING area, leaving the file and its edits untouched
 ```
 
-`--staged` says "restore from `HEAD` to the staging area" — meaning, make the staging area match what's already committed. Your working-directory changes are untouched.
+Read it carefully: `git restore` restores; `--staged` says what to restore *from where to where* - it restores the staging entry to match HEAD. File on disk: unchanged. Old spelling: `git reset HEAD page.txt` (same effect, and yes, that is the first appearance of `reset`, which grows teeth in a moment).
 
-For all staged files at once:
+#### 26.4 Level Three: Fix the Last Commit
+
+Covered in Chapter 13.5 and repeated here because it is *the* undo you will use weekly:
 
 ```bash
-git restore --staged .
+git commit --amend --no-edit    # fold currently staged changes into the last commit, keeping its message
+git commit --amend -m "new message"    # same, but replace the message
 ```
 
----
+Amend is safe while the commit is local-only. If you already pushed the commit, amend + force-push is the history-rewriting territory of Chapter 19.6 - prefer section 26.6's revert for anything pushed.
 
-## 7.3 Discarding Local Changes: `git restore`
+#### 26.5 Level Four: Undo Commits Locally with reset
 
-You made changes to `README.md`, decided you hate them, and want the file back to its last-committed state.
+`git reset` moves the current branch's pointer backward, and its three modes answer the question "and what happens to the changes that were in the undone commits?" Watch the same reset through three lenses:
 
 ```bash
-git restore README.md
-# older equivalent (still works):
-git checkout -- README.md
+git reset --soft HEAD~1    # move branch back 1 commit; changes stay STAGED (safest: nothing leaves the machine)
+git reset --mixed HEAD~1   # move branch back; changes stay on DISK, UNSTAGED (this is the DEFAULT mode)
+git reset --hard HEAD~1    # move branch back; changes are REMOVED from disk too (dangerous, total)
 ```
 
-**Warning:** this discards your uncommitted changes permanently. There's no undo for working-directory changes that were never staged or committed.
-
-To discard all changes in the working directory:
-
-```bash
-git restore .
-```
-
----
-
-## 7.4 `git reset`: Soft, Mixed, Hard
-
-`git reset` moves the current branch pointer to a different commit. It has three modes that differ in what they do to the staging area and working directory.
-
-```
-                          Staging area    Working directory
-                          ─────────────    ─────────────────
-git reset --soft  HEAD~1  unchanged       unchanged
-git reset         HEAD~1  reset           unchanged
-git reset --hard  HEAD~1  reset           reset
-```
-
-### Setup
-
-Let's say `main` has three commits: C1 → C2 → C3. You're on `main` and `HEAD` is at C3.
-
-```
-(C1) ── (C2) ── (C3)   ← main, HEAD
-```
-
-### `git reset --soft HEAD~1`
-
-Moves `main` back one commit (to C2), but the staging area and working directory are untouched.
-
-```
-(C1) ── (C2)   ← main, HEAD
-            └── (C3)   ← still in staging, "as if you just committed"
-```
-
-**Use case:** you committed too early and want to amend the commit (combine more changes into it):
-
-```bash
-git reset --soft HEAD~1
-# make more changes, stage them
-git commit -m "Updated message"
-```
-
-### `git reset HEAD~1` (default mode: "mixed")
-
-Moves `main` back to C2 and **unstages** changes (they're now back in the working directory).
-
-```
-(C1) ── (C2)   ← main, HEAD
-            └── (C3)   ← still in working directory, unstaged
-```
-
-**Use case:** you committed the wrong files and want to re-stage them differently:
-
-```bash
-git reset HEAD~1
-git add specific-file.txt
-git commit -m "Better message"
-```
-
-### `git reset --hard HEAD~1`
-
-Moves `main` back to C2 and **discards** all changes in both staging and working directory.
-
-```
-(C1) ── (C2)   ← main, HEAD
-            (C3)   ← gone from working directory AND staging
-                    (but still in .git/objects until gc runs — see section 7.8)
-```
-
-**Use case:** you really want to throw away the last commit and its changes:
-
-```bash
-git reset --hard HEAD~1
-```
-
-**⚠ Warning:** `--hard` is the only `reset` mode that loses data from the working directory. Use it carefully. If you have uncommitted changes you want to keep, `git stash` first.
-
----
-
-## 7.5 `git revert`: The Safe Undo
-
-`git reset` rewrites history. If you've already pushed the commit you want to "undo", rewriting history means **force-pushing**, which breaks everyone else's repo. The safe alternative is `git revert`, which creates a *new* commit that undoes an older one.
-
-```bash
-git revert <commit-hash>
-```
-
-Example:
-
-```
-(C1) ── (C2) ── (C3) ── (C4 revert of C2)   ← main
-```
-
-`C4` is a new commit that does the *opposite* of `C2`. The history is preserved; nothing is rewritten. Safe to push.
-
-Reading the output:
-
-```bash
-git revert a1b2c3d
-```
+**Anatomy:** `HEAD~1` means "the parent of HEAD" (Chapter 14.3's notation); `--soft/--mixed/--hard` select *how much* of the working state is reset along with the pointer. The picture that makes it stick:
 
 ```text
-[main 7d8e9f0] Revert "Add broken feature"
+                          where HEAD ends up:   staging area:      working directory:
+ --soft   HEAD~1                    staged as-is        untouched
+ --mixed (default)                  empty                     changes present, unstaged
+ --hard                             empty                     pristine (edits DELETED)
+```
+
+**The canonical uses:** `--soft` to recommit properly ("the last three commits should have been one"); `--mixed` to uncommit and reselect what goes in ("committed too early, let me restage carefully"); `--hard` to genuinely erase local work ("this experiment never happened") - and note that `--hard` also restores staged files, making it the true nuke. Even after `--hard`, the commits themselves linger in the database for reflog rescue (26.7) - which is why Git veterans say "reset --hard is recoverable if it was ever committed."
+
+#### 26.6 Level Five: Undo Pushed Commits with revert
+
+**`git reset` on a shared branch is forbidden** (Chapter 19.6's Golden Rule: moving the public pointer backward makes teammates' history diverge from yours). The shared-safe undo is:
+
+```bash
+git revert 9a8b7c6    # create a NEW commit that is the exact inverse of commit 9a8b7c6
+```
+
+Output:
+
+```text
+[main 4e5f6a7] Revert "feat: add footer note"
  1 file changed, 1 deletion(-)
- create mode 100644 some-file.txt
+ delete mode 100644 footer.txt
 ```
 
-For reverting a merge commit:
+**Decoded:** Git did not erase history; it authored a new commit that performs the opposite changes (deleted the file the old commit added). The timeline grows forward - the old commit remains visible, the revert sits next to it - which is why teammates pulling your branch just receive a normal new commit. The diff of "old + revert" is nothing. This is the undo you use on anything already pushed to a shared branch: honest, forward-only, conflict-safe.
+
+One special case: reverting a *merge commit* requires telling Git which parent was "main": `git revert -m 1 <merge-commit-id>`. The `-m 1` selects parent 1 ("mainline," the branch you merged INTO) as the side to restore.
+
+#### 26.7 The Time Machine: git reflog
+
+The reflog ("reference log") is Git's private diary of everywhere HEAD has pointed, kept for you locally. Almost every "I destroyed my work" story ends here:
 
 ```bash
-git revert -m 1 <merge-commit-hash>
-```
-
-`-m 1` tells Git which parent to keep (parent 1 = the branch you merged into).
-
----
-
-## 7.6 `reset` vs `revert`: Which One When?
-
-| Situation | Use |
-|---|---|
-| You committed locally, haven't pushed, want to undo | `git reset` (rewrites only your local history) |
-| You committed and pushed, want to undo for everyone | `git revert` (adds an undo commit; safe to push) |
-| You want to undo multiple commits and combine them into one | `git reset --soft` then recommit |
-| You want to throw away uncommitted changes in working directory | `git restore .` (not reset) |
-| You want to test an old commit, then come back | `git checkout <hash>` (detached HEAD), then `git switch main` |
-
-Rule of thumb: **if it's been pushed, revert. If it hasn't, reset.**
-
----
-
-## 7.7 `git stash`: Shelving Work in Progress
-
-You're halfway through a feature when an urgent bug comes in. You don't want to commit half-done work, but you can't switch branches with uncommitted changes either.
-
-`git stash` saves your uncommitted changes to a temporary shelf and reverts your working directory to `HEAD`.
-
-```bash
-git stash
+git reflog    # show the history of HEAD movements
 ```
 
 Output:
 
 ```text
-Saved working directory and index state WIP on main: 9fceb52 Initial commit
+9a8b7c6 (HEAD -> main) HEAD@{0}: commit: feat: add footer note
+5e4f3a2 HEAD@{1}: commit: fix typo
+3f2a1b4 HEAD@{2}: commit: feat: add dark theme file
+7c9e4f2 HEAD@{3}: reset: moving to HEAD~1     <-- a reset happened here, "losing" 3f2a1b4
 ```
 
-Your working directory is now clean. Switch branches, fix the bug, switch back.
-
-### Listing stashes
+**Decoded, line by line:** each line is one past position of HEAD; `HEAD@{0}` is *now*; `HEAD@{1}` is "where HEAD was one move ago" (counting backward, exactly like `stash@{0}` in Chapter 20); the text after the colon is what caused the move - a commit, a reset, a checkout, a merge. The demonstration writes itself: even after `git reset --hard HEAD~1`, line `HEAD@{2}` still names the "lost" commit `3f2a1b4`, so:
 
 ```bash
-git stash list
+git reset --hard 3f2a1b4         # travel back: branch pointer and files restored to that snapshot
+git branch rescue 3f2a1b4         # gentler alternative: rescue the commit onto a new branch, current branch untouched
+```
+
+**The limits, honestly stated:** the reflog is local (your teammates' reflogs are their own), it covers *committed* states (never-committed edits are truly gone), and entries expire (default: 90 days) before the garbage collector truly deletes unreachable objects. Ninety days is a lot of safety net; "commit early, commit often" (Chapter 13.6) is still the policy that keeps you inside it.
+
+#### 26.8 Cleaning Untracked Files
+
+```bash
+git clean -n       # DRY RUN: list what WOULD be deleted, delete nothing (always run this first)
+git clean -f       # delete untracked files (not ignored ones)
+git clean -fd       # delete untracked files AND untracked directories
+git clean -fdx      # nuclear: untracked AND ignored (node_modules gone too) - read it twice before running
+```
+
+Untracked means invisible to the reflog: `git clean -f` is the one command in this chapter with no time machine behind it. The `-n` dry-run habit exists for exactly this reason.
+
+#### 26.9 The Decision Table
+
+Print this table mentally; it is the chapter compressed:
+
+| You want to... | Command | Safety |
+| --- | --- | --- |
+| Discard edits in one file | `git restore <file>` | Destructive to uncommitted edits |
+| Unstage a file | `git restore --staged <file>` | Fully safe |
+| Fix last commit (message/files) | `git commit --amend` | Safe if not pushed |
+| Redo the last N commits as staged | `git reset --soft HEAD~N` | Safe if not pushed |
+| Erase local commits entirely | `git reset --hard HEAD~N` | Local only; reflog can rescue |
+| Undo a PUSHED commit | `git revert <id>` | The shared-safe undo |
+| Recover "lost" commits | `git reflog` then reset/branch | Usually works within 90 days |
+| Delete untracked junk | `git clean -n` then `-f` | No reflog: be sure |
+
+---
+
+### Chapter 27: Precision Tools: cherry-pick, bisect, and grep
+
+#### 27.1 git cherry-pick: Copying One Commit
+
+`git merge` brings over *everything* from a branch; `git cherry-pick` brings *one specific commit* - replaying it as a new commit on your current branch. The everyday scenarios: you need a bugfix that lives on a feature branch but is not merged yet; a hotfix made on `main` needs to also land on your `v1.0` release branch; or a teammate's commit solves your exact problem and you need it now without their other work.
+
+```bash
+git switch release-v1            # stand on the branch that NEEDS the fix
+git log main --oneline           # find the commit's ID (e.g. 5e4f3a2)
+git cherry-pick 5e4f3a2          # replay that one commit here
 ```
 
 Output:
 
 ```text
-stash@{0}: WIP on main: 9fceb52 Initial commit
-stash@{1}: WIP on feature/x: 4d2c1ab Add footer
+[release-v1 8f9a0b1] fix: handle empty input
+ 1 file changed, 3 insertions(+)
 ```
 
-### Viewing a stash
+**Decoded:** a *new* commit `8f9a0b1` was created on `release-v1` with the *same changes and message* as `5e4f3a2` - new ID because new parent (Chapter 7, Idea Three). Add `-x` (`git cherry-pick -x 5e4f3a2`) to append "(cherry picked from commit 5e4f3a2...)" to the message - the honest bookkeeping flag you want on shared branches, because in six months "why are there two copies of this fix?" should be answerable. Conflicts during a pick resolve exactly like Chapter 18, then `git cherry-pick --continue`. Ranges work too: `git cherry-pick A..B` picks everything after A up to B. And the caution label: cherry-picking *instead of merging* regularly creates parallel histories of duplicate changes (the "same patch, two IDs" problem); it is a scalpel for exceptions, not a lifestyle.
+
+#### 27.2 git bisect: The Bug Hunt Binary Search
+
+The situation: the app worked last Tuesday; today it is broken; there are 60 commits in between; the culprit is one of them, and you would rather not check out 60 versions manually. `git bisect` finds it in about six steps, by *binary search*: it checks out the midpoint of the suspects, you answer "does this version work?", it halves the remaining suspects, repeat. Sixty commits, six questions; 1,000 commits, ten.
+
+A complete annotated session:
 
 ```bash
-git stash show -p stash@{0}      # -p for patch (diff)
+git bisect start         # begin the hunt
+git bisect bad           # verdict: CURRENT version (HEAD) is broken - the known end of the bad range
+git bisect good v1.2.0    # verdict: tag v1.2.0 (Chapter 21) was the last KNOWN-GOOD version
 ```
 
-### Applying a stash
-
-```bash
-git stash apply                  # apply the most recent stash (stash@{0})
-git stash apply stash@{1}        # apply a specific stash
-```
-
-`apply` keeps the stash on the shelf. To apply *and* remove:
-
-```bash
-git stash pop                    # apply stash@{0} and drop it
-```
-
-### Dropping a stash
-
-```bash
-git stash drop stash@{0}         # remove one
-git stash clear                  # remove all (careful!)
-```
-
-### Stashing untracked files
-
-By default, `git stash` ignores untracked (new) files. Include them with:
-
-```bash
-git stash -u                     # include untracked files
-git stash -a                     # include untracked AND ignored files
-```
-
-### Stashing with a message
-
-```bash
-git stash push -m "wip: hero animation"
-```
-
-Makes `git stash list` more readable.
-
----
-
-## 7.8 `git reflog`: The Time Machine
-
-The **reflog** records every place `HEAD` and other refs have been. It's local (not pushed), and expires after 30–90 days. This is your ultimate safety net.
-
-```bash
-git reflog
-```
-
-Sample output:
+Output:
 
 ```text
-4d2c1ab HEAD@{0}: commit: Add hello-world entry point
-a1b2c3d HEAD@{1}: reset: moving to HEAD~1
-9fceb52 HEAD@{2}: commit: Add project description to README
-5f6a7b8 HEAD@{3}: commit (initial): Initial commit: add README
+Bisecting: 30 revisions left to test after this (roughly 5 steps)
+[f1e2d3c...] feat: add login rate limiting
 ```
 
-Each entry is a snapshot of where `HEAD` was at one point in time.
-
-### Recovering a "lost" commit
-
-Suppose you `git reset --hard HEAD~1` and then realised you actually wanted to keep that commit:
+**Decoded:** Git checked out the middle commit of the suspect range (`f1e2d3c`), tells you 30 commits remain and about 5 rounds will finish. Now *you* run the program, reproduce, and judge this exact version:
 
 ```bash
-git reflog
-# 4d2c1ab HEAD@{0}: reset: moving to HEAD~1
-# 9fceb52 HEAD@{1}: commit: Add hello-world entry point   ← I want this back
+git bisect good     # if this checkout WORKS: culprit is in the newer half
+git bisect bad      # if this checkout is BROKEN: culprit is in the older half (including this one)
 ```
 
-```bash
-git reset --hard 9fceb52
-# or equivalently:
-git reset --hard HEAD@{1}
-```
-
-`HEAD@{1}` is shorthand for "the reflog entry at index 1" — one operation ago.
-
-### Recovering a deleted branch
-
-```bash
-git branch deleted-branch 9fceb52      # recreate branch at this commit
-# or:
-git switch -b recovered-branch HEAD@{2}
-```
-
----
-
-## 7.9 Cleaning Untracked Files: `git clean`
-
-`git clean` removes untracked files (those not yet added to Git). Use carefully — there's no undo.
-
-```bash
-git clean -n          # dry run: shows what would be deleted, deletes nothing
-git clean -f          # force: actually delete untracked files
-git clean -fd         # also delete untracked directories
-git clean -fdx        # also delete ignored files (e.g. node_modules, dist/)
-```
-
-**Always run `-n` (dry run) first.** Read the list of files. Confirm none are precious. Then run `-f`.
-
----
-
-## 7.10 `git cherry-pick`
-
-`git cherry-pick` takes a commit from one branch and applies it as a new commit on your current branch.
-
-```bash
-git switch main
-git cherry-pick a1b2c3d      # apply commit a1b2c3d onto main
-```
-
-Use cases:
-- A bug fix on `develop` that you also need on `main` (backporting).
-- A single useful commit on a branch you otherwise don't want to merge.
-- Applying someone else's commit to your branch.
-
-Cherry-picking multiple commits:
-
-```bash
-git cherry-pick a1b2c3d 4d2c1ab 9fceb52     # three commits, in order
-git cherry-pick a1b2c3d..4d2c1ab            # range (exclusive of a1b2c3d, inclusive of 4d2c1ab)
-```
-
-If a conflict occurs, resolve as usual, then:
-
-```bash
-git add .
-git cherry-pick --continue
-# or:
-git cherry-pick --abort       # give up
-```
-
----
-
-## 7.11 The Emergency Recovery Table
-
-| Situation | Command |
-|---|---|
-| I staged a file I didn't mean to | `git restore --staged <file>` |
-| I want to discard uncommitted changes | `git restore <file>` (or `git restore .` for all) |
-| I committed too early, want to add more | `git reset --soft HEAD~1` then edit + add + commit |
-| I committed and want to undo locally | `git reset HEAD~1` (mixed) or `--hard` to also discard changes |
-| I committed and pushed, want to undo safely | `git revert <commit-hash>` then `git push` |
-| I want to undo the last commit but keep changes | `git reset --soft HEAD~1` |
-| I lost uncommitted work after `git stash` | `git stash list` then `git stash apply stash@{0}` |
-| I deleted a branch by mistake | `git reflog` to find the hash, then `git branch <name> <hash>` |
-| I `reset --hard` and lost commits | `git reflog` to find hash, then `git reset --hard <hash>` |
-| I `reset --hard` AND ran `git gc --prune=now` | Likely gone. Restore from backup or remote. |
-| I force-pushed and overwrote remote commits | GitHub staff can sometimes recover via support ticket; otherwise gone. |
-| I committed a secret (password, key) | Use BFG Repo-Cleaner or `git filter-repo`, then force-push. **Rotate the secret immediately** regardless. |
-| My repo is corrupted (`git fsck` reports errors) | `git fsck --full`; if salvageable, fix objects; otherwise `git clone` fresh from remote. |
-| I'm in detached HEAD and made commits | `git branch save-my-work` then `git switch main` |
-| I merged the wrong branch | `git reset --hard HEAD~1` (if not pushed) or `git revert -m 1 <merge-hash>` (if pushed) |
-| I want to swap my last two commits | `git rebase -i HEAD~2` and reorder |
-
----
-
-## 7.12 Removing a Secret from History
-
-If you accidentally committed a password, simply removing it in a new commit is **not enough** — the secret is still in the old commit's diff, forever accessible via `git log -p`.
-
-The standard tool for rewriting history to remove secrets is **`git filter-repo`** (modern replacement for BFG Repo-Cleaner and `git filter-branch`).
-
-```bash
-# Install
-pip install git-filter-repo
-
-# Remove a specific file from all of history
-git filter-repo --path secrets.env --invert-paths
-
-# Remove all instances of a string from all files in history
-echo "MY_PASSWORD=hunter2" > passwords.txt
-git filter-repo --replace-text passwords.txt
-```
-
-After rewriting, force-push:
-
-```bash
-git push --force
-```
-
-**Then rotate the secret.** Assume it's compromised; rewriting history doesn't help if someone already cloned your repo.
-
----
-
-## 7.13 `git fsck`: File System Check
-
-`git fsck` verifies the integrity of your `.git/` directory:
-
-```bash
-git fsck
-```
-
-Sample clean output:
+After each verdict, Git checks out the next midpoint automatically. When the range collapses:
 
 ```text
-Checking object directories: 100% (256/256), done.
+5e4f3a2 is the first bad commit
+commit 5e4f3a2
+Author: ...
+    fix: change validation order
 ```
 
-If there are errors, you'll see `missing blob`, `dangling commit`, etc. Dangling commits are usually old, unreferenced commits — they're fine (they'll be GC'd eventually) but they're also what you'd want to look at if you lost something.
-
----
-
-## 7.14 Your Turn
-
-Practice recovering from disasters in a sandbox. **Use a throwaway repo** — do these in `git-practice` only after backing up.
-
-1. Make 5 commits. Run `git reset --hard HEAD~2`. Confirm your last 2 commits are gone from `git log`. Then use `git reflog` and `git reset --hard HEAD@{2}` to recover them.
-
-2. Stage a file, then unstage it without losing the working-directory changes: `git restore --staged`.
-
-3. Make changes to a file. Run `git stash`. Confirm working directory is clean. Run `git stash pop`. Confirm your changes are back.
-
-4. Make 3 commits and push them. Then `git revert HEAD~1` to undo the middle one. Push. Verify on github.com that the revert appears as a new commit, not a rewrite.
-
-5. Create a branch `feature/will-delete`, commit on it, switch back to main, and delete the branch with `git branch -D feature/will-delete`. Recover it using `git reflog` + `git branch`.
-
-6. (Caution: use a sandbox repo.) Make a commit containing a "secret" (just text). Then use `git filter-repo --path secrets.txt --invert-paths` to remove it from history. Verify with `git log -p` that the secret is gone.
-
-7. Run `git fsck` on your repo. It should report no errors.
-
-If you can confidently recover from each scenario above, Git disasters no longer scare you. The remaining chapters add power tools.
-
-**Next up: Chapter 8 — Intermediate to Advanced Git.** Rebase, interactive rebase, hooks, submodules, bisect, blame — the tools that separate casual users from Git experts.
-
----
----
-
-
-# Chapter 8 — Intermediate to Advanced Git
-
-> **Goal of this chapter:** Master rebase, interactive rebase, tags, aliases, blame, bisect, submodules, worktrees, hooks, line endings, and safe history rewriting. These are the tools that separate "uses Git" from "expert with Git".
-
-This chapter is denser than the previous ones. Take your time. Try every command.
-
----
-
-## 8.1 `git rebase`
-
-`git rebase` is alternative to `git merge` for combining branches. It "replays" your commits on top of another branch, producing a linear history.
-
-### The scenario
-
-You branched off `main` to make `feature/x`. While you worked, `main` moved forward. You want to update `feature/x` to include `main`'s latest commits.
-
-```
-Before rebase:
-       (C1) ── (C2) ── (C3) ── (C4)              ← main
-                          │
-                          └── (C5) ── (C6)         ← feature/x
-
-After `git rebase main` on feature/x:
-       (C1) ── (C2) ── (C3) ── (C4)              ← main
-                                     │
-                                     └── (C5') ── (C6')   ← feature/x
-```
-
-Notice `C5'` and `C6'` — these are **new commits** with new hashes, even though the changes are the same as `C5` and `C6`. The originals (`C5`, `C6`) still exist in `.git/objects/` (recoverable via reflog) but are no longer on `feature/x`.
-
-### Running a rebase
+**Decoded:** `first bad commit` - the commit that introduced the bug, with its message: your suspect, with a confession note attached. The final command:
 
 ```bash
-git switch feature/x
-git rebase main
+git bisect reset      # return to the branch you started on; hunt over
 ```
 
-Git replays each commit on `feature/x` on top of `main`. If a commit applies cleanly, great. If it conflicts:
+The automation upgrade, when you have a test that fails on the bug: `git bisect run npm test` - Git runs the command at each step itself, treats exit code 0 as good and non-zero as bad, and delivers the culprit without you touching anything. This combination - a fast test plus bisect - is why disciplined commit hygiene (Chapter 13.6) is not pedantry: atomic commits make bisect surgical, and bisect is the closest thing debugging has to a time machine.
 
-```text
-CONFLICT (content): Merge conflict in some-file.txt
-error: could not apply 4d2c1ab...
-```
+#### 27.3 git grep: Search, but With Repository Awareness
 
-Resolve the conflict (just like a merge conflict), then:
+The system `grep` searches a folder; `git grep` searches *what Git knows about*: your tracked files, in seconds, at any point in history:
 
 ```bash
-git add some-file.txt
-git rebase --continue
+git grep "rateLimit"            # find the string in all tracked files of the current checkout
+git grep -n "rateLimit"         # -n: prefix each hit with its line number
+git grep -i "ratelimit"         # -i: case-insensitive (matches rateLimit, RateLimit, RATELIMIT...)
+git grep -c "TODO"              # -c: per-file COUNT of matches (a satisfying to-do census)
+git grep -l "rateLimit"         # -l: just the filenames containing matches
+git grep "rateLimit" v1.0.0     # search the code AS OF TAG v1.0.0 - "when did this first exist?"
+git grep --cached "rateLimit"   # search what is STAGED (before committing it)
 ```
 
-Or abort:
+The differences from plain grep that matter: `git grep` respects `.gitignore` (no node_modules noise), searches any snapshot of history, and is fast on huge repositories (it walks Git's own index). "Search the code as of v1.0.0" is also a soft introduction to archaeological thinking: the repository contains every version your project ever had.
+
+#### 27.4 Which Tool When
+
+| The situation | The precision tool |
+| --- | --- |
+| One commit from elsewhere, needed here | `git cherry-pick` |
+| "Something between then and now broke this" | `git bisect` |
+| "Where in the codebase is X?" | `git grep` |
+| "What did this file look like at v1.0?" | `git show v1.0.0:path` (Chapter 14) |
+
+### Chapter 28: Hooks and Aliases
+
+#### 28.1 What Hooks Are
+
+A **hook** is a script Git runs automatically at a specific moment in a Git operation: before a commit completes, before a push leaves, after a checkout, and so on. Hooks turn Git's checkpoints into a quality-control system: your code can *refuse to be committed* if it contains a forbidden string, *refuse to be pushed* if tests fail, or *remind you of conventions* as messages are written. Hooks are plain scripts (shell by default; any executable works), and they live in a special folder inside the repository: `.git/hooks/`.
+
+Look inside any repository: `ls .git/hooks` shows a collection of `*.sample` files - inactive templates Git ships for documentation. A hook *activates* when you remove the `.sample` extension and make the file executable. The contract every hook obeys: **exit code 0 means "proceed"; any non-zero exit code means "stop the operation and show my output."** That single rule is the entire hook API.
+
+#### 28.2 A Complete pre-commit Hook, Line by Line
+
+The `pre-commit` hook runs between you typing `git commit` and the commit being created - the perfect enforcement point. Create the file `.git/hooks/pre-commit` with this content, where every line is annotated:
 
 ```bash
-git rebase --abort
+#!/bin/sh                                        # line 1: "shebang" - run this file with /bin/sh, the shell
+
+# Block commits that contain debug leftovers
+if git diff --cached | grep -q "console.log"; then    # line 3: `git diff --cached` = the staged changes (what is about to be committed); `|` pipes that text into `grep -q "console.log"` which searches silently (-q = quiet) and exits 0 if found
+  echo "ERROR: console.log found in staged changes."  # line 4: print the reason for rejection to the user
+  echo "Remove debug prints, or use 'git commit --no-verify' if you truly must."   # line 5: how to proceed
+  exit 1                                          # line 6: NON-ZERO exit = stop this commit, right now
+fi                                                # line 7: end of the if-block
+
+exit 0                                            # line 8: reached only if nothing was found: exit 0 = allow the commit
 ```
 
-Or skip the conflicting commit:
+Activate it (two steps, both required):
 
 ```bash
-git rebase --skip
+chmod +x .git/hooks/pre-commit    # chmod changes file permissions; +x adds "executable" - without it Git ignores the file
 ```
 
----
+Now `git commit` with a staged `console.log` prints both error lines and produces no commit. `git commit --no-verify` (the documented escape hatch, also `-n`) skips hooks when you truly must - and the escape hatch existing is what makes strict hooks tolerable to a team.
 
-## 8.2 The Golden Rule of Rebase
+#### 28.3 The Other Hooks You Will Actually Use
 
-**Never rebase commits that have been pushed and shared with others.**
+| Hook | Runs when | Classic use |
+| --- | --- | --- |
+| `pre-commit` | before a commit is created | block debug leftovers, lint, format check |
+| `commit-msg` | after the message is written, before commit finalizes | enforce Conventional Commits |
+| `pre-push` | before a push leaves your machine | run the test suite locally |
+| `prepare-commit-msg` | before the editor opens | inject a message template (e.g., the issue number) |
+| `post-merge` | after a merge completes | rebuild dependencies, update generated files |
 
-Rebase creates new commit hashes. If you've pushed `feature/x` and a teammate has based work on it, rebasing `feature/x` rewrites history — your teammate's repo is now broken.
-
-The rule:
-- **Public branches (`main`, `develop`)**: never rebase. Always merge.
-- **Private branches (your own feature branches that nobody else uses)**: rebase freely.
-
-If you must rewrite a pushed branch, communicate with everyone who has it first.
-
----
-
-## 8.3 Interactive Rebase: Rewriting History
-
-`git rebase -i` lets you edit the commit history of your branch. You can:
-- **Reorder** commits.
-- **Squash** multiple commits into one.
-- **Reword** commit messages.
-- **Edit** the contents of an old commit.
-- **Drop** commits you don't want.
-
-### Starting an interactive rebase
+A `commit-msg` example worth understanding, because message discipline is Chapter 13's theme - create `.git/hooks/commit-msg`:
 
 ```bash
-git rebase -i HEAD~3
-```
-
-This opens your editor with the last 3 commits:
-
-```text
-pick 9fceb52 Add hello-world entry point
-pick 4d2c1ab Add project description to README
-pick a1b2c3d Fix typo in README
-
-# Rebase commands:
-# p, pick   = use commit
-# r, reword = use commit, but edit the commit message
-# e, edit   = use commit, but stop for amending
-# s, squash = use commit, but meld into previous commit
-# f, fixup  = like "squash", but discard this commit's log message
-# x, exec   = run command using shell
-# d, drop   = remove commit
-#
-# These lines can be re-ordered; they are executed top-to-bottom.
-```
-
-### Common use cases
-
-**Squash the bottom commit into the top one:**
-
-Change:
-```text
-pick 9fceb52 Add hello-world entry point
-pick 4d2c1ab Add project description to README
-pick a1b2c3d Fix typo in README
-```
-
-To:
-```text
-pick 9fceb52 Add hello-world entry point
-squash 4d2c1ab Add project description to README
-pick a1b2c3d Fix typo in README
-```
-
-Save and close. Git opens another editor to combine the messages.
-
-**Reword a commit:**
-
-Change `pick` to `reword` (or just `r`):
-```text
-reword 9fceb52 Add hello-world entry point
-pick 4d2c1ab Add project description to README
-```
-
-Save, close. Git opens the editor for that commit's message.
-
-**Drop a commit:**
-
-Change `pick` to `drop` (or just delete the line).
-
-**Split a commit:**
-
-Change `pick` to `edit`. Git pauses at that commit. You can then:
-```bash
-git reset HEAD~             # unstage the commit's changes
-# stage them in pieces
-git add file1.txt
-git commit -m "First part"
-git add file2.txt
-git commit -m "Second part"
-git rebase --continue
-```
-
----
-
-## 8.4 Merge vs Rebase: The Decision
-
-| | Merge | Rebase |
-|---|---|---|
-| History | Preserves all commits, including merge commits | Linear, no merge commits |
-| Conflict resolution | Once, at merge time | Per commit, during rebase |
-| Rewrites history? | No | Yes |
-| Safe to do after push? | Yes | No (Golden Rule) |
-| Best for | Public branches, shared history | Private feature branches before merging |
-
-**Typical pro workflow:**
-1. Branch `feature/x` from `main`.
-2. As `main` moves, occasionally `git rebase main` on `feature/x` to stay up-to-date.
-3. Before opening a PR, `git rebase -i main` to squash/cleanup your commits.
-4. Open PR; merge with **squash-and-merge** or **rebase-and-merge**.
-
-Result: clean, linear `main` history where each commit is meaningful.
-
----
-
-## 8.5 Tags and Releases
-
-A **tag** is a fixed pointer to a specific commit. Used for releases (`v1.0`, `v2.3.7`).
-
-### Lightweight tags
-
-```bash
-git tag v1.0
-```
-
-Just a 41-byte file pointing to the current commit. No metadata.
-
-### Annotated tags (recommended)
-
-```bash
-git tag -a v1.0 -m "Release 1.0: initial public release"
-```
-
-Creates a tag object with author, date, and message. Stored in `.git/refs/tags/v1.0`.
-
-### Tagging a specific commit
-
-```bash
-git tag -a v0.9 -m "Beta release" 9fceb52
-```
-
-### Listing and inspecting tags
-
-```bash
-git tag                       # list all tags
-git tag -l "v1.*"             # list tags matching pattern
-git show v1.0                 # show tag details + the commit it points to
-```
-
-### Pushing tags
-
-Tags are NOT pushed by `git push`. Push explicitly:
-
-```bash
-git push origin v1.0          # one tag
-git push origin --tags        # all tags
-```
-
-### Deleting tags
-
-```bash
-git tag -d v1.0                       # local
-git push origin --delete v1.0         # remote
-```
-
-### GitHub Releases
-
-A GitHub **Release** is a tag plus a release page (notes, downloadable binaries). To create:
-
-1. Push the tag to GitHub.
-2. Repo → **Releases** → **Draft a new release**.
-3. **Choose a tag** (or create one).
-4. **Release title:** `v1.0 — Initial release`.
-5. **Description:** changelog (you can use `gh` to auto-generate).
-6. **Attach binaries** (zip, .deb, .exe, etc.).
-7. **Publish release**.
-
-Or via CLI:
-
-```bash
-gh release create v1.0 --notes "Initial public release."
-gh release create v1.1 --generate-notes      # auto-generate from commits
-```
-
----
-
-## 8.6 Aliases: Build Your Own Shortcuts
-
-If you find yourself typing the same long command, alias it.
-
-### Inline aliases
-
-```bash
-git config --global alias.co checkout
-git config --global alias.br branch
-git config --global alias.ci commit
-git config --global alias.st status
-git config --global alias.lg "log --oneline --graph --all --decorate"
-git config --global alias.last "log -1 HEAD"
-git config --global alias.unstage "restore --staged"
-```
-
-Now you can type:
-
-```bash
-git co main
-git lg
-git ci -m "Add feature"
-git unstage file.txt
-```
-
-### Aliases that run shell commands
-
-Prefix with `!`:
-
-```bash
-git config --global alias.cleanup '!git branch --merged | grep -v main | xargs git branch -d'
-```
-
-Now `git cleanup` deletes all merged branches except `main`.
-
----
-
-## 8.7 `git blame`: Who Wrote This Line?
-
-`git blame` shows, for each line of a file, which commit last touched it and who wrote it.
-
-```bash
-git blame README.md
-```
-
-Sample output:
-
-```text
-9fceb528 (Aziz Nader 2025-10-05 10:32:14 1) # My First Repo
-a1b2c3d4 (Aziz Nader 2025-10-05 10:45:02 2)
-a1b2c3d4 (Aziz Nader 2025-10-05 10:45:02 3) This is a project I'm building while learning Git.
-```
-
-Reading each line:
-- `9fceb528` — commit hash.
-- `(Aziz Nader 2025-10-05 10:32:14 1)` — author, date, line number.
-- The line content.
-
-Useful flags:
-
-```bash
-git blame -L 10,20 README.md      # only lines 10-20
-git blame -w README.md             # ignore whitespace changes
-git blame -C README.md             # detect lines moved from other files
-```
-
-GitHub's web UI shows blame: click **Blame** on any file.
-
----
-
-## 8.8 `git bisect`: Binary Search for Bugs
-
-`git bisect` finds which commit introduced a bug by binary search. Suppose the latest commit has a bug but `v1.0` (100 commits ago) worked. `bisect` walks you through ~7 commits (log2 of 100) instead of all 100.
-
-### Manual bisect
-
-```bash
-git bisect start
-git bisect bad                  # mark current commit as buggy
-git bisect good v1.0            # mark v1.0 as known-good
-```
-
-Git checks out a midpoint:
-
-```text
-Bisecting: 50 revisions left to test after this
-[abc1234] Some commit message
-```
-
-Run your tests. If they pass:
-
-```bash
-git bisect good
-```
-
-If they fail:
-
-```bash
-git bisect bad
-```
-
-Git checks out another midpoint. Repeat ~7 times. Eventually:
-
-```text
-abc1234 is the first bad commit
-```
-
-End the session:
-
-```bash
-git bisect reset
-```
-
-### Automated bisect
-
-Give bisect a script that returns 0 (good) or non-zero (bad):
-
-```bash
-git bisect start HEAD v1.0
-git bisect run npm test          # or any test command
-```
-
-Git runs the tests, checks out commits, narrows the range automatically, and reports the first bad commit.
-
----
-
-## 8.9 Searching Your History
-
-### Search commit messages
-
-```bash
-git log --grep="password"        # commits with "password" in message
-git log --grep="password" -i     # case-insensitive
-git log --grep="fix" --author="Aziz"      # combined filters
-```
-
-### Search code (in tracked files)
-
-```bash
-git grep "TODO"                  # files containing "TODO" in current state
-git grep -n "function"           # with line numbers
-```
-
-### Search across all history
-
-```bash
-git log -S "function foo"       # commits that added/removed the string "function foo"
-git log -G "function.*foo"      # commits matching a regex
-```
-
-`-S` is "pickaxe" — finds commits where the count of occurrences of a string changed. Perfect for "when was this function added?".
-
-### Who added this line, when, and in which commit?
-
-```bash
-git blame -L <line>,<line> <file>
-```
-
-Or on github.com, click **Blame** on any file.
-
----
-
-## 8.10 Submodules
-
-A **submodule** is a Git repo nested inside another Git repo. Useful when your project depends on an external repo that you want to keep separate (not vendor).
-
-### Adding a submodule
-
-```bash
-git submodule add https://github.com/owner/external-repo.git libs/external
-git commit -m "Add external-repo as a submodule"
-```
-
-This adds:
-- A clone of `external-repo` at `libs/external`.
-- A `.gitmodules` file at the project root recording the mapping.
-- A gitlink entry in the index pointing at a specific commit of the submodule.
-
-### Cloning a repo with submodules
-
-```bash
-git clone --recurse-submodules https://github.com/you/main-repo.git
-```
-
-Without `--recurse-submodules`, the submodule folders are empty. To populate them after the fact:
-
-```bash
-git submodule update --init --recursive
-```
-
-### Updating a submodule
-
-```bash
-cd libs/external
-git switch main
-git pull
-cd ../..
-git add libs/external
-git commit -m "Update external submodule to latest"
-```
-
-### Removing a submodule
-
-```bash
-git submodule deinit -f libs/external
-rm -rf .git/modules/libs/external
-git rm -f libs/external
-git commit -m "Remove external submodule"
-```
-
-Submodules have a reputation for being fiddly. For many use cases, **package managers** (npm, pip, cargo) are simpler. Use submodules only when you specifically need a separate Git repo nested inside yours.
-
----
-
-## 8.11 `git worktree`
-
-`git worktree` lets you have **multiple working directories** for the same repository, each checked out to a different branch. Useful when you need to work on two branches simultaneously without cloning twice.
-
-```bash
-git worktree add ../project-hotfix hotfix/urgent-bug
-```
-
-This creates a new working directory at `../project-hotfix` with the `hotfix/urgent-bug` branch checked out. They share the same `.git/` (so commits in either show up in both immediately).
-
-```bash
-cd ../project-hotfix
-# ... fix the bug, commit ...
-cd ../project
-git worktree list
-# /Users/you/project          9fceb52 [main]
-# /Users/you/project-hotfix   4d2c1ab [hotfix/urgent-bug]
-
-git worktree remove ../project-hotfix      # when done
-```
-
----
-
-## 8.12 Cloning Big Repositories Efficiently
-
-For huge repos (Linux kernel, Chromium), a full clone is multi-GB. Strategies:
-
-### Shallow clone (just the latest commit)
-
-```bash
-git clone --depth 1 https://github.com/torvalds/linux.git
-```
-
-You get the latest commit only. Saves gigabytes. Cannot see history older than one commit.
-
-### Blobless clone (all commits, file contents fetched on demand)
-
-```bash
-git clone --filter=blob:none https://github.com/torvalds/linux.git
-```
-
-Downloads all commits and trees but fetches blobs (file contents) only when you check them out. Great for browsing history without downloading every version of every file.
-
-### Treeless clone (even more aggressive)
-
-```bash
-git clone --filter=tree:none https://github.com/torvalds/linux.git
-```
-
-Only fetches trees when needed. Best for very large repos where you'll only touch a small portion.
-
-### Partial checkout (only certain directories)
-
-```bash
-git clone --filter=blob:none --no-checkout https://github.com/torvalds/linux.git
-cd linux
-git sparse-checkout init --cone
-git sparse-checkout set Documentation drivers/gpu
-git checkout main
-```
-
-You now have only `Documentation/` and `drivers/gpu/` from Linux on disk.
-
----
-
-## 8.13 Git Hooks
-
-**Hooks** are scripts that Git runs automatically before or after certain events (commit, push, receive, etc.). Stored in `.git/hooks/`.
-
-### Hook types
-
-| Hook | When it runs | Use case |
-|---|---|---|
-| `pre-commit` | Before a commit is created | Lint, format, run tests |
-| `prepare-commit-msg` | After the commit message is prepared | Insert ticket number into message |
-| `commit-msg` | After the message is finalized | Validate message format |
-| `post-commit` | After commit is created | Notify CI, send slack message |
-| `pre-push` | Before pushing | Run tests, prevent pushing to `main` |
-| `pre-rebase` | Before rebasing | Stop rebase of public branches |
-| `post-merge` | After a merge | Re-install dependencies |
-
-### Example: a pre-commit hook that runs tests
-
-```bash
-# .git/hooks/pre-commit
-#!/bin/sh
-echo "Running tests before commit..."
-npm test
-if [ $? -ne 0 ]; then
-  echo "❌ Tests failed. Commit aborted."
-  exit 1
+#!/bin/sh                                    # shell, as always
+MSG_FILE="$1"                                 # line: hooks receive arguments; $1 to commit-msg is the FILE containing the message
+if ! grep -qE "^(feat|fix|docs|chore|refactor|test|perf|ci)(\(.+\))?: .+" "$MSG_FILE"; then   # line: grep -E = extended regex; the pattern demands a line STARTING (^) with a known type, optional (...) scope, a colon+space, then text
+  echo "ERROR: message must follow Conventional Commits, e.g. 'feat: add login'"    # the rejection reason
+  exit 1                                      # stop the commit
 fi
-echo "✅ Tests passed."
-exit 0
+exit 0                                        # message is valid: proceed
 ```
 
-Make it executable:
+#### 28.4 The Catch, and the Industry Answer
+
+Here is the hook trap that surprises everyone: **`.git/hooks` is not version-controlled and does not travel with clones.** Your carefully built pre-commit hook protects only *your* copy of the repository; a fresh teammate clone has no hooks at all (and GitHub cannot run local hooks - see Part G for that). The industry's answer is hook *manager* packages that install hooks through the version-controlled dependency system every project already has: **husky** + **lint-staged** for JavaScript projects, **pre-commit** for Python, **lefthook** cross-language. Same hook scripts, but a one-command setup in `package.json` (Chapter 34's capstone will show the pattern). For personal use and learning, plain `.git/hooks` scripts remain perfect.
+
+#### 28.5 Aliases: Typing 60% Less
+
+An **alias** is a personal shorthand you teach Git via the same `git config` you learned in Chapter 9: `git config --global alias.<name> "<expansion>"`. Afterward `git <name>` runs the expansion. A curated set, each annotated:
 
 ```bash
-chmod +x .git/hooks/pre-commit
+git config --global alias.st "status -sb"                 # `git st` = short-format status with branch info (-s short, -b show branch)
+git config --global alias.cm "commit -m"                  # `git cm "msg"` = the commit you type fifty times a day
+git config --global alias.unstage "restore --staged"      # `git unstage file` = self-documenting, no flag to misremember
+git config --global alias.last "log -1 HEAD"               # `git last` = show the most recent commit in full
+git config --global alias.amend "commit --amend --no-edit" # `git amend` = the Chapter 13.5 shortcut, named honestly
+git config --global alias.lg "log --graph --oneline --all --decorate"   # `git lg` = THE pretty history graph (Chapter 14.2)
+git config --global alias.undo "reset --soft HEAD~1"      # `git undo` = uncommit, keep changes staged (Chapter 26.5, soft mode)
 ```
 
-Now every `git commit` runs the tests first. If they fail, the commit is aborted.
-
-### Sharing hooks
-
-`.git/hooks/` is not tracked by Git (it's per-clone). To share hooks with a team, store them in your repo (e.g. `.githooks/`) and configure Git to use that directory:
-
-```bash
-git config core.hooksPath .githooks
-```
-
-Add this to your setup script (`Makefile`, `package.json` postinstall, README).
-
-### Pre-commit framework (recommended)
-
-The [pre-commit](https://pre-commit.com/) framework manages hooks as code. Define hooks in a YAML file:
-
-```yaml
-# .pre-commit-config.yaml
-repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
-    hooks:
-      - id: trailing-whitespace
-      - id: end-of-file-fixer
-      - id: check-yaml
-      - id: check-added-large-files
-  - repo: https://github.com/pycqa/black
-    rev: 24.3.0
-    hooks:
-      - id: black
-```
-
-Install once:
-
-```bash
-pip install pre-commit
-pre-commit install
-```
-
-Now hooks are versioned, shareable, and reproducible across the team.
+Aliasing any flag you can decode is legitimate; the discipline is naming aliases after their *meaning* (`unstage`, `undo`, `last`), not their letters. Aliases with shell power start with `!`: `git config --global alias.cdls '!cd "$1" && ls'` style (rarely needed; know the `!` convention when you meet it). Remove one with `git config --global --unset alias.st`, or view them all with `git config --global --get-regexp alias`. Fair warning: `git lg` is habit-forming - it is the graph from Chapter 14, one keystroke away, and it is how professionals actually *watch* repositories evolve.
 
 ---
 
-## 8.14 Line Endings and `.gitattributes`
+### Chapter 29: Submodules
 
-Different operating systems use different line endings:
-- **Unix/Linux/macOS:** `\n` (LF)
-- **Windows:** `\r\n` (CRLF)
+#### 29.1 The Problem
 
-This causes annoying diffs and the warning `LF will be replaced by CRLF`.
+Sometimes project A needs to include project B, and both are independent Git repositories with their own histories - you want to embed B inside A without merging them into one repository. Classic cases: a shared component library used by several apps, a vendored external tool, or a documentation theme. Git's feature for this is the **submodule**: a repository embedded inside another repository, pinned to one exact commit.
 
-### The `.gitattributes` solution
+#### 29.2 Adding a Submodule
 
-Create a `.gitattributes` file in your repo root:
+```bash
+git submodule add git@github.com:yourname/shared-lib.git lib/shared    # embed shared-lib's repository at the path lib/shared
+```
+
+**Anatomy:** `git submodule` - the subcommand family; `add` - register a new embedded repository; the URL - where to clone it from; `lib/shared` - the path inside *this* repository where it will live (optional; defaults to the repo name).
+
+Two changes appear, both of which must be committed:
+
+1. `.gitmodules` - a new tracked file recording the mapping. Its content, decoded:
 
 ```text
-* text=auto eol=lf
-*.bat text eol=crlf
-*.sh text eol=lf
-*.png binary
-*.jpg binary
+[submodule "lib/shared"]              # the section: one embedded repository
+    path = lib/shared                 # where it lives inside THIS repository
+    url = git@github.com:yourname/shared-lib.git    # where a fresh clone should fetch it from
 ```
 
-Reading:
-- `* text=auto eol=lf` — for all text files, normalise to LF in the repo (regardless of OS).
-- `*.bat text eol=crlf` — Windows batch files use CRLF.
-- `*.png binary` — treat as binary, don't touch line endings.
+2. A staged entry `lib/shared` that is not a normal file but a **gitlink**: the recording of "this path points at that repository, pinned to this exact commit." Commit both, and push. Note what the parent repository does *not* contain: the submodule's files or history - only the *pointer* (this is why submodules stay lightweight, and also the root of their confusion, next section).
 
-Commit this file once; everyone on the team gets consistent line endings automatically.
+#### 29.3 Cloning a Repository That Has Submodules
+
+A plain clone fetches the parent but leaves the submodule paths *empty* - the classic "why is this folder empty" surprise. Two equivalent fixes:
+
+```bash
+git clone --recurse-submodules git@github.com:yourname/project-a.git    # clone AND fetch submodules, one command
+# or, inside an existing clone:
+git submodule update --init --recursive    # initialize (register paths from .gitmodules) and fetch each pinned commit; --recursive handles submodules-inside-submodules
+```
+
+#### 29.4 Living With Submodules
+
+Enter `lib/shared` and it behaves as the full repository it is: its own branches, commits, history (you can even check its `.git`). Two behaviors define daily life:
+
+**Working inside it:** changes committed inside the submodule affect only the submodule. The parent still pins the *old* commit until you re-pin:
+
+```bash
+cd lib/shared && git switch main && git pull    # bring the submodule up to date (inside the submodule)
+cd ../.. && git add lib/shared && git commit -m "chore: bump shared-lib submodule"    # re-pin it in the PARENT: normal add/commit of the path records the new pinned commit
+```
+
+**The detour warning:** `cd lib/shared; git status` will often say `HEAD detached at <hash>` (Chapter 21.6). This is normal: the parent pinned a *commit*, not a branch, so the submodule checks out that commit directly. Detached-and-inspecting is safe; if you want to *develop* in the submodule, first `git switch main` (or a work branch) inside it.
+
+#### 29.5 When NOT to Use Submodules
+
+Honest consensus: submodules are Git's most-hated feature, and the feeling is earned - empty folders after cloning, detached HEADs, teammates forgetting `--init`, updates that need two repositories' worth of ceremony. Reach for alternatives first: **package managers** (npm, pip, Maven, Cargo) when the dependency can be a versioned package - which is *most* of the time; **one big repository** (a "monorepo") when the parts always evolve together and share tooling; **`git subtree`** when you want the vendor's files *merged into* your tree with their history preserved. Submodules earn their keep in a narrow zone: independent histories, exact-commit pinning, sparse inclusion. If you find yourself in that zone, you now know the machinery.
 
 ---
 
-## 8.15 Pushing Rewritten History Safely
+### Chapter 30: Inside the .git Directory
 
-After a `rebase`, `commit --amend`, or interactive rebase, your local branch has different commit hashes than the remote. A normal `git push` is rejected:
+The entire guide has whispered it; this chapter says it plainly and proves it with your own eyes: **everything Git knows about your repository lives in one hidden folder.** Demystifying it is the difference between operating Git from memory and *understanding* it - and understanding it is what Chapter 26's undo wizardry, Chapter 19's rebase warnings, and every future error message are actually about.
+
+#### 30.1 The Tour
+
+Run `ls .git` inside `my-first-repo` and meet the residents, each with one job:
 
 ```text
-! [rejected]    feature/x -> feature/x (non-fast-forward)
+HEAD         config       hooks/       info/        objects/     refs/
+description  index        logs/
 ```
 
-To push the rewritten history:
+| Item | What it is |
+| --- | --- |
+| `HEAD` | one line: where "here" is (usually: which branch) |
+| `config` | this repository's local settings (the `--local` level of Chapter 9) |
+| `description` | unused placeholder for server software |
+| `hooks/` | Chapter 28's hook scripts live here |
+| `index` | the staging area, as an actual binary file - "the index" is a literal file |
+| `info/` | rarely used extras (global excludes patterns) |
+| `objects/` | THE database: every blob, tree, and commit this repository has ever committed |
+| `refs/` | pointers: `refs/heads/*` are branches, `refs/tags/*` are tags |
+| `logs/` | the reflog from Chapter 26.7, stored as append-only files |
+| (occasional) `MERGE_HEAD`, `ORIG_HEAD`, `COMMIT_EDITMSG` | scratch state during operations: the merge in progress, the pre-rebase position, the last editor message |
+
+#### 30.2 HEAD, Opened
 
 ```bash
-git push --force-with-lease
+cat .git/HEAD    # print the file (cat = concatenate/print, Chapter 10)
 ```
 
-**`--force-with-lease`** is the safe version of `--force`. It only force-pushes if nobody else has pushed commits you don't have. If someone did push, it refuses — protecting you from overwriting their work.
+Output:
 
-**Avoid plain `git push --force`.** It overwrites unconditionally and can destroy teammates' work. Always prefer `--force-with-lease`.
+```text
+ref: refs/heads/main
+```
 
----
+One line, decoded: HEAD is a *symbolic reference* - instead of naming a commit directly, it names another pointer: "the branch file at `refs/heads/main`." That indirection is what "being on a branch" means. Switch branches (`git switch`), `cat` it again, and the line changes. Check out a tag or commit directly and the file *stops being symbolic* - it holds a raw commit hash. That state is Chapter 21.6's "detached HEAD," now with its mechanical explanation: `cat .git/HEAD` says so, and so does `git status`.
 
-## 8.16 Your Turn
-
-1. In your `git-practice` repo, create a `feature/x` branch. Make 3 commits with deliberately bad messages (`fix`, `update`, `stuff`). Run `git rebase -i HEAD~3` and squash them into one with a clean message.
-
-2. Tag the current commit as `v1.0` (annotated). Push the tag to GitHub. Verify it appears in the **Tags** tab on github.com.
-
-3. Create a GitHub Release for `v1.0` using `gh release create`.
-
-4. Pick a file in your repo. Run `git blame` on it. Identify which commit last touched line 1.
-
-5. Set up `git bisect`: introduce a "bug" (e.g. change a string to "BROKEN") in commit 5 of 10. Use bisect to find which commit introduced the change.
-
-6. Configure the alias `git lg` and use it. Configure `git co`, `git ci`, `git st`.
-
-7. Add a pre-commit hook that runs `git diff --check` (catches trailing whitespace). Test it by trying to commit a file with trailing whitespace — the hook should block the commit.
-
-8. Add a `.gitattributes` file declaring `*.md text eol=lf`. Commit it.
-
-9. Find an old commit of yours that you'd like to "improve". Use `git rebase -i` to reword its message. Force-push with `--force-with-lease`.
-
-If you've done all 9, you're now an advanced Git user. The next chapter takes you into GitHub Actions and CI/CD — automating the boring stuff.
-
-**Next up: Chapter 9 — GitHub Actions: Automation for Everyone.**
-
----
----
-
-
-# Chapter 9 — GitHub Actions: Automation for Everyone
-
-> **Goal of this chapter:** Automate everything. Run tests on every push, build artifacts, deploy to production, schedule cron jobs, and more — all with GitHub Actions, GitHub's built-in CI/CD platform.
-
-**GitHub Actions** is a CI/CD platform built into GitHub. You write workflows in YAML files; GitHub runs them on its servers (or yours) when events happen (push, PR, schedule, manual trigger). It's free for public repos (with limits for private).
-
----
-
-## 9.1 What Is CI/CD?
-
-- **CI (Continuous Integration):** Every push automatically runs tests. Bugs are caught within minutes, not weeks.
-- **CD (Continuous Deployment / Delivery):** Every successful CI run can be deployed to staging or production automatically.
-
-Without CI/CD:
-- Developer commits broken code → merges to main → bug reaches production → customer reports → days of debugging.
-
-With CI/CD:
-- Developer commits broken code → CI runs tests → tests fail → push rejected/PR blocked → developer fixes immediately.
-
----
-
-## 9.2 Your First Workflow, Line by Line
-
-Workflows live in `.github/workflows/`. Let's create one that runs on every push and prints "Hello, World!".
-
-### Step 1: Create the file
+#### 30.3 Branches, Opened
 
 ```bash
-mkdir -p .github/workflows
+ls .git/refs/heads/     # list the branch files
+cat .git/refs/heads/main    # print the content of the branch named main
 ```
 
-Create `.github/workflows/hello.yml` with this content:
+Output:
 
-```yaml
-name: Hello World
-
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
-jobs:
-  say-hello:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Print greeting
-        run: echo "Hello, World! This is my first GitHub Action."
+```text
+9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b
 ```
 
-### Step 2: Commit and push
+That is the *entire content* of a branch: one commit ID, 41 bytes. Chapter 7's "branch is just a pointer" was literal, and here is the pointer on disk. Now prove the causality chain: `git branch experiment` and `ls .git/refs/heads/` again - a new file `experiment` appeared; `git branch -d experiment` and it is gone. `git commit` runs, and the `main` file's content changes to the new commit's ID. Tada: all of branching was file writes all along.
+
+#### 30.4 The Database, Opened
 
 ```bash
-git add .github/workflows/hello.yml
-git commit -m "Add hello-world GitHub Actions workflow"
-git push
+ls .git/objects/        # see the two-character directories...
+ls .git/objects/9a/     # ...inside one live the objects whose ID starts with 9a
 ```
 
-### Step 3: Watch it run
-
-On github.com → **Actions** tab. You'll see a run starting. Click into it. After ~30 seconds, it should be green ✅.
-
-### Line-by-line explanation
-
-```yaml
-name: Hello World
-```
-The workflow's display name. Shows up in the Actions UI.
-
-```yaml
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-```
-**Triggers.** This workflow runs on push to `main` and on PRs targeting `main`.
-
-```yaml
-jobs:
-  say-hello:
-```
-A workflow has one or more **jobs**. Each job runs in parallel by default. This one is named `say-hello`.
-
-```yaml
-    runs-on: ubuntu-latest
-```
-The runner: a GitHub-hosted Ubuntu VM. Other options: `ubuntu-latest`, `windows-latest`, `macos-latest`, or self-hosted runners.
-
-```yaml
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-```
-**Steps** run sequentially within a job. The first uses `actions/checkout@v4` — a pre-built action that clones your repo onto the runner. Without this, your repo isn't on the runner.
-
-```yaml
-      - name: Print greeting
-        run: echo "Hello, World! This is my first GitHub Action."
-```
-The `run` directive executes a shell command. You can run any shell command here: `npm test`, `make`, `python script.py`, etc.
-
----
-
-## 9.3 Secrets: Storing Passwords Safely
-
-Workflows often need credentials: API tokens, deploy keys, database passwords. **Never put them in your code or YAML.** Store them as GitHub **secrets**.
-
-### Adding a secret
-
-1. Repo → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**.
-2. **Name:** `API_TOKEN`.
-3. **Secret:** the actual value.
-4. **Add secret**.
-
-Or via CLI:
+Loose objects are stored one file per object, filed under the first two characters of their ID (efficiency: millions of files across 256 directories instead of one giant directory). Now meet your own commits as objects, with plumbing commands (Git's low-level vocabulary; the everyday commands you know are "porcelain"):
 
 ```bash
-gh secret set API_TOKEN --body "your-secret-value-here"
+git cat-file -p HEAD     # -p = pretty-print the object HEAD points at
 ```
 
-### Using a secret in a workflow
+Output:
+
+```text
+tree 5d6e7f8...
+parent 7c9e4f2...
+author Your Real Name <your_email@example.com> 1760000000 +0200
+committer Your Real Name <your_email@example.com> 1760000000 +0200
+
+Add a second line to the greeting
+```
+
+**Decoded, line by line - this is Chapter 7.4 as a real object in your hands:** `tree 5d6e7f8...` - the snapshot this commit points to (the directory listing); `parent 7c9e4f2...` - the previous commit (absent on the very first commit: your root-commit from Chapter 12 had no parent line); `author`/`committer` - who and when, from your Chapter 9 identity, with a Unix timestamp; then the message, verbatim. Follow the tree: `git cat-file -p 5d6e7f8` prints the directory listing (filenames pointing to blob IDs and subtrees); follow a blob: `git cat-file -p <blob-id>` prints the file content itself. The chain commit -> tree -> blob from Idea Four is not a diagram anymore; it is three commands you just ran. (One more plumbing gem: `git hash-object hello.txt` prints what the ID of its current content *would be* - the identity mathematics of Idea Three, executed live.)
+
+#### 30.5 Why This Tour Matters
+
+Three payoffs, compounding forever. First, **fear reduction**: corruption and mystery shrink when the wizard is exposed as a filing cabinet (HEAD is a file; branches are files; history is a database of compressed objects). Second, **error literacy**: "refusing to update ref with old packed ref," "unable to create index.lock," "bad object" - future error messages describe *these specific things*, and Chapter 37 will read them to you fluently. Third, **confidence with danger**: now you know what `reset` moves (the branch file's content), what rebase creates (new objects; the old ones linger in `objects/` until garbage collection), and why the reflog (the `logs/` directory!) can find "lost" commits: they were never deleted from the database, only unreferenced. Git has been honest the whole time; now you have read its diary.
+
+## Part G: Automation with GitHub Actions
+
+Everything so far has been *you* operating Git. Part G teaches you to make *computers* operate it: running tests when you push, building on every pull request, and deploying your project automatically when main changes. This is CI/CD - the automation layer of modern software - and GitHub Actions is the tool that makes it three YAML files and zero servers.
+
+### Chapter 31: GitHub Actions from Zero
+
+#### 31.1 What CI/CD Means, Word by Word
+
+- **CI - Continuous Integration:** every push (and every PR) triggers an automatic *integration check*: your code is fetched onto a fresh machine, where it is built and tested from scratch. The word "continuous" means *on every change*, not "eventually." The point: the bug you just introduced is reported in minutes, on a clean machine, not in three weeks on a teammate's laptop.
+- **CD - Continuous Delivery:** after the checks pass, a *release artifact* (a build ready to ship) is produced automatically.
+- **CD - Continuous Deployment:** the artifact is *deployed to real users* automatically - merge to main, and the site updates itself.
+
+The problem this stack solves is the oldest one in teamwork: "works on my machine" (the bug class that appears only on machines that differ from yours), and its cousin "we tested it manually once and prayed." CI replaces prayer with a machine that re-verifies everything, identically, every time.
+
+#### 31.2 What GitHub Actions Is
+
+GitHub Actions is GitHub's built-in automation platform: when repository *events* happen (push, PR, schedule...), GitHub *rents you a computer* (a fresh virtual machine, called a **runner**), and on it executes the steps described in a file you committed to the repository. For public repositories this is free; private repositories include a monthly allowance of free minutes (GitHub bills usage beyond that - a meter you will not approach at this guide's scale).
+
+#### 31.3 YAML in Three Minutes
+
+Workflows are written in **YAML** (a human-readable configuration format, pronounced "YAM-el"), so here is the entire grammar you need, annotated:
 
 ```yaml
-name: Use Secret
+name: My workflow          # a key "name" with the value "My workflow"  (key: value, colon + space)
+                            # a comment: everything after the # is ignored
+
+jobs:                      # a key whose value is a LIST of things (plural key = list follows)
+  - first-item             # list items start with "- " (hyphen + space), each on its own line
+  - second-item            # each hyphen is a new list item
+
+setup:                     # keys can have nested values by INDENTATION (2 spaces, never tabs)
+  key-inside: value        # a key nested one level under "setup"
+```
+
+The one rule with no exceptions: **indentation carries meaning**, so mis-aligned spaces are the number-one workflow error. If a file ever fails mysteriously, check your indentation first.
+
+#### 31.4 Where Workflows Live
+
+Workflows live in the directory `.github/workflows/` at your repository root, one file per workflow, named anything ending `.yml`. Being ordinary repository files, they are versioned, reviewed via PRs, and upgraded with the code they serve. This is Actions' quiet genius: your automation is code, in your repository, exactly like everything else in this guide.
+
+#### 31.5 Your First Workflow, Then Every Line of It
+
+Create `.github/workflows/hello.yml` in `my-first-repo` with exactly this content:
+
+```yaml
+name: My first workflow
 
 on: push
 
 jobs:
-  use-secret:
+  say-hello:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Use the secret
-        env:
-          API_TOKEN: ${{ secrets.API_TOKEN }}
-        run: |
-          echo "The token starts with: ${API_TOKEN:0:4}..."
-          curl -H "Authorization: Bearer $API_TOKEN" https://api.example.com/data
+      - name: Greet the world
+        run: echo "Hello from a GitHub runner!"
 ```
 
-The `${{ secrets.API_TOKEN }}` expression injects the secret into the env var. Logs show `***` instead of the value — secrets are masked in output.
+Commit and push it:
 
-### Secret scopes
+```bash
+git add .github/workflows/hello.yml
+git commit -m "ci: add first workflow"
+git push
+```
 
-- **Repository secrets:** only this repo.
-- **Environment secrets:** tied to a deployment environment (`staging`, `production`).
-- **Organization secrets:** shared across repos in an org.
+Then, on github.com, open your repository and click the **Actions** tab. Watch your workflow appear, click it, click the job `say-hello`, click the step `Greet the world`, and watch a machine you do not own print your greeting. Now the anatomy, line by line - this small file contains every structural concept in the entire platform:
+
+- `name: My first workflow` - the display name in the Actions tab (cosmetic).
+- `on: push` - **when to run**: on every push, of any branch. The `on:` key accepts events, branches filters, schedules...
+- `jobs:` - the container of **jobs**. A workflow has one or more jobs, which *by default run in parallel*.
+- `say-hello:` - a **job ID** you invent (no spaces; hyphens fine). Displayed as the job's name.
+- `runs-on: ubuntu-latest` - **which machine to rent**: GitHub's newest Ubuntu runner (also `windows-latest`, `macos-latest`). This single line is the "server" you are not buying.
+- `steps:` - the ordered list of the job's **steps**, executed top to bottom.
+- `- name: Greet the world` - a new list item; a human label for the step (shown as a collapsible section in the UI).
+- `run: echo "Hello!"` - the actual command to execute in the runner's shell. Steps come in exactly two kinds: `run:` (run this shell command) or `uses:` (run this pre-packaged *Action*, next section).
+
+#### 31.6 The `uses:` Keyword: Pre-Packaged Power
+
+`uses:` loads a published, reusable step. The one you will type most in your life:
+
+```yaml
+      - uses: actions/checkout@v4    # fetch YOUR repository's code onto the runner
+```
+
+**Decoded:** `actions/checkout` is the action's name (`actions` = GitHub's official account, `checkout` = the action that clones your repo onto the runner); `@v4` pins the major version to use. The deep reason it exists: your runner is a *stranger's blank machine* - it does not contain your code until checkout fetches it. That blankness is CI's superpower (a fresh machine on every run is what makes results trustworthy) and checkout is the bridge across it.
+
+#### 31.7 The Vocabulary, Assembled
+
+| Word | Meaning |
+| --- | --- |
+| Workflow | one `.yml` file: a trigger plus jobs |
+| Event | what fires a workflow (`on:`): push, pull_request, schedule, manual |
+| Runner | the fresh virtual machine a job runs on |
+| Job | one parallelizable unit of work on one runner |
+| Step | one item in a job's list: `run` a command or `uses` an action |
+| Action | a pre-packaged reusable step (`uses: owner/action@version`) |
+
+#### 31.8 The Badge (Proof of Health, Publicly)
+
+At the top of the repository's Actions tab, each workflow offers a **status badge** - a live image URL that reads passing/failing. Embedding it in a README (the professional handshake you have seen a thousand times):
+
+```markdown
+![CI](https://github.com/yourname/my-first-repo/actions/workflows/hello.yml/badge.svg)
+```
+
+**Decoded:** `![CI](URL)` is Markdown's image syntax (alt text `CI`, then the image URL); the URL points at your repository's badge endpoint, which GitHub renders as a green "passing" or red "failing" badge, live. Every serious open source project wears these at the top of its README; by Part H you will too.
+
+#### 31.9 The Events You Will Actually Trigger On
+
+```yaml
+on: push                                  # every push, any branch
+on: [push, pull_request]                  # a LIST: pushes AND pull requests (PRs get their own run)
+on:
+  push:
+    branches: [main]                      # only pushes TO main
+on:
+  pull_request:
+    branches: [main]                      # only PRs TARGETING main
+on: workflow_dispatch                      # a manual "Run workflow" button appears in the Actions tab
+on:
+  schedule:
+    - cron: "0 3 * * 1"                    # weekly: minute hour day-of-month month day-of-week (this: Mondays 03:00 UTC)
+```
+
+The push-plus-pull_request combo is the CI standard: your feature branch gets tested as you work, and the PR gets its own authoritative record of the exact code being proposed for merge.
 
 ---
 
-## 9.4 More Workflow Patterns
+### Chapter 32: Building a Real CI Pipeline
 
-### Pattern 1: Run tests for a Node.js project
+#### 32.1 The Goal
+
+A real pipeline for a JavaScript project: on every push and PR, install dependencies, run the linter, run the tests, and verify a production build succeeds - on a clean machine, on two Node.js versions, uploading the build as an artifact. Every line below is one you have either already met or will meet now, decoded.
+
+Create `.github/workflows/ci.yml`:
 
 ```yaml
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+  pull_request:
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        node-version: [18, 20, 22]
+        node-version: [20, 22]
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out the code
+        uses: actions/checkout@v4
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm run lint
-      - run: npm test
-      - run: npm run build
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+  package:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Build production bundle
+        run: npm ci && npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-build
+          path: dist/
 ```
 
-**`matrix`** runs the job multiple times — once per Node version. If any fails, the workflow fails.
+#### 32.2 Every New Line, Decoded
 
-### Pattern 2: Deploy to GitHub Pages
+- `on: push: branches: [main]` with `pull_request:` bare - run on pushes *to main only*, plus *every* PR regardless of target-branch (the standard CI posture: feature branches get checked via their PRs, main gets checked on every direct push).
+- `strategy: matrix: node-version: [20, 22]` - a **matrix**: the `test` job runs once *per value*, i.e., twice - once on Node 20, once on Node 22. Version drift is its own bug class ("works on Node 22, dies on 20"); the matrix catches it per-push.
+- `uses: actions/setup-node@v4` - installs Node.js on the runner (the runner ships with many tools, but pinning versions is CI hygiene: your laptop, the runner, and production should all agree).
+- `with:` - the *inputs* block for an action; every action accepts its own set of inputs.
+- `node-version: ${{ matrix.node-version }}` - the `{{ }}` is Actions' expression syntax (variable substitution); `matrix.node-version` reads the current matrix cell's value. Each of the two parallel jobs inserts its own number here.
+- `cache: npm` - save `~/.npm`'s download cache between runs. Repeat runs skip dependency downloads; the cache is stored keyed to your lockfile.
+- `npm ci` - "clean install": installs *exactly* what `package-lock.json` records, deleting `node_modules` first, and *failing* if lockfile and manifest disagree. In CI it is the correct command where `npm install` ("install something reasonable") is the wrong one - CI is about reproducibility, not convenience.
+- `run: npm run lint` / `npm test` / `npm run build` - the project's own scripts (from `package.json`'s `scripts` block); CI just runs what the project defines. The lesson generalizes: a good pipeline is thin - it runs the commands the project already owns.
+- `needs: test` - **job dependency**: `package` waits for `test` to succeed on *all* matrix cells before starting. Without `needs:`, jobs run in parallel; with it, you draw the DAG.
+- `uses: actions/upload-artifact@v4` with `name:` and `path: dist/` - after the build, upload the `dist/` folder as a downloadable **artifact**: a zip attached to the run's page in the Actions tab, retained for a default of 90 days. Artifacts are how CI output gets into hands (including yours, debugging at 2 a.m.).
+
+#### 32.3 Where Results Live
+
+Every run appears in the **Actions** tab: a list entry per event, colored green (success), red (failure), or yellow (running), each expandable to its jobs, each to its steps, each to its raw logs. On **pull requests**, the run's verdict appears *inside the PR* under the Checks tab - which is the professional tie-in: repository Settings -> Branches -> Branch protection for `main` can require "status checks" to pass before merging is even possible. That is the closed loop: tests fail, PR cannot merge, main stays green - forever (Chapter 23.2's rule 1, now enforced by machinery instead of discipline).
+
+One debugging reflex for your first failures: read the failing step's log from the top - the first `error` in the wall of text is the real one; the lines below it are aftershocks. And remember the YAML reflex from 31.3: malformed indentation fails before your code even runs.
+
+---
+
+### Chapter 33: Continuous Deployment
+
+#### 33.1 The Idea
+
+CI verifies your code; **CD ships it**: merge to main, and the site is rebuilt and re-published with no human hands. This chapter deploys to **GitHub Pages** (free static hosting, Chapter 25.6) with the modern Actions-based flow, then sketches deploying to a real server.
+
+#### 33.2 The Pages Deployment Workflow
+
+Create `.github/workflows/deploy.yml`:
 
 ```yaml
-name: Deploy to Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm ci
-      - run: npm run build
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment: github-pages
-    steps:
-      - uses: actions/deploy-pages@v4
-```
-
-After this runs, your site is live at `https://yourname.github.io/repo-name/`.
-
-### Pattern 3: Scheduled job (cron)
-
-```yaml
-name: Nightly Cleanup
-
-on:
-  schedule:
-    - cron: '0 2 * * *'   # every day at 02:00 UTC
-
-jobs:
-  cleanup:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: ./scripts/cleanup.sh
-```
-
-Cron syntax: `minute hour day-of-month month day-of-week`. The `'0 2 * * *'` means minute=0, hour=2, every day, every month, every weekday.
-
-### Pattern 4: Manual trigger
-
-```yaml
-name: Manual Deploy
-
-on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Target environment'
-        required: true
-        default: 'staging'
-        type: choice
-        options:
-          - staging
-          - production
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload site content
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
       - name: Deploy
-        run: ./deploy.sh ${{ github.event.inputs.environment }}
+        id: deployment
+        uses: actions/deploy-pages@v4
 ```
 
-On github.com → **Actions** → choose workflow → **Run workflow** button appears.
+#### 33.3 Every Line, Decoded
 
-### Pattern 5: Cache dependencies
+- `on: push: branches: [main]` + `workflow_dispatch:` - deploy when main changes, plus a manual button for re-deploys on demand. Deploying only from main is deliberate: main is the only branch people trust (Chapter 23), and deployment is the maximum-trust action.
+- `permissions:` - **least-privilege, per-workflow tokens**. By default a workflow's token is broad; this block shrinks it to exactly what deploying needs: `contents: read` (read the code), `pages: write` (publish to Pages), `id-token: write` (prove this workflow's identity to the Pages service - the modern OIDC authentication, no stored passwords at all).
+- `concurrency: group: pages` + `cancel-in-progress: true` - serialize deploys: a second deploy while one runs is queued (or the older one cancelled). Deploys racing each other produces last-write-wins chaos; this makes them orderly.
+- `environment:` - GitHub's environments feature: this job targets the protected `github-pages` environment, and `url:` publishes the final link into the run's UI. (On serious projects, environments gate deploys: `production` can require manual approvals.)
+- `actions/configure-pages@v4` - prepare the Pages service for this repository.
+- `actions/upload-pages-artifact@v3` with `path: .` - bundle the site (here: the repository *is* the site, so the path is the whole folder; a built project would say `path: dist/`, combining with Chapter 32's build).
+- `id: deployment` + `actions/deploy-pages@v4` - the final act: publish. The `id:` gives the step a name other lines can reference - which `url: ${{ steps.deployment.outputs.page_url }}` above does exactly: read the URL this step outputs, and display it.
+
+#### 33.4 Turning It On
+
+Settings -> Pages -> under Build and deployment, set **Source: GitHub Actions**. (The legacy "deploy from branch" mode is the Chapter 25.6 click-path; Actions source is the modern, controllable one.) Push to main once more, watch the Actions tab, and open the URL the run prints: `https://yourname.github.io/my-first-repo/` - your repository, live on the internet, re-published by machinery on every push to main.
+
+#### 33.5 Deploying to a Real Server Instead
+
+For a virtual private server or any machine with SSH access, the same skeleton with different final steps: connect with SSH and run the deploy commands there.
 
 ```yaml
-      - uses: actions/setup-node@v4
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1        # a popular community action that runs commands on your server via SSH
+        with:
+          host: ${{ secrets.SERVER_HOST }}    # the server's address, stored as a secret
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}   # the private key, stored as a secret
+          script: |                           # the pipe makes a MULTI-LINE value: the commands to run ON the server
+            cd /var/www/app
+            git pull
+            npm ci --omit=dev
+            systemctl restart app
+```
+
+The single new concept is **secrets**: repository Settings -> Secrets and variables -> Actions -> New repository secret. A secret is a named value GitHub encrypts and exposes *only* to workflows as `${{ secrets.NAME }}` - never printed in logs, never visible after saving. The deployment keys to your server have no business in a repository file (Chapter 15's `.gitignore` protects files from *accidents*; secrets protect values from *existing in the repo at all*). Between this pattern and the OIDC token of 33.3 lies the entire modern philosophy: **credentials belong in secret stores, never in repositories.**
+
+#### 33.6 The CD Pyramid You Just Climbed
+
+Level 1: publish on merge to main (this chapter). Level 2: environments with approvals for production. Level 3: deploy on *tags* only (`on: push: tags: ["v*"]`), so releases - Chapter 21's semantic monuments - trigger shipping. All three are the same skeleton you now own, with different triggers and destinations.
+
+## Part H: Mastery and the Real World
+
+Part H is where everything you have learned becomes one continuous professional performance: a real application, planned in issues, built in branches, merged through pull requests, tested by automation, tagged as a release, and deployed to a live URL. Then the surrounding skills: team workflows, best practices, troubleshooting, interview answers, and your roadmap.
+
+### Chapter 34: Capstone Project: Build and Ship a Real Application
+
+#### 34.1 Meet TaskFlow
+
+You will build **TaskFlow**, a real, working to-do application: vanilla HTML, CSS, and JavaScript (no frameworks, no dependencies, nothing to install), persisted in the browser's localStorage, deployed live on GitHub Pages. The application is deliberately simple so the *workflow* is the star: every professional Git habit from Parts C through G gets exercised exactly once, in order. Here is the full journey on one page:
+
+```text
+ 1. git init the project                          (Chapter 11)
+ 2. Build a minimal skeleton, commit atomically    (Chapters 12-13)
+ 3. Push it to a brand-new GitHub repository       (Chapter 22)
+ 4. Plan features as Issues                         (Chapter 25)
+ 5. Build each feature: branch -> commit -> PR     (Chapters 16, 23)
+ 6. Tag v1.0.0 and publish a GitHub Release        (Chapters 21, 25)
+ 7. Add a CI workflow that tests it                 (Chapters 31-32)
+ 8. Deploy it live with an Actions workflow         (Chapters 25, 33)
+```
+
+#### 34.2 Step 1 - Create the Project
+
+```bash
+mkdir ~/git-practice/taskflow    # create the project folder
+cd ~/git-practice/taskflow       # enter it
+git init -b main                 # initialize the repository, first branch named main (Chapter 11)
+```
+
+Now create the skeleton. Create `index.html` with this content - every line annotated:
+
+```html
+<!DOCTYPE html>                        <!-- line 1: "this document is HTML5" - the standard opening declaration -->
+<html lang="en">                       <!-- the root element; lang helps screen readers and search engines -->
+  <head>                               <!-- metadata: everything ABOUT the page, not visible in it -->
+    <meta charset="UTF-8" />           <!-- character encoding: enables any language's characters -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- make it behave on phones -->
+    <title>TaskFlow</title>            <!-- the text in the browser tab -->
+    <link rel="stylesheet" href="style.css" /> <!-- attach the stylesheet (Chapter 15's ignored-by-nothing file) -->
+    <script src="app.js" defer></script> <!-- attach the JavaScript; "defer" = run after HTML is fully parsed -->
+  </head>
+  <body>                               <!-- the visible page -->
+    <main class="container">           <!-- a semantic wrapper; the class hooks CSS -->
+      <h1>TaskFlow</h1>                <!-- the heading -->
+      <p class="subtitle">A to-do app, versioned with Git.</p>
+      <!-- the input row: a text field and a button, ready for the add-task feature -->
+      <form id="task-form">
+        <input id="task-input" type="text" placeholder="What needs doing?" required />
+        <button type="submit">Add</button>
+      </form>
+      <!-- the task list: currently empty; JavaScript will fill it -->
+      <ul id="task-list"></ul>
+      <p id="task-count"></p>          <!-- the counter line, filled by JavaScript later -->
+    </main>
+  </body>
+</html>
+```
+
+Create `style.css`:
+
+```css
+body {                                      /* the whole page */
+  font-family: system-ui, sans-serif;       /* the OS's native font: clean, zero bytes downloaded */
+  background: #f4f5f7;                     /* soft gray backdrop */
+  color: #1f2430;                          /* dark text: good contrast */
+  margin: 0;                               /* remove browser default margins */
+}
+.container { max-width: 520px; margin: 3rem auto; padding: 0 1rem; } /* centered column, 3rem above, safe on phones */
+h1 { margin-bottom: 0.25rem; }
+.subtitle { margin-top: 0; color: #6b7280; }
+#task-form { display: flex; gap: 0.5rem; margin: 1rem 0; } /* input and button side by side, small gap */
+#task-input { flex: 1; padding: 0.5rem; }  /* the input grows to fill the row */
+#task-list { list-style: none; padding: 0; } /* remove default bullet styling */
+#task-list li {                             /* each task row */
+  display: flex; align-items: center; gap: 0.5rem;  /* checkbox, text, delete button in a row */
+  background: #ffffff; padding: 0.6rem 0.8rem; margin-bottom: 0.5rem;
+  border-radius: 6px; border: 1px solid #e5e7eb;
+}
+#task-list li.done span { text-decoration: line-through; color: #9ca3af; } /* completed tasks: crossed out */
+#task-list li button { margin-left: auto; background: none; border: none; cursor: pointer; color: #ef4444; }
+```
+
+Create an empty placeholder `app.js` (a single comment line):
+
+```js
+// TaskFlow application logic arrives with the first feature branch.
+```
+
+Create `.gitignore` (Chapter 15's habit, from day one):
+
+```text
+.DS_Store        # macOS junk (Chapter 15's tour)
+Thumbs.db        # Windows junk
+.vscode/         # per-person editor state
+```
+
+#### 34.3 Step 2 - The Atomic First Commits
+
+Practice Chapter 13.6 deliberately: three logical units, three commits.
+
+```bash
+git add index.html style.css
+git commit -m "feat: add page skeleton and styling"
+git add app.js
+git commit -m "chore: add app.js placeholder"
+git add .gitignore
+git commit -m "chore: add gitignore"
+```
+
+And the badge that starts life immediately (Chapter 31.8): create `README.md` containing a title, a one-line description, and nothing else yet - we will grow it:
+
+```bash
+git add README.md
+git commit -m "docs: add readme"
+```
+
+#### 34.4 Step 3 - Publish to GitHub
+
+Create the repository on GitHub exactly as Chapter 22.2 taught (name `taskflow`, Public, no auto-files), then:
+
+```bash
+git remote add origin git@github.com:yourname/taskflow.git   # register the remote (Chapter 22.3)
+git push -u origin main                                       # first push; -u dance once, forever (Chapter 22.4)
+```
+
+(Or the one-command version, Chapter 25.10: `gh repo create taskflow --public --source=. --push`.)
+
+#### 34.5 Step 4 - Plan the Work as Issues
+
+Click Issues -> New issue, and file four - each a small, well-scoped unit (Chapter 25.1's rules):
+
+- Issue #1: "Add task creation" - submitting the form adds a task to the list.
+- Issue #2: "Mark tasks complete" - checkbox strikes through the task.
+- Issue #3: "Delete tasks" - per-task delete button.
+- Issue #4: "Persist tasks and show a live counter" - localStorage + remaining count.
+
+#### 34.6 Step 5 - Feature Cycle One: Add Task Creation (The Full Professional Loop, Once, Slowly)
+
+```bash
+git switch main && git pull      # ALWAYS start from the latest main (Chapter 23.3's liturgy)
+git switch -c feat/add-tasks     # branch named for the issue (Chapter 16 naming conventions)
+```
+
+Now write the real `app.js` - every line annotated:
+
+```js
+// TaskFlow application logic.
+
+const form = document.querySelector("#task-form");        // find the <form> element by its id; const = never reassigned
+const input = document.querySelector("#task-input");        // the text field
+const list = document.querySelector("#task-list");         // the <ul> that displays tasks
+const count = document.querySelector("#task-count");       // the counter line
+
+let tasks = [];                                           // the in-memory task list; "let" because its CONTENT changes
+                                                           // (tasks will persist to localStorage in issue #4)
+
+function render() {                                        // redraw the list from the data: the single source of truth
+  list.innerHTML = "";                                     // clear the current display...
+  for (const task of tasks) {                              // ...then rebuild it from the array...
+    const li = document.createElement("li");               // one <li> per task
+    const box = document.createElement("input");             // its checkbox...
+    box.type = "checkbox";                                 // ...is literally an input of type checkbox
+    box.checked = task.done;                              // reflect the data
+    const span = document.createElement("span");             // the task text...
+    span.textContent = task.text;                          // ...safely as TEXT (never innerHTML: user input!)
+    const del = document.createElement("button");           // the delete button
+    del.textContent = "x";                                 // a plain glyph; issues #2 and #3 wire these up
+    li.append(box, span, del);                              // assemble the row
+    list.append(li);                                       // add it to the list
+  }
+  const left = tasks.filter((t) => !t.done).length;         // count NOT-done items (filter keeps where condition true)
+  count.textContent = left + " of " + tasks.length + " remaining";   // the live counter (issue #4's visible half)
+}
+
+form.addEventListener("submit", (event) => {               // when the form is submitted...
+  event.preventDefault();                                  // ...stop the browser's default full-page reload
+  const text = input.value.trim();                         // read and trim the input
+  if (!text) return;                                       // ignore empty submissions (belt: the input is also "required")
+  tasks.push({ text: text, done: false });                 // add a task OBJECT {text, done} to the data
+  input.value = "";                                        // clear the field for the next entry
+  render();                                                // redraw
+});
+```
+
+Commit and publish the branch (Chapter 23.3, verbatim):
+
+```bash
+git add app.js
+git commit -m "feat: add task creation (closes #1)"    # the (closes #1) spell: merging auto-closes Issue #1
+git push -u origin feat/add-tasks
+```
+
+Open the pull request on GitHub (base `main` <- compare `feat/add-tasks`), with a description that follows the Chapter 23.3 template: **What** (submitting the form appends a task), **Why** (core feature, Issue #1), **How I tested** ("added three tasks locally; they appear; counter updates"). Self-review the Files-changed tab (yes, reviewing your own PR is a real habit), then **Squash and merge** (Chapter 23.5's modern default). Then the ritual (Chapter 23.6):
+
+```bash
+git switch main
+git pull
+git branch -d feat/add-tasks
+```
+
+Watch the PR page: Issue #1 auto-closed itself. That single sentence - *merged, and the issue closed itself* - is the professional loop closing with zero human bookkeeping.
+
+#### 34.7 Feature Cycles Two and Three (The Same Loop, Faster)
+
+**feat/complete-tasks** and **feat/delete-tasks** (Issues #2 and #3) follow the identical loop, so only the new code is shown. Both changes live inside `render()` - replace the middle of the loop with:
+
+```js
+    box.checked = task.done;                              // (unchanged) reflect the data...
+    box.addEventListener("change", () => {                // WHEN the checkbox is toggled...
+      task.done = box.checked;                            // ...update the DATA, not the pixels...
+      render();                                           // ...and let render() repaint from data
+    });                                                   // (data-first rendering: the habit scales forever)
+```
+
+Commit: `feat: toggle task completion (closes #2)`. And for deleting, after `del.textContent = "x";`:
+
+```js
+    del.addEventListener("click", () => {                 // WHEN the delete button is clicked...
+      tasks = tasks.filter((t) => t !== task);             // ...drop THIS task from the array (identity check: "t" is not "this one")
+      render();                                           // ...repaint
+    });
+```
+
+Commit: `feat: delete tasks (closes #3)`. Each on its own branch, its own PR, its own squash-merge. Note the accumulating evidence of good habits: main grows by one clean commit per feature, issues close themselves, and each PR was small enough to genuinely review.
+
+#### 34.8 Feature Cycle Four: Persistence (Issue #4)
+
+Persistence belongs to *every* mutation: save after add, toggle, and delete; load at startup. On branch `feat/persist`:
+
+```js
+let tasks = JSON.parse(localStorage.getItem("taskflow-tasks") || "[]");  // ON STARTUP: read the saved string; JSON.parse revives the array; "|| '[]'" = first-visit fallback: empty list, never a crash
+```
+
+And one helper called after every mutation:
+
+```js
+function save() {                                          // one job: serialize and persist the data
+  localStorage.setItem("taskflow-tasks", JSON.stringify(tasks));  // localStorage stores STRINGS; JSON.stringify turns the array into one
+}
+```
+
+Add `save();` after each `tasks.push(...)`, `task.done = ...`, and `tasks = tasks.filter(...)` line, commit as `feat: persist tasks and show live counter (closes #4)`, PR, merge. Close your browser entirely, reopen: your tasks survived. The application is feature-complete.
+
+#### 34.9 Step 6 - Tag and Release v1.0.0
+
+```bash
+git switch main && git pull    # stand on the finished product
+git tag -a v1.0.0 -m "TaskFlow 1.0.0: create, complete, delete, persist"   # the annotated monument (Chapter 21.2)
+git push origin v1.0.0         # tags travel only when explicitly pushed (Chapter 21.4)
+```
+
+On GitHub: Releases -> Draft a new release -> **Choose a tag** -> select `v1.0.0` -> auto-generate notes (Chapter 25.5) -> Publish. Your repository now has a public releases page.
+
+#### 34.10 Step 7 - CI: The Application Tests Itself
+
+Vanilla JavaScript with zero dependencies still deserves CI, and `node:test` (built into Node since version 18) makes it genuinely possible with zero installs. Create `tests/app.test.js` - every line annotated:
+
+```js
+const test = require("node:test");              // node:test = the built-in test framework (require = CommonJS import)
+const assert = require("node:assert");           // node:assert = the built-in assertion library
+const fs = require("node:fs");                   // node:fs = file system access (reading our own files)
+
+test("index.html exists and is an HTML5 document", () => {        // a named test: the smallest unit of proof
+  const html = fs.readFileSync("index.html", "utf8");            // read the file as text (utf8 = correct decoding)
+  assert.ok(html.includes("<!DOCTYPE html>"));                    // assert.ok FAILS THE TEST if the value is falsy
+  assert.ok(html.includes("task-form"));                          // the form the app depends on must exist
+});
+
+test("app.js contains the three core features by name", () => {
+  const js = fs.readFileSync("app.js", "utf8");
+  assert.ok(js.includes("render"));           // structure: rendering from data
+  assert.ok(js.includes("preventDefault"));   // behavior: form handling without page reload
+  assert.ok(js.includes("localStorage"));     // feature #4: persistence
+});
+
+test("style.css styles the task list", () => {
+  const css = fs.readFileSync("style.css", "utf8");
+  assert.ok(css.includes("#task-list"));     // the stylesheet targets the list
+});
+```
+
+And `.github/workflows/ci.yml`, which you can now read fluently (Chapter 31-32):
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:                # every push to main, and every PR
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4          # fetch the code onto the blank runner
+      - uses: actions/setup-node@v4        # install Node
         with:
           node-version: 20
-          cache: 'npm'
+      - run: node --test                    # Node's built-in test RUNNER: finds tests/*.test.js and runs them
+      - run: node --check app.js            # bonus: full syntax validation of app.js (exits non-zero on any parse error)
 ```
 
-Or for Python:
+Commit (`ci: add test workflow`), push to main, and watch the Actions tab run it green. Add the badge (Chapter 31.8) to `README.md`, commit, push - watch the badge appear, green, live.
 
-```yaml
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          cache: 'pip'
+#### 34.11 Step 8 - Deploy: The Live URL
+
+Add `.github/workflows/deploy.yml` - it is *literally* Chapter 33.2's file (upload path `.`, since the site is plain static files). Settings -> Pages -> Source: GitHub Actions. Push, watch the run, then visit:
+
+```text
+https://yourname.github.io/taskflow/
 ```
 
-Caching dependencies dramatically speeds up subsequent runs (from minutes to seconds).
+Your application is live on the internet, and every future merge to main redeploys it automatically.
 
----
+#### 34.12 Step 9 - Finish the README
 
-## 9.5 Workflow Syntax Cheat Sheet
+Grow the README into the Chapter 36.4 shape: title + badge, one-paragraph description, a screenshot, live demo link, and how to run it locally (clone, open `index.html`). Final commits, final push - and this time, deliberately, on a branch with a PR, because it is muscle memory now, not ceremony.
 
-| Key | Purpose |
-|---|---|
-| `name:` | Workflow display name |
-| `on:` | Triggers (push, pull_request, schedule, workflow_dispatch, etc.) |
-| `jobs:` | Defines jobs (each runs on its own runner) |
-| `runs-on:` | Runner OS (ubuntu-latest, windows-latest, macos-latest) |
-| `needs:` | Job dependencies (run after another job) |
-| `steps:` | List of steps in a job |
-| `uses:` | Run an action (pre-built or from a repo) |
-| `with:` | Inputs to an action |
-| `run:` | Run a shell command |
-| `env:` | Environment variables |
-| `if:` | Conditional execution |
-| `strategy.matrix:` | Run across multiple configs |
-| `permissions:` | Fine-grained token permissions |
-| `timeout-minutes:` | Kill job if it runs too long |
-| `continue-on-error:` | Don't fail workflow if this step fails |
+#### 34.13 What You Just Practiced
 
----
+| Skill | Where | Where it was taught |
+| --- | --- | --- |
+| init, atomic commits, conventional messages | Steps 1-2 | Chapters 11-13 |
+| remotes, first push | Step 3 | Chapter 22 |
+| issues as planning | Step 4 | Chapter 25 |
+| branch -> commit -> PR -> squash-merge -> cleanup | Steps 5-8 | Chapters 16, 23 |
+| closing issues via PR | Steps 5-8 | Chapter 23.3 |
+| annotated tags, GitHub Releases | Step 6 | Chapters 21, 25 |
+| CI with tests on every push/PR | Step 7 | Chapters 31-32 |
+| automated deployment | Step 8 | Chapter 33 |
 
-## 9.6 Keeping Your Project Secure
+One final exercise that doubles as an exam: **clone your own project on another machine** (`git clone git@github.com:yourname/taskflow.git`), and continue its development there - a new feature, through the full loop. If that works (it will), you have not just read this guide; you have *deployed* its skills across machines, which is the definition of having them.
 
-### Code owners
+### Chapter 35: Team Workflows
 
-A `CODEOWNERS` file in `.github/` or repo root specifies who reviews changes to which paths:
+You know every move; a **workflow** is the *choreography* a team agrees on: which branches exist, who merges what, and how code reaches production. There are three dominant choreographies in the industry, and choosing among them - or at least understanding the one your team uses - is a mark of seniority.
+
+#### 35.1 GitHub Flow: The One You Already Know
+
+You have been doing GitHub Flow since Chapter 23: `main` is always deployable; all work happens on short-lived branches; PRs review and merge it; deploys follow merges. That is the entire specification - six lines, no special branches, no ceremony.
+
+```text
+   main:  ---o---o---o---o---o---o--->      (every o = a reviewed, tested, deployable state)
+                 \     / \        /
+       branches:  o---o   o---o---o         (short-lived feature/fix branches, PR'd, squash-merged, deleted)
+```
+
+**Where it shines:** web applications and services, deployed continuously, small-to-huge teams (it is GitHub's own internal workflow, hence the name). **Where it strains:** software with formal versioned releases (mobile apps, installed software) needs more scaffolding - which is what Git Flow provides.
+
+#### 35.2 Git Flow: The Full Cathedral
+
+Git Flow (a 2010 convention by Vincent Driessen) formalizes releases with dedicated long-lived branches:
+
+| Branch | Purpose | Lives |
+| --- | --- | --- |
+| `main` (or `master`) | production only: every commit is a shipped release, tagged | forever |
+| `develop` | the integration line: where features accumulate toward the next release | forever |
+| `feature/*` | one unit of work, branched *from develop*, merged *into develop* | days |
+| `release/*` | stabilization of the upcoming version ("v1.2.0-rc1": no new features, bugfixes only), merged to both `develop` and `main` | days |
+| `hotfix/*` | urgent production fix, branched from `main`, merged into both `main` and `develop` | hours-days |
+
+```text
+ main:    ---o(v1.0)------o(v1.1)------------->    (tags on every release commit)
+              \            / \         /
+ develop:     o--o--o--o--o---o--o--o-->         (integration; version merges back down)
+               \    /          \    /
+ features:      o--o            o--o              (branched from, merged back to develop)
+```
+
+**Where it shines:** versioned, scheduled releases; multiple supported versions alive simultaneously. **Where it strains:** continuous web deployment (the `develop` detour adds latency to every change - and note the modern successor tooling is the `git-flow` command suite, while most web teams have simply moved on to the alternatives below).
+
+#### 35.3 Trunk-Based Development
+
+The high-velocity philosophy: everyone merges to `main` ("the trunk") *very* frequently - multiple times a day; branches live hours, not days. The enabler of such boldness: **feature flags** (runtime switches hiding unfinished code paths in production, so an incomplete feature ships dark and is enabled when ready) plus relentless CI on every push (Chapter 32 made you fluent in that half already).
+
+**Where it shines:** large organizations optimizing for integration speed (Google and Meta famously run variants of it). **What it demands:** the strongest automated test culture of the three - trunk-based with weak tests is just chaos with a name.
+
+#### 35.4 Choosing
+
+| Your situation | Reach for |
+| --- | --- |
+| Web app/service, deploy often, small-or-medium team | **GitHub Flow** (the default answer; also this guide's) |
+| Versioned releases, app stores, multiple supported versions | **Git Flow** |
+| Large org, mature test culture, integration speed is god | **Trunk-based** |
+
+For learning teams, GitHub Flow's simplicity wins: it exercises 100% of the skills from this guide and hides none of its mistakes behind ceremony.
+
+#### 35.5 Hardening GitHub Flow: Protected Branches and CODEOWNERS
+
+Two GitHub settings convert workflow *conventions* into workflow *guarantees*. Repository Settings -> Branches -> Add branch protection rule for `main`:
+
+- **Require a pull request before merging** - direct pushes to main are rejected; the PR is not optional bureaucracy, it is technically impossible to skip.
+- **Require approvals** (1 or 2) - a second human must have approved.
+- **Require status checks to pass** - the Chapter 32 CI run must be green; a red build blocks the merge button itself.
+- **Require linear history** - rejects merge commits, enforcing the squash-and-merge aesthetic.
+
+And `CODEOWNERS` - a file at repository root (`.github/CODEOWNERS`) mapping paths to the people whose *review is automatically requested*:
 
 ```text
 # .github/CODEOWNERS
-
-# Default owners
-*                       @you
-
-# Frontend team owns these
-/src/components/        @frontend-team
-
-# Backend team owns these
-/src/api/               @backend-team
-
-# Security-critical paths require both teams
-/src/api/auth/          @frontend-team @backend-team
+*                        @yourname                     # default: the repo owner reviews everything
+/docs/                   @tech-writers-team            # documentation changes need the writers' review
+/src/payments/            @payments-team @alice        # the payments code needs its owning team AND alice
+.github/workflows/        @devops-team                 # CI/CD changes get DevOps eyes automatically
 ```
 
-GitHub automatically requests review from the owners when a PR touches their paths.
-
-### Dependabot
-
-Automatically opens PRs when your dependencies have security vulnerabilities:
-
-1. Repo → **Settings** → **Code security and analysis** → **Dependabot alerts** → Enable.
-2. **Dependabot security updates** → Enable.
-
-Create `.github/dependabot.yml` to also get version-update PRs:
-
-```yaml
-version: 2
-updates:
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "monthly"
-```
+**Decoded, line by line:** the format is `<path pattern> <owners>`; `*` matches everything (the fallback rule); owners prefixed with `@` are GitHub accounts or teams; more specific (later) rules refine more general (earlier) ones. The effect: PRs that touch payments automatically add `@payments-team` as required reviewers. Code ownership that enforces itself is one of the cheapest quality systems a scaling team can install - and you can already read its whole configuration language, because it is four lines of pattern-matching you have seen twice before (`.gitignore` in Chapter 15, `.gitmodules` in Chapter 29).
 
 ---
 
-## 9.7 Releases and Changelogs
+### Chapter 36: Best Practices and Golden Rules
 
-Generate release notes automatically from PRs since the last release:
+#### 36.1 Daily Discipline
+
+**Pull before you start; push before you stop.** Begin every session with `git pull` (begin from everyone's latest), end every session with `git push` (never leave finished work marooned on one machine; the laptop that falls in the ocean takes unpushed commits with it - Chapter 22 made this a two-word habit).
+
+**Commit small, commit often, commit honestly.** Small atomic commits (Chapter 13.6) are not bureaucracy; they are what makes revert (Chapter 26.6), cherry-pick (Chapter 27.1), and bisect (Chapter 27.2) surgical instead of catastrophic. The professional test of a commit: "could I explain this one in a single subject line?" If not, split it.
+
+**Never sleep on uncommitted work.** The one loss Git cannot undo is the never-committed (Chapter 26.1's honest failure mode). A commit takes four seconds; make it.
+
+**Branch for anything that takes more than minutes.** Branches are free (Chapter 16.6); `main`'s cleanliness is expensive. The reflex "about to try something? `git switch -c` first" is the single highest-leverage habit in this entire guide.
+
+#### 36.2 The Unforgivable Sins
+
+**Never commit secrets.** API keys, tokens, `.env` files, private keys: a pushed secret is compromised *even if you delete the commit later* - clones, forks, and scrapers move fast. The protocol: ignore `.env` from commit zero (Chapter 15), use GitHub secrets for CI values (Chapter 33.5), and if a secret *did* escape: rotate/revoke it *first* (assume it is captured), then clean history (filter-repo) as a courtesy. **Never rewrite shared history.** Chapter 19.6's Golden Rule, restated as culture: rebase your private branches freely; merge or revert everything public. **Never force-push to main.** It is the rewrite-sin at maximum volume; branch protection (Chapter 35.5) exists to make it impossible.
+
+#### 36.3 Collaboration Craft
+
+**Small pull requests.** Review quality collapses somewhere around 400 changed lines; split rather than apologize. **Review the code, never the coder** (Chapter 23.4's phrasing discipline), and when *receiving* review, remember that a requested change is collaboration, not verdict. **Update your branch, don't force-push it, during review** - new commits show reviewers exactly what changed since their last look; a rewritten history invalidates their work. **Link issues and PRs** (`Closes #N`, Chapter 23.3) so the project's paper trail writes itself. And **write the README your future contributor deserves**: what it is, a screenshot or live link, install and run instructions, how to contribute - Chapter 34.12 built exactly this shape, once, slowly; reproducing it is now minutes.
+
+#### 36.4 The Ten Golden Rules
+
+1. **`main` is sacred.** Every commit on it is reviewed, tested, and deployable; all work arrives via PR. (Chapters 23, 35)
+2. **Commit early, commit often, commit atomically, message honestly.** (Chapter 13)
+3. **Pull before you push.** The rejected push is a race you can always win politely. (Chapters 22, 37)
+4. **Branch for experiments; delete branches without ceremony.** (Chapter 16)
+5. **Stage deliberately (`git add <file>`); let `git status` narrate.** The unread status output is where mistakes hide. (Chapter 12)
+6. **`.gitignore` from day one; secrets never in repositories, ever.** (Chapters 15, 36.2)
+7. **Revert on shared branches; reset only on your own.** (Chapter 26)
+8. **Rebase private work to keep history honest; merge shared work to keep history true.** (Chapter 19)
+9. **When lost: `git status`, then `git reflog`, then breathe.** Almost nothing is truly lost. (Chapters 26, 30)
+10. **Automate what you repeat: aliases for typing, hooks for checks, Actions for pipelines.** (Chapters 28, 31-33)
+
+Tape rule ten to your monitor if you keep only one: every chapter of Part G began as someone repeating rule ten's manual version until it hurt. Now - the encyclopedia of when things hurt anyway, and their cures.
+
+### Chapter 37: Troubleshooting Encyclopedia
+
+Errors are not failure; they are Git talking to you. Every entry below follows the same shape: the exact message, what it *actually* means, the fix with annotated commands, and the prevention. Read this chapter twice: once now, once the first time something below happens to you and your memory whispers "this was in the encyclopedia."
+
+#### 37.1 `fatal: not a git repository (or any of the parent directories): .git`
+
+**Meaning:** you ran a Git command in a folder that is not inside any repository - Git walked upward through parent folders looking for a `.git` directory (Chapter 11) and found none. **Fix:** `pwd` to see where you actually are, `cd` to your project folder, and retry; or `git init` if the project genuinely needs to be born. **Prevention:** the prompt habit - check that your shell is where you think it is; or a glance at `git status`, which cannot lie to you about repository-ness.
+
+#### 37.2 `Please tell me who you are` (fatal: unable to auto-detect email address)
+
+**Meaning:** your first-ever commit on a machine, before Chapter 9's identity configuration. Git refuses to author anonymous history. **Fix:**
 
 ```bash
-gh release create v1.1 --generate-notes
+git config --global user.name "Your Real Name"     # the identity, installed once (Chapter 9.2)
+git config --global user.email "your_email@example.com"
 ```
 
-GitHub scans merged PRs since the previous tag and generates a markdown changelog grouped by labels.
+**Prevention:** Chapter 9 exists precisely for this moment.
 
-You can customise the template at `.github/release.yml`:
+#### 37.3 `nothing to commit, working tree clean`
 
-```yaml
-changelog:
-  categories:
-    - title: 🎉 New Features
-      labels: [feature, enhancement]
-    - title: 🐛 Bug Fixes
-      labels: [bug, fix]
-    - title: 📚 Documentation
-      labels: [documentation]
-    - title: ⬆️ Dependencies
-      labels: [dependencies]
-    - title: Other Changes
-      labels: ["*"]
-```
+**Meaning:** not an error at all - your staging area and history agree perfectly (Chapter 12.5's phrase). Common in two confusing disguises: you forgot to `git add` your new edits, or you already committed and forgot. **Fix:** if you expected changes to be waiting, run `git add .` then `git status` again; and `git log -1` to see whether you in fact already committed it. **Prevention:** `git status` *before* `git commit`, always - it narrates reality.
 
----
+#### 37.4 `! [rejected] main -> main (fetch first)` (hint: Updates were rejected...)
 
-## 9.8 The GitHub CLI: GitHub From Your Terminal
-
-A recap of useful `gh` commands:
+**Meaning:** the remote has commits you do not have - someone (or you, on another machine, Chapter 34.13) pushed first. Git refuses your push because accepting it would orphan their work. This is not corruption; it is Git protecting your teammate. **Fix:**
 
 ```bash
-# Repos
-gh repo create <name> --public --source=. --push
-gh repo clone owner/repo
-gh repo view --web
-gh repo fork owner/repo --clone
-
-# Pull requests
-gh pr create --title "..." --body "..."
-gh pr list
-gh pr view 42
-gh pr checkout 42
-gh pr merge 42 --squash --delete-branch
-gh pr diff 42
-
-# Issues
-gh issue create --title "..." --body "..."
-gh issue list
-gh issue view 42
-gh issue close 42
-
-# Actions
-gh run list
-gh run view <run-id>
-gh run view <run-id> --log     # full logs
-gh run rerun <run-id>
-
-# Releases
-gh release create v1.0 --generate-notes
-gh release upload v1.0 ./dist/app.zip
-gh release download v1.0
-
-# Secrets
-gh secret set NAME --body "value"
-gh secret list
-
-# Gists
-gh gist create file.txt --public
-gh gist list
+git pull                     # fetch + merge their work into yours (or rebase, if pull.rebase is set)
+# (resolve any conflicts exactly as Chapter 18 taught)
+git push                     # now your work sits atop theirs; push succeeds
 ```
 
----
+**Prevention:** rule 3 - pull before you push, and push before you stop.
 
-## 9.9 Gists
+#### 37.5 `fatal: refusing to merge unrelated histories`
 
-A **gist** is a small Git repo on gist.github.com for sharing snippets.
+**Meaning:** two histories with *no common ancestor*: classically, you created a GitHub repository *with* a README/license (Chapter 22.2's warning about that checkbox), then connected a local repository with its own separate first commit. Git is asking: "am I really looking at two beginnings of one project?" **Fix**, when you are sure it is one project:
 
 ```bash
-# Create a gist from a file
-gh gist create snippet.py --public --desc "Quick Python snippet"
-
-# From stdin
-echo "print('hello')" | gh gist create - --public
-
-# List your gists
-gh gist list
-
-# View one
-gh gist view <gist-id>
-```
-
-Gists are full Git repos — you can `git clone` them, fork them, etc.
-
----
-
-## 9.10 Your Turn
-
-1. In your `pr-practice` repo, add a workflow at `.github/workflows/ci.yml` that runs `echo "Tests passed"` on every push. Verify on github.com that it runs and turns green.
-
-2. Add a `matrix` strategy to run on Node 18, 20, and 22 (even if you don't have a Node project, this proves the matrix works).
-
-3. Add a manual trigger (`workflow_dispatch`) with an input `environment` (staging or production). Verify the **Run workflow** button appears.
-
-4. Set a repository secret `MY_NAME` to your name. Modify the workflow to print `Hello, ${{ secrets.MY_NAME }}!` (use an `env:` block to inject it). Confirm the value shows as `***` in logs.
-
-5. Create a `CODEOWNERS` file that makes `@you` the owner of everything. Open a PR; GitHub should auto-request you as a reviewer.
-
-6. Tag the latest commit as `v1.0` (annotated), push the tag, then create a GitHub release using `gh release create v1.0 --generate-notes`.
-
-7. Enable Dependabot for your repo (Settings → Code security and analysis). Create `.github/dependabot.yml` for weekly npm updates.
-
-8. (Bonus) Set up a workflow that runs every Monday at 9am UTC and posts an issue titled "Weekly review" in your repo.
-
-If you've done all 8, you have a fully automated repo: tests on every push, releases tagged, security updates flowing in, deployable to Pages if applicable. Welcome to modern software development.
-
-**Next up: Chapter 10 — GUI Clients, Tools & Editor Integrations.** The terminal is powerful but not the only way. We'll cover the best GUI Git clients and IDE integrations.
-
----
----
-
-
-# Chapter 10 — GUI Clients, Tools & Editor Integrations
-
-> **Goal of this chapter:** Survey the visual tools available for Git. Not everyone loves the terminal; sometimes a GUI is faster. By the end, you'll know which tool to use for what task.
-
-The terminal is the most powerful way to use Git, but for some tasks — resolving complex merge conflicts, visualising branch graphs, scanning diffs across many files — a GUI wins. This chapter is a quick survey; pick one or two that fit your workflow.
-
----
-
-## 10.1 Why Use a GUI?
-
-| Task | CLI | GUI |
-|---|---|---|
-| Single commit | Fast | About the same |
-| Single file diff | `git diff file` is fine | GUI shows side-by-side, easier to read |
-| Multi-file diff across many commits | Painful | GUI excels |
-| Resolving merge conflicts | Edit markers manually | GUI 3-way merge is much faster |
-| Branch graph visualisation | ASCII art | Beautiful graph |
-| Staging individual lines (`-p`) | Tedious | Click-and-drag |
-| Beginners learning | Scary | Approachable |
-
-You don't have to pick a side — pros switch between CLI and GUI constantly.
-
----
-
-## 10.2 GitHub Desktop
-
-**GitHub Desktop** is GitHub's official, free Git client. Available for Windows and macOS.
-
-- Download: <https://desktop.github.com/>
-- Source: <https://github.com/desktop/desktop>
-
-### What it does well
-
-- Friendly for absolute beginners. Visualises the "stage → commit → push" loop clearly.
-- One-click integration with GitHub for auth, PRs, forks.
-- Shows diffs side-by-side with syntax highlighting.
-- Branch list, history graph, and "undo last commit" button.
-
-### Limitations
-
-- macOS/Windows only (no native Linux).
-- Lacks power features (rebase, cherry-pick are hidden).
-- Not customisable.
-
-**Best for:** Beginners transitioning from "I'm scared of Git" to "I use it daily".
-
----
-
-## 10.3 Sourcetree
-
-**Sourcetree** is Atlassian's free Git client (Windows, macOS). Older and more feature-rich than GitHub Desktop.
-
-- Download: <https://www.sourcetree.com/>
-
-### What it does well
-
-- Full-featured: rebase, cherry-pick, submodules, interactive rebase all supported.
-- Excellent visual diff and merge tool.
-- Integrates with Bitbucket and Stash out of the box (works fine with GitHub too).
-- Supports Git LFS, Git Flow.
-
-### Limitations
-
-- UI feels dated.
-- Requires an Atlassian account to use (free).
-- No Linux version.
-
-**Best for:** Mid-level users who want GUI access to power features without learning CLI flags.
-
----
-
-## 10.4 GitKraken
-
-**GitKraken** is a cross-platform (Windows, macOS, Linux) Git client with a beautiful, modern UI.
-
-- Download: <https://www.gitkraken.com/>
-
-### What it does well
-
-- Best-in-class branch graph visualisation.
-- Cross-platform (rare for full-featured GUIs).
-- Drag-and-drop for merging, rebasing, cherry-picking.
-- Built-in merge conflict resolver.
-- Integrates with GitHub, GitLab, Bitbucket, Azure DevOps.
-
-### Limitations
-
-- Free version doesn't allow private repos (must pay for Pro).
-- Electron-based; can feel heavy on slow machines.
-
-**Best for:** Visual thinkers; teams standardising on a cross-platform GUI.
-
----
-
-## 10.5 VS Code Built-in Git
-
-VS Code has Git built in. You may not need a separate GUI.
-
-### What it does well
-
-- Source Control panel (Ctrl+Shift+G): see changed files, stage, commit, all from the editor.
-- Inline diff: click any modified file to see side-by-side diff.
-- Branch picker in the status bar (bottom-left): switch branches with two clicks.
-- 3-way merge UI when conflicts occur: "Accept Current", "Accept Incoming", "Accept Both" buttons appear above each conflict.
-- Integrated terminal for CLI commands.
-
-### Recommended extensions
-
-- **GitLens** — supercharges Git in VS Code. Shows blame info inline, hover for commit details, commit search, rebase editor.
-- **Git Graph** — visualises the branch graph inside VS Code.
-- **GitHub Pull Requests** — manage PRs without leaving the editor.
-- **Edit csv / Excel Viewer** — useful for data files.
-
-### Setting up VS Code as your default Git editor and merge tool
-
-```bash
-git config --global core.editor "code --wait"
-git config --global merge.tool code
-git config --global mergetool.code.cmd 'code --wait $MERGED'
-```
-
-Now `git commit` (without `-m`) opens VS Code; `git mergetool` opens conflicts in VS Code.
-
----
-
-## 10.6 JetBrains IDEs (IntelliJ, PyCharm, WebStorm, etc.)
-
-JetBrains IDEs have best-in-class Git integration. The git log view, branch tree, diff viewer, and conflict resolver are all excellent.
-
-### What it does well
-
-- **Git tab (Alt+9):** commit, branch, log, all in one tool window.
-- **Annotate (blame):** right-click any file → Git → Show History or Annotate.
-- **Branch tree:** visual graph with filters.
-- **Conflict resolver:** 3-way merge UI with syntax highlighting.
-- **Local history:** separate from Git — JetBrains keeps its own history of file changes, even if you didn't commit.
-
-### Limitations
-
-- Heavyweight (lots of RAM).
-- Paid (some are free Community editions).
-- Per-language: each IDE is for a specific stack.
-
----
-
-## 10.7 Other Notable Tools
-
-### CLI enhancements
-
-- **`lazygit`** — terminal UI for Git. Brilliant for keyboard-driven workflows.
-- **`tig`** — terminal git history browser. ncurses-based, very fast.
-- **`gh`** — GitHub CLI (we've covered this).
-- **`gitui`** — Rust-based terminal UI, very fast.
-
-### Diff tools
-
-- **Meld** — cross-platform visual diff and merge tool.
-- **Beyond Compare** — premium, very polished.
-- **KDiff3** — free, handles 3-way merges well.
-- **Delta** — `git diff` beautifier for the terminal. Configure once, every `git diff` is gorgeous.
-
-Install delta:
-
-```bash
-brew install git-delta      # macOS
-cargo install git-delta     # Linux (with Rust)
-```
-
-Then add to `~/.gitconfig`:
-
-```ini
-[core]
-    pager = delta
-
-[interactive]
-    diffFilter = delta --color-only
-
-[delta]
-    navigate = true
-    side-by-side = true
-    line-numbers = true
-```
-
-### GitHub-specific tools
-
-- **GitHub Mobile** — iOS/Android app. Review PRs, merge, comment from your phone.
-- **GitHub Codespaces** — full VS Code in the browser, backed by a cloud VM. Free tier for small use.
-- **GitHub Copilot** — AI pair programmer (paid).
-- **Octotree** — browser extension: tree-view sidebar for github.com repos.
-
----
-
-## 10.8 Choosing Your Stack
-
-| Persona | Recommended stack |
-|---|---|
-| Absolute beginner | GitHub Desktop + VS Code |
-| Mid-level developer | VS Code + GitLens + `gh` CLI |
-| Power user | Terminal + `lazygit` + `delta` + VS Code only for editing |
-| JetBrains user | Use the IDE's built-in Git, supplement with `gh` CLI |
-| Visual thinker | GitKraken or Sourcetree + `gh` CLI |
-| Mobile reviewer | GitHub Mobile + VS Code |
-
-There's no "right" answer. Try a few and pick what fits.
-
----
-
-## 10.9 Your Turn
-
-1. Install **GitHub Desktop** and clone one of your repos through it. Make a commit through the GUI. Verify it appears on github.com.
-
-2. Install **GitLens** in VS Code. Open any tracked file. Hover over a line — you should see a popup showing the commit that last touched it.
-
-3. (Optional) Install **`lazygit`** and try its UI. Press `?` for help. Make a commit through it.
-
-4. (Optional) Install **`delta`** and configure it as your pager. Run `git diff` and `git log -p` — the output should look noticeably better.
-
-5. If you use a JetBrains IDE, open your repo in it. Try the **Git → Annotate** feature on a file. Try resolving a synthetic merge conflict using the IDE's 3-way merge UI.
-
-You don't need to use all these tools. Pick the one that fits your workflow and ignore the rest.
-
-**Next up: Chapter 11 — Best Practices and Conventions.** Git is a tool; how you use it determines whether your project's history is a joy or a nightmare to navigate.
-
----
----
-
-
-# Chapter 11 — Best Practices and Conventions
-
-> **Goal of this chapter:** Make your repo's history a joy to navigate, not a nightmare. Master atomic commits, conventional commit messages, PR descriptions, repo housekeeping, and licensing.
-
-A good Git history reads like a story. A bad one reads like a stream of consciousness. This chapter is how to make yours good.
-
----
-
-## 11.1 Atomic Commits and Small Pull Requests
-
-**Atomic commit:** a commit that does exactly one thing. Adds a feature. Fixes a bug. Renames a function. Not all three.
-
-Why atomic matters:
-- **Easier to review.** A 5-line PR is reviewed in 30 seconds. A 500-line PR sits for days.
-- **Easier to revert.** If commit X introduced a bug, you can `git revert X` without affecting other work.
-- **Easier to bisect.** `git bisect` finds the exact commit that introduced a bug. Atomic commits make this trivial.
-- **Easier to understand.** Future-you reading `git log` should understand each commit's purpose without reading the diff.
-
-### The rule of thumb
-
-> If you can describe your commit with "and", it should be two commits.
-
-Bad: `Add login page AND fix typo in README AND update dependencies`.
-Good: Three commits — `Add login page`, `Fix typo in README`, `Update dependencies`.
-
-### Same for PRs
-
-A PR should do one thing. If you find yourself writing `Part 1: ...; Part 2: ...` in the description, split into two PRs.
-
----
-
-## 11.2 Commit Message Conventions
-
-The most widely-adopted standard is **Conventional Commits**:
-
-```
-<type>(<scope>): <subject>
-
-<body>
-
-<footer>
-```
-
-### Types
-
-| Type | When to use |
-|---|---|
-| `feat` | New feature |
-| `fix` | Bug fix |
-| `docs` | Documentation only |
-| `style` | Formatting, semicolons, whitespace (no code change) |
-| `refactor` | Code restructuring, no behaviour change |
-| `perf` | Performance improvement |
-| `test` | Adding or correcting tests |
-| `build` | Build system, dependencies |
-| `ci` | CI configuration changes |
-| `chore` | Maintenance, no production code change |
-| `revert` | Reverting a previous commit |
-
-### Examples
-
-```text
-feat(auth): add password reset flow
-
-Implements the forgot-password feature end-to-end:
-- New route /password/reset
-- Email sending via the existing mailer
-- Token expiry after 1 hour
-- Tests for happy path and expired token
-
-Closes #42
-```
-
-```text
-fix(login): redirect to dashboard after login
-
-Previously, successful login kept the user on the login page.
-The redirect target was being computed before the session was set,
-so it always returned to the login form.
-
-Fixes #87
-```
-
-```text
-docs(readme): document env vars in README
-
-Adds a table of required environment variables to the README,
-including default values and where to find them in production.
-```
-
-### Rules
-
-1. **Subject line ≤ 50 characters** (so it fits in `git log --oneline`).
-2. **Subject line lowercase, no trailing period.**
-3. **Subject in imperative mood**: "Add" not "Added" or "Adds".
-4. **Blank line after subject.**
-5. **Body wrapped at 72 characters** (so it fits in 80-char terminals with indentation).
-6. **Body explains *why*, not what.** The diff shows what.
-7. **Footer for issue references:** `Closes #42`, `Fixes #87`, `Refs #100`.
-
-### Auto-generating changelogs
-
-With Conventional Commits, tools can auto-generate changelogs:
-
-- **standard-version** (npm): auto-bump version + changelog from commits.
-- **semantic-release** (npm): auto-publish to npm on every merge.
-- **release-please** (GitHub Action): Google's PR-based release manager.
-
----
-
-## 11.3 Pull Request Description Template
-
-A good PR description:
-
-```markdown
-## What does this PR do?
-Implements the password reset flow end-to-end.
-
-## Why?
-Users currently cannot recover forgotten passwords (issue #42).
-
-## How did you test this?
-- 12 unit tests covering all branches of `resetPassword()`.
-- Manual: requested reset for `test@example.com`, verified email arrived, clicked link, set new password, logged in.
-
-## Screenshots
-![reset-flow](https://example.com/screenshot.png)
-
-## Checklist
-- [x] Tests pass (`npm test`)
-- [x] Lint passes (`npm run lint`)
-- [x] Documentation updated
-- [x] No new console.log statements
-- [x] Self-reviewed my own diff
-```
-
-### Auto-fill this template
-
-Add `.github/PULL_REQUEST_TEMPLATE.md` to your repo. GitHub uses it as the default PR description.
-
----
-
-## 11.4 Repository Housekeeping Files
-
-A professional repo has these files at the root:
-
-```
-my-project/
-├── .github/
-│   ├── PULL_REQUEST_TEMPLATE.md
-│   ├── ISSUE_TEMPLATE/
-│   │   ├── bug-report.md
-│   │   └── feature-request.md
-│   ├── workflows/
-│   │   └── ci.yml
-│   ├── CODEOWNERS
-│   └── dependabot.yml
-├── .gitignore
-├── .gitattributes
-├── .editorconfig
-├── .env.example              ← template; real .env is gitignored
-├── README.md
-├── LICENSE
-├── CHANGELOG.md
-├── CONTRIBUTING.md
-├── CODE_OF_CONDUCT.md
-└── SECURITY.md
-```
-
-### README.md
-
-The face of your repo. Should answer:
-- What is this project?
-- Why does it exist?
-- How do I install it?
-- How do I use it?
-- How do I contribute?
-
-Use badges (shields.io) for status, version, license, build.
-
-### LICENSE
-
-Pick one. Most common:
-
-| License | Use when |
-|---|---|
-| MIT | Permissive. Anyone can use, modify, distribute. Most popular for OSS. |
-| Apache 2.0 | Permissive + patent grant. Common for bigger projects. |
-| GPL v3 | Copyleft. Derivatives must also be GPL. |
-| BSD 2-Clause / 3-Clause | Permissive, similar to MIT. |
-| Unlicense | Public domain dedication. |
-| Proprietary / All Rights Reserved | For private/commercial code. |
-
-Pick MIT unless you have a specific reason. Get the file from <https://choosealicense.com/>.
-
-### CHANGELOG.md
-
-Manual changelog of releases. Format (Keep a Changelog):
-
-```markdown
-# Changelog
-
-## [Unreleased]
-
-## [1.2.0] - 2025-10-05
-### Added
-- Password reset flow.
-### Changed
-- Login redirects to dashboard.
-### Fixed
-- Token expiry edge case.
-
-## [1.1.0] - 2025-09-01
-### Added
-- Dark mode.
-```
-
-### CONTRIBUTING.md
-
-How to contribute: setup steps, PR process, code style, testing requirements. New contributors read this first.
-
-### CODE_OF_CONDUCT.md
-
-Adopt the Contributor Covenant: <https://www.contributor-covenant.org/>. Tells contributors how to behave.
-
-### SECURITY.md
-
-How to report security vulnerabilities: email vs. public issue, response time, scope.
-
-### .editorconfig
-
-Standardise editor behaviour across IDEs:
-
-```ini
-root = true
-
-[*]
-indent_style = space
-indent_size = 2
-end_of_line = lf
-charset = utf-8
-trim_trailing_whitespace = true
-insert_final_newline = true
-
-[*.md]
-trim_trailing_whitespace = false   # Markdown needs trailing two spaces for line breaks
-
-[Makefile]
-indent_style = tab
-```
-
-Most editors auto-respect `.editorconfig` (with a plugin if needed).
-
-### .env.example
-
-Template for required environment variables. Real `.env` is gitignored:
-
-```bash
-# .env.example
-DATABASE_URL=postgres://user:pass@localhost:5432/db
-API_KEY=your-api-key-here
-PORT=3000
-```
-
-New developers copy this to `.env` and fill in real values.
-
----
-
-## 11.5 Choosing a License
-
-If in doubt, choose MIT. Reasons:
-
-- Short (one page).
-- Permissive (anyone can use your code).
-- Compatible with almost every other license.
-- Recognised worldwide.
-
-For commercial projects where you worry about patents, use Apache 2.0.
-
-If you want derivatives to also be open source, use GPL v3.
-
-You can also add a `LICENSE` file via github.com: when creating a repo, pick from the dropdown. Or download from <https://choosealicense.com/licenses/>.
-
----
-
-## 11.6 The Top 10 Git Mistakes to Avoid
-
-1. **Committing secrets.** Once a secret is in history, it's hard to remove and must be considered compromised. Use `.gitignore` from day one.
-
-2. **Force-pushing to shared branches.** Always use `--force-with-lease`. Never force-push to `main`.
-
-3. **Committing huge files.** Binaries, videos, datasets bloat the repo forever. Use Git LFS for large files.
-
-4. **Not using branches.** Committing directly to `main` for everything makes history chaotic and prevents safe experimentation.
-
-5. **Bad commit messages.** "fix", "update", "asdf", "wip" tell future-you nothing.
-
-6. **Long-lived feature branches.** A branch open for 3 months accumulates conflicts. Merge or rebase often.
-
-7. **Not reading diffs before committing.** `git diff --staged` takes 5 seconds and catches "I didn't mean to commit that".
-
-8. **Squashing everything into one commit per PR.** Loses meaningful history. Better: rebase -i to clean up, then merge with a clean set of commits.
-
-9. **Ignoring merge conflicts.** Marking them "resolved" by deleting both sides loses work. Read, understand, choose.
-
-10. **Not committing often enough.** Hour-long uncommitted sessions risk loss. Commit every 30–60 minutes when work is in a usable state.
-
----
-
-## 11.7 Team Conventions Checklist
-
-A good team's repo has:
-
-- [ ] `.gitignore` covering secrets, dependencies, build output, OS junk.
-- [ ] `.gitattributes` for line endings.
-- [ ] `.editorconfig` for consistent indentation.
-- [ ] Branch protection on `main` requiring PR + CI.
-- [ ] CI workflow running tests + lint on every PR.
-- [ ] `CONTRIBUTING.md` explaining the workflow.
-- [ ] `CODE_OF_CONDUCT.md` and `SECURITY.md`.
-- [ ] PR template and issue templates.
-- [ ] Conventional commit messages (enforced by commitlint if strict).
-- [ ] Code owners for sensitive paths.
-- [ ] Dependabot enabled.
-- [ ] Releases tagged with annotated tags.
-- [ ] `CHANGELOG.md` updated per release.
-- [ ] License file present and correct.
-
-Print this list and audit your repo. Most repos miss 3-4 of these — fix them this week.
-
----
-
-## 11.8 Git LFS (Large File Storage)
-
-Git is bad at binaries. A 100MB Photoshop file changing every commit bloats the repo. **Git LFS** stores large files out-of-band, keeping the main repo small.
-
-```bash
-# Install (macOS)
-brew install git-lfs
-
-# Initialise once per user
-git lfs install
-
-# Track certain file types
-git lfs track "*.psd"
-git lfs track "*.zip"
-git lfs track "*.mp4"
-
-# Commit the .gitattributes that LFS created
-git add .gitattributes
-git commit -m "Configure Git LFS for binaries"
-
-# Now add binaries normally
-git add design.psd
-git commit -m "Add homepage design"
-```
-
-GitHub provides 1 GB free LFS storage + 1 GB/month bandwidth for free accounts.
-
----
-
-## 11.9 Your Turn
-
-1. Audit your `pr-practice` repo against the **Team Conventions Checklist** above. Add the missing files (`.gitignore`, `.gitattributes`, `.editorconfig`, `LICENSE`, `CHANGELOG.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`).
-
-2. Create `.github/PULL_REQUEST_TEMPLATE.md` with the structure from section 11.3. Open a PR and verify the template auto-fills.
-
-3. Configure branch protection on `main` requiring 1 approval + CI.
-
-4. Commit using Conventional Commits format for the next 10 commits. Get into the habit.
-
-5. Add a `CODEOWNERS` file making `@you` the owner of all paths. Verify GitHub requests you as a reviewer on the next PR.
-
-6. Enable Dependabot. Wait a day — you'll likely get a PR bumping some dependency.
-
-7. Tag the current commit as `v1.1.0` (annotated), push the tag, create a release. Update `CHANGELOG.md` to match.
-
-By the end of this checklist, your repo is professional-grade. Recruiters, collaborators, and future-you will thank you.
-
-**Next up: Chapter 12 — Guided Real-World Projects.** Five projects that exercise everything you've learned, end to end.
-
----
----
-
-
-# Chapter 12 — Guided Real-World Projects
-
-> **Goal of this chapter:** Build five real projects end-to-end using everything you've learned. Each project is increasingly ambitious. By the end, you will have a portfolio of working Git/GitHub demonstrations.
-
-These projects are designed to exercise specific skills. Do them in order. Each builds on the previous.
-
----
-
-## 12.1 Project 1 — Portfolio From Zero to a Live Website
-
-**Skills exercised:** repo creation, commits, branches, push, GitHub Pages, PR, release.
-
-### The goal
-
-A personal portfolio website, deployed to GitHub Pages, with a release tagged `v1.0`.
-
-### Step-by-step
-
-1. **Create the repo:**
-
-   ```bash
-   gh repo create my-portfolio --public --source=. --remote=origin --push
-   ```
-
-2. **Create the basic structure:**
-
-   ```bash
-   mkdir my-portfolio
-   cd my-portfolio
-   ```
-
-   Create `index.html`:
-
-   ```html
-   <!DOCTYPE html>
-   <html lang="en">
-   <head>
-     <meta charset="UTF-8">
-     <title>Your Name — Portfolio</title>
-     <link rel="stylesheet" href="style.css">
-   </head>
-   <body>
-     <header>
-       <h1>Your Name</h1>
-       <p>Software developer. Lifelong learner.</p>
-     </header>
-     <main>
-       <section id="projects">
-         <h2>Projects</h2>
-         <p>Coming soon.</p>
-       </section>
-       <section id="about">
-         <h2>About</h2>
-         <p>I'm learning Git & GitHub from zero to hero.</p>
-       </section>
-     </main>
-     <footer>
-       <p>&copy; 2025 Your Name</p>
-     </footer>
-   </body>
-   </html>
-   ```
-
-   Create `style.css`:
-
-   ```css
-   body {
-     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-     max-width: 720px;
-     margin: 2rem auto;
-     padding: 0 1rem;
-     color: #222;
-   }
-   h1, h2 { color: #0066cc; }
-   ```
-
-3. **Initial commit:**
-
-   ```bash
-   git add .
-   git commit -m "feat: initial portfolio website"
-   ```
-
-4. **Create a `gh-pages` workflow** (or use the simple "deploy from main" approach):
-
-   ```bash
-   mkdir -p .github/workflows
-   ```
-
-   `.github/workflows/deploy.yml`:
-
-   ```yaml
-   name: Deploy to Pages
-
-   on:
-     push:
-       branches: [main]
-
-   permissions:
-     contents: read
-     pages: write
-     id-token: write
-
-   jobs:
-     deploy:
-       runs-on: ubuntu-latest
-       environment: github-pages
-       steps:
-         - uses: actions/checkout@v4
-         - uses: actions/configure-pages@v4
-         - uses: actions/upload-pages-artifact@v3
-           with:
-             path: .
-         - uses: actions/deploy-pages@v4
-   ```
-
-5. **Commit and push:**
-
-   ```bash
-   git add .github/workflows/deploy.yml
-   git commit -m "ci: deploy to GitHub Pages on push to main"
-   git push
-   ```
-
-6. **Configure Pages:** Settings → Pages → Source = GitHub Actions.
-
-7. **Wait ~1 minute.** Visit `https://yourname.github.io/my-portfolio/`. Your site is live.
-
-8. **Branch off for an improvement:**
-
-   ```bash
-   git switch -c feature/about-section
-   ```
-
-   Edit `index.html` to expand the About section. Add a `CREDITS.md` file. Commit.
-
-9. **Open a PR:** Push the branch, open a PR on github.com, write a description, request a review (from yourself).
-
-10. **Merge the PR** using squash-and-merge. Delete the branch.
-
-11. **Tag a release:**
-
-    ```bash
-    git switch main
-    git pull
-    git tag -a v1.0 -m "First public release of portfolio"
-    git push origin v1.0
-    gh release create v1.0 --generate-notes --title "v1.0 — Initial release"
-    ```
-
-12. **Verify:** Visit the Releases tab on github.com. Your release is there with auto-generated notes.
-
-### What you've demonstrated
-
-End-to-end: repo setup, branching, PR workflow, CI/CD deployment, releases. This is the foundation of every professional web project.
-
----
-
-## 12.2 Project 2 — The Full Feature Workflow
-
-**Skills exercised:** issue, branch, commits, PR, review feedback, CI, merge.
-
-### The goal
-
-Open an issue for a missing feature, branch, implement, address review feedback, merge with CI passing.
-
-### Step-by-step
-
-1. **Open an issue** on your portfolio repo: "Add a projects gallery with cards".
-
-2. **Branch locally:**
-
-   ```bash
-   git switch -c feature/projects-gallery
-   ```
-
-3. **Implement the gallery** in `index.html`:
-
-   ```html
-   <section id="projects">
-     <h2>Projects</h2>
-     <div class="grid">
-       <article class="card">
-         <h3>Project 1</h3>
-         <p>A short description.</p>
-       </article>
-       <article class="card">
-         <h3>Project 2</h3>
-         <p>Another project.</p>
-       </article>
-     </div>
-   </section>
-   ```
-
-   Add CSS:
-
-   ```css
-   .grid {
-     display: grid;
-     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-     gap: 1rem;
-   }
-   .card {
-     border: 1px solid #ddd;
-     padding: 1rem;
-     border-radius: 8px;
-   }
-   ```
-
-4. **Commit (multiple atomic commits):**
-
-   ```bash
-   git add index.html
-   git commit -m "feat: add projects gallery section"
-   git add style.css
-   git commit -m "style: add card grid layout for projects"
-   ```
-
-5. **Push and open a PR:**
-
-   ```bash
-   git push -u origin feature/projects-gallery
-   gh pr create --title "Add projects gallery" --body "Closes #1"
-   ```
-
-6. **Self-review.** Read every line of the diff. Leave a comment on the CSS suggesting a hover effect.
-
-7. **Address your own feedback:** Add a hover effect, commit, push.
-
-   ```css
-   .card:hover {
-     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-     transform: translateY(-2px);
-     transition: all 0.2s ease;
-   }
-   ```
-
-   ```bash
-   git add style.css
-   git commit -m "feat: add hover effect to project cards"
-   git push
-   ```
-
-8. **Merge the PR** once CI passes. Verify the issue auto-closed.
-
-9. **Pull the merge locally:**
-
-   ```bash
-   git switch main
-   git pull
-   ```
-
-10. **Verify the live site** at your Pages URL.
-
-### What you've demonstrated
-
-The complete loop: issue → branch → multiple commits → PR → review feedback → amend → CI → merge → auto-close. This is what engineers do every day.
-
----
-
-## 12.3 Project 3 — Merge Conflict Surgery
-
-**Skills exercised:** branching, conflicting changes, conflict resolution, merge commits.
-
-### The goal
-
-Engineer a controlled merge conflict, resolve it cleanly, understand exactly what happened.
-
-### Step-by-step
-
-1. **In your portfolio repo, edit `index.html` line 1 of the About section:**
-
-   ```bash
-   git switch -c conflict-practice
-   ```
-
-   Change "I'm learning Git & GitHub from zero to hero." to "I build things with Git & GitHub.".
-
-   ```bash
-   git add index.html
-   git commit -m "docs: update About section wording"
-   ```
-
-2. **Switch back to main and edit the same line differently:**
-
-   ```bash
-   git switch main
-   ```
-
-   Change "I'm learning Git & GitHub from zero to hero." to "I'm a developer who loves clean Git history.".
-
-   ```bash
-   git add index.html
-   git commit -m "docs: rewrite About section"
-   ```
-
-3. **Try to merge `conflict-practice`:**
-
-   ```bash
-   git merge conflict-practice
-   ```
-
-   Expected: conflict.
-
-4. **Open `index.html`.** You'll see:
-
-   ```html
-   <<<<<<< HEAD
-   I'm a developer who loves clean Git history.
-   =======
-   I build things with Git & GitHub.
-   >>>>>>> conflict-practice
-   ```
-
-5. **Resolve by combining both ideas:**
-
-   ```html
-   I'm a developer who loves clean Git history and builds with Git & GitHub.
-   ```
-
-6. **Mark as resolved and commit the merge:**
-
-   ```bash
-   git add index.html
-   git commit
-   ```
-
-7. **Inspect the merge commit:**
-
-   ```bash
-   git show HEAD
-   ```
-
-   Notice the `Merge: <hash1> <hash2>` line showing both parents.
-
-8. **Push:**
-
-   ```bash
-   git push
-   ```
-
-9. **Delete the merged branch:**
-
-   ```bash
-   git branch -d conflict-practice
-   ```
-
-### What you've demonstrated
-
-You can resolve real conflicts calmly and correctly. This is one of the most hireable Git skills.
-
----
-
-## 12.4 Project 4 — Automation with GitHub Actions
-
-**Skills exercised:** writing workflows, matrix builds, secrets, manual triggers.
-
-### The goal
-
-A repo with multiple workflows: CI on push, scheduled job, manual deploy with secrets.
-
-### Step-by-step
-
-1. **Create a new repo `git-actions-lab`:**
-
-   ```bash
-   gh repo create git-actions-lab --public --source=. --remote=origin --push
-   ```
-
-2. **Add a CI workflow** (`.github/workflows/ci.yml`):
-
-   ```yaml
-   name: CI
-
-   on: [push, pull_request]
-
-   jobs:
-     test:
-       runs-on: ubuntu-latest
-       strategy:
-         matrix:
-           node-version: [18, 20, 22]
-       steps:
-         - uses: actions/checkout@v4
-         - uses: actions/setup-node@v4
-           with:
-             node-version: ${{ matrix.node-version }}
-             cache: 'npm'
-         - run: echo "Running tests on Node ${{ matrix.node-version }}"
-         - run: echo "TODO: add real tests"
-   ```
-
-3. **Add a scheduled workflow** (`.github/workflows/nightly.yml`):
-
-   ```yaml
-   name: Nightly
-
-   on:
-     schedule:
-       - cron: '0 2 * * *'   # every day at 02:00 UTC
-     workflow_dispatch:      # also manually
-
-   jobs:
-     nightly:
-       runs-on: ubuntu-latest
-       steps:
-         - uses: actions/checkout@v4
-         - name: Create nightly issue
-           env:
-             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-           run: |
-             gh issue create \
-               --title "Nightly check $(date -u +%Y-%m-%d)" \
-               --body "Automated nightly check."
-   ```
-
-4. **Add a manual deploy workflow** with a secret (`.github/workflows/deploy.yml`):
-
-   ```yaml
-   name: Deploy
-
-   on:
-     workflow_dispatch:
-       inputs:
-         environment:
-           description: 'Target environment'
-           required: true
-           type: choice
-           options: [staging, production]
-
-   jobs:
-     deploy:
-       runs-on: ubuntu-latest
-       environment: ${{ github.event.inputs.environment }}
-       steps:
-         - uses: actions/checkout@v4
-         - name: Simulate deploy
-           env:
-             DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-           run: |
-             echo "Deploying to ${{ github.event.inputs.environment }}"
-             echo "Using token starting with: ${DEPLOY_TOKEN:0:4}..."
-   ```
-
-5. **Set a secret:**
-
-   ```bash
-   gh secret set DEPLOY_TOKEN --body "fake-token-12345"
-   ```
-
-6. **Commit and push everything:**
-
-   ```bash
-   git add .
-   git commit -m "ci: add CI, nightly, and deploy workflows"
-   git push
-   ```
-
-7. **Verify:**
-   - CI runs on push. Three jobs (Node 18, 20, 22).
-   - On github.com → Actions → "Nightly" → "Run workflow" button. Run it manually; an issue should be created.
-   - On github.com → Actions → "Deploy" → "Run workflow". Pick "production". In the logs, the secret shows as `***`.
-
-### What you've demonstrated
-
-You can write real CI/CD pipelines. This is the daily work of DevOps engineers.
-
----
-
-## 12.5 Project 5 — Your First Open-Source Contribution
-
-**Skills exercised:** fork, clone, upstream, branch, push to fork, PR to upstream.
-
-### The goal
-
-Contribute to an existing open-source project. (We'll use a practice repo, but the workflow is identical for real OSS projects.)
-
-### Step-by-step
-
-1. **Find a practice repo.** GitHub maintains <https://github.com/octocat/Spoon-Knife> as a fork-and-PR practice target. Or use any repo marked `good first issue` at <https://github.com/search?q=label%3A%22good+first+issue%22>.
-
-2. **Fork the repo** on github.com (click **Fork** in the top right). Or via CLI:
-
-   ```bash
-   gh repo fork octocat/Spoon-Knife --clone
-   cd Spoon-Knife
-   ```
-
-3. **Add upstream remote:**
-
-   ```bash
-   git remote add upstream https://github.com/octocat/Spoon-Knife.git
-   git remote -v
-   ```
-
-4. **Sync with upstream:**
-
-   ```bash
-   git switch main
-   git fetch upstream
-   git merge upstream/main
-   git push origin main
-   ```
-
-5. **Branch:**
-
-   ```bash
-   git switch -c docs/improve-readme
-   ```
-
-6. **Make a small, meaningful improvement:** fix a typo, add a useful line to the README, improve code comments. Don't change functionality.
-
-7. **Commit:**
-
-   ```bash
-   git add README.md
-   git commit -m "docs: improve README installation step"
-   ```
-
-8. **Push to your fork:**
-
-   ```bash
-   git push -u origin docs/improve-readme
-   ```
-
-9. **Open a PR upstream:**
-
-   ```bash
-   gh pr create \
-     --repo octocat/Spoon-Knife \
-     --base main \
-     --head yourname:docs/improve-readme \
-     --title "Docs: improve README installation step" \
-     --body "Small clarification in the installation section."
-   ```
-
-10. **Wait for review.** This is the part that takes the longest. Maintainers are volunteers; weeks can pass.
-
-11. **Address feedback** if requested: push more commits to the same branch.
-
-12. **Celebrate** when it merges.
-
-### What you've demonstrated
-
-You can contribute to open-source projects following the canonical workflow. This is how thousands of people contribute to Linux, React, Python, VS Code, etc.
-
----
-
-## 12.6 The Mastery Checklist
-
-Tick each box when you can confidently do it without referring to the guide:
-
-- [ ] Explain what Git is to a non-technical friend.
-- [ ] Explain the difference between Git and GitHub.
-- [ ] Install and configure Git on a fresh machine in under 10 minutes.
-- [ ] Create a repo, commit, push, all from memory.
-- [ ] Stage individual lines (`git add -p`).
-- [ ] Branch, switch, merge.
-- [ ] Resolve a merge conflict calmly.
-- [ ] Set up a `.gitignore` and `.gitattributes`.
-- [ ] Connect a local repo to GitHub via SSH.
-- [ ] Open a PR with a good description.
-- [ ] Review someone else's PR with inline comments.
-- [ ] Use `git reset` (soft, mixed, hard) appropriately.
-- [ ] Use `git revert` for pushed commits.
-- [ ] Use `git stash` and `git stash pop`.
-- [ ] Recover a "deleted" commit via `git reflog`.
-- [ ] Rebase a feature branch onto `main`.
-- [ ] Use interactive rebase to squash commits.
-- [ ] Tag a release and create a GitHub Release.
-- [ ] Write a GitHub Actions workflow.
-- [ ] Use a secret in a workflow.
-- [ ] Set up branch protection.
-- [ ] Fork, clone with upstream, sync.
-- [ ] Open a PR to a project you don't own.
-- [ ] Configure aliases.
-- [ ] Read a `git blame` output and find the commit that introduced a line.
-- [ ] Use `git bisect` to find a bug-introducing commit.
-- [ ] Audit a repo against the Team Conventions Checklist.
-- [ ] Explain the Conventional Commits format.
-- [ ] Choose an appropriate open-source license.
-
-If you can tick all of these, **you are no longer a beginner at Git**. You are competent. The remaining chapters are reference material.
-
-**Next up: Chapter 13 — Open-Source Contribution Workflow.** A deeper dive into how to find, evaluate, and contribute to open-source projects professionally.
-
----
----
-
-
-# Chapter 13 — Open-Source Contribution Workflow
-
-> **Goal of this chapter:** Contribute to open-source projects professionally. Find issues, read `CONTRIBUTING.md`, follow etiquette, get your PR merged.
-
-Thousands of developers contribute to open-source projects every day. The mechanics are Git + GitHub (which you now know); the social side is what this chapter covers.
-
----
-
-## 13.1 What Counts as Open Source?
-
-**Open source** means the source code is available under a license that allows anyone to use, modify, and distribute it. Different licenses have different rules:
-
-- **MIT/Apache/BSD** — permissive: anyone can use your code, even commercially.
-- **GPL** — copyleft: derivatives must also be GPL.
-- **Unlicense** — public domain.
-
-If a repo has a `LICENSE` file with an OSI-approved license, it's open source.
-
-Popular open-source projects you may have used: Linux, React, VS Code, Git itself, Node.js, Python, TensorFlow, Kubernetes, Postgres, WordPress.
-
----
-
-## 13.2 Why Contribute?
-
-- **Build your portfolio.** A PR merged to a popular project is more impressive than any certificate.
-- **Learn from experts.** Code review from experienced maintainers is free mentorship.
-- **Fix bugs that annoy you.** Found a bug in a library you use? Fix it.
-- **Pay it forward.** Open source runs the internet. Contribute back.
-- **Meet people.** Many maintainers are friendly and welcoming.
-- **Job opportunities.** Recruiters search GitHub for active contributors to projects they care about.
-
----
-
-## 13.3 Finding a Project to Contribute To
-
-### Labels to search for
-
-Most repos label issues that are good for newcomers:
-
-- `good first issue` — small, well-described, suitable for first-time contributors.
-- `help wanted` — maintainers want help.
-- `documentation` — docs-only changes, great for non-coders.
-- `beginner-friendly` — some repos use this.
-
-Search URLs:
-
-```
-https://github.com/search?q=label%3A%22good+first+issue%22+state%3Aopen&type=issues
-https://github.com/search?q=label%3A%22help+wanted%22+state%3Aopen&type=issues
-```
-
-### Tools for finding projects
-
-- **<https://goodfirstissue.dev/>** — curated list.
-- **<https://up-for-grabs.net/>** — projects wanting contributors.
-- **<https://www.firsttimersonly.com/>** — advice for first-timers.
-- **<https://github.com/trending/>** — trending repos (not always beginner-friendly, but interesting).
-- **<https://codetriage.com/>** — get one issue from a project you watch in your inbox daily.
-
-### Picking a project
-
-Prefer projects that:
-- Are actively maintained (commits in the last month).
-- Have open issues labeled `good first issue`.
-- Have a `CONTRIBUTING.md` (signals they want contributors).
-- Have a `CODE_OF_CONDUCT.md` (signals respectful community).
-- Respond to PRs in reasonable time (check the closed PRs tab).
-
----
-
-## 13.4 Reading `CONTRIBUTING.md`
-
-Every well-run open-source project has a `CONTRIBUTING.md` at the root. **Read it before opening a PR.** It tells you:
-
-- How to set up the project locally.
-- Code style conventions.
-- Test requirements (you must add tests for new features).
-- Branch / commit / PR conventions.
-- How to sign your commits (some projects require DCO or GPG signing).
-- Where to ask questions (Discussions tab, Slack, mailing list).
-
-Skipping this is the #1 reason first PRs get rejected.
-
-### Example structure of a `CONTRIBUTING.md`
-
-```markdown
-# Contributing
-
-Thanks for your interest! This document explains how to contribute.
-
-## Setup
-
-1. Fork and clone the repo.
-2. Run `npm install`.
-3. Copy `.env.example` to `.env` and fill in values.
-4. Run `npm run dev`.
-
-## Code style
-
-- We use Prettier with the config in `.prettierrc`.
-- Run `npm run lint` before committing. CI will fail if lint fails.
-
-## Commit messages
-
-- Follow Conventional Commits: `feat(scope): description`.
-- Reference issues: `Closes #123`.
-
-## Tests
-
-- Add tests for any new feature.
-- Run `npm test` locally. CI runs the same.
-
-## Pull requests
-
-- One feature per PR.
-- Keep PRs under 300 lines if possible.
-- Address review feedback within 2 weeks or the PR may be closed.
-
-## Code of Conduct
-
-By participating, you agree to abide by our [Code of Conduct](CODE_OF_CONDUCT.md).
-```
-
----
-
-## 13.5 Forking and Cloning (Refresher)
-
-```bash
-# Fork on github.com (or use gh)
-gh repo fork owner/repo --clone
-
-# Add upstream
-git remote add upstream https://github.com/owner/repo.git
-
-# Branch off upstream/main (not your fork's main)
-git fetch upstream
-git switch -c feature/my-contribution upstream/main
-```
-
-The last step is critical: branch from the *original* project's `main`, not your fork's. Your fork's `main` may be out of date.
-
----
-
-## 13.6 Keeping Your Fork in Sync
-
-Before starting new work, sync:
-
-```bash
-git switch main
-git fetch upstream
-git merge upstream/main
-git push origin main
-```
-
-Or in one command:
-
-```bash
-gh repo sync yourname/repo --source owner/repo
-```
-
-Do this weekly if you contribute regularly.
-
----
-
-## 13.7 Writing the PR
-
-A good OSS PR has:
-
-- **Clear title:** `[Fix] Handle null pointer in user lookup` (some projects prefix with type).
-- **Description:** what, why, how tested.
-- **Issue reference:** `Fixes #123` (so the issue auto-closes on merge).
-- **Linked to issue:** if there's no issue, open one first and discuss the approach before coding.
-- **Tests:** added or updated.
-- **No unrelated changes:** no formatting "drive-by" fixes in files you didn't mean to touch.
-- **Small scope:** one feature per PR.
-
-### Example PR description
-
-```markdown
-## What does this PR do?
-Fixes a null pointer exception in `UserLookup.findById` when called with a non-existent ID.
-
-## Why?
-Currently, `findById(0)` crashes with NPE because the code assumes the user exists. Issue #123 has details.
-
-## How was it tested?
-- Added unit test `findById_returnsNull_forNonExistentId`.
-- Manually verified with `npm test`.
-
-## Checklist
-- [x] Tests pass
-- [x] Code follows style guide
-- [x] Self-reviewed
-
-Fixes #123
-```
-
----
-
-## 13.8 Code Review Etiquette (Revisited for OSS)
-
-### For contributors
-
-- **Be patient.** Maintainers are volunteers. Days or weeks may pass.
-- **Don't ping for updates within a week.** If a month passes, a polite "Any thoughts on this?" is OK.
-- **Address feedback gracefully.** Even if you disagree, respond thoughtfully.
-- **Push commits, don't force-push** unless asked. Maintainers like to see the evolution.
-- **Stay on topic.** Don't sneak in unrelated changes.
-- **Close stale PRs.** If you abandon a PR, close it. Don't leave it open.
-
-### For maintainers
-
-- **Be welcoming.** First-time contributors are nervous. A friendly "Thanks for this!" goes a long way.
-- **Be specific in feedback.** "This is wrong" → "This is O(n²); a Set would make it O(n)".
-- **Don't demand.** Suggest. "Have you considered…".
-- **Acknowledge effort.** Even if you reject a PR, thank the contributor for trying.
-- **Close inactive PRs politely.** After a month of no response, comment and close.
-
----
-
-## 13.9 Common First-PR Pitfalls
-
-1. **Not reading `CONTRIBUTING.md`.** Read it twice.
-2. **Opening a PR without an issue.** Many projects require an issue first.
-3. **Sneaking in unrelated changes.** Reviewers see every file in the diff.
-4. **Force-pushing after review.** Maintainers lose the conversation context.
-5. **Huge PRs.** 500-line PRs from strangers don't get reviewed.
-6. **Arguing with the maintainer's design choices.** If they say "we don't want this", accept it.
-7. **Demanding an immediate review.** Maintainers owe you nothing.
-8. **Not signing the commit (if DCO required).** Some projects require `Signed-off-by: Name <email>` in the commit message. Add `-s` to `git commit`:
-   ```bash
-   git commit -s -m "fix: handle null pointer in user lookup"
-   ```
-
----
-
-## 13.10 Where to Go From Here
-
-Once you've merged your first PR:
-
-- **Tackle bigger issues.** Move from `good first issue` to `help wanted`.
-- **Become a regular.** Pick one project and contribute regularly. Maintainers will notice.
-- **Help others.** Review other people's PRs. Answer issues. Be the welcoming voice.
-- **Maintain a project.** Eventually, you'll start your own. Apply everything you've learned about being a good maintainer.
-
----
-
-## 13.11 Your Turn
-
-1. Go to <https://github.com/search?q=label%3A%22good+first+issue%22+state%3Aopen&type=issues>. Pick an issue in a project you use (or find interesting).
-
-2. Read the project's `CONTRIBUTING.md`. Note any setup steps.
-
-3. Fork and clone locally. Get the project running.
-
-4. Comment on the issue: "I'd like to work on this. Could you confirm the approach is X?" Wait for a reply.
-
-5. Implement, test, commit (with conventional commits if the project uses them).
-
-6. Push and open a PR. Use the PR template from Chapter 11.3.
-
-7. Address any feedback within a day or two.
-
-8. Celebrate when it merges. Add the merged PR URL to your resume.
-
-If you've made it this far in the guide and completed this exercise, **you are a contributor to open source.** That title is permanent.
-
-**Next up: Chapter 14 — The Complete Cheat Sheet.** Bookmark it. Search it when stuck.
-
----
----
-
-
-# Chapter 14 — The Complete Cheat Sheet
-
-> **Goal of this chapter:** Be your searchable reference. Bookmark it. When you forget a command, jump here.
-
-This chapter is dense by design. No explanations, just commands and one-liners. Search by category.
-
----
-
-## 14.1 Command Reference by Category
-
-### Setup and configuration
-
-```bash
-git --version                              # check installed version
-git config --global user.name "Name"        # set your name
-git config --global user.email "email"      # set your email (use GitHub no-reply for privacy)
-git config --global init.defaultBranch main # default branch name
-git config --global core.editor "code --wait" # default editor
-git config --global pull.rebase true        # pull with rebase
-git config --global push.default current    # push only current branch
-git config --global color.ui auto           # color output
-git config --global credential.helper store # store HTTPS credentials
-git config --global alias.lg "log --oneline --graph --all --decorate"  # alias
-git config --global --list                  # see all settings
-git config --global --edit                  # open ~/.gitconfig in your editor
-```
-
-### Starting or getting a project
-
-```bash
-git init                                   # turn current folder into a Git repo
-git clone <url>                            # clone a remote repo
-git clone <url> --depth 1                  # shallow clone (only latest commit)
-git clone <url> --filter=blob:none         # blobless clone (defer blobs)
-git clone <url> -b <branch>                # clone and checkout specific branch
-git clone <url> <folder>                   # clone into specific folder
-gh repo create <name> --public --source=. --push  # create GitHub repo from current dir
-gh repo clone <owner>/<repo>               # clone via gh (auto-auth)
-gh repo fork <owner>/<repo> --clone        # fork and clone in one step
-```
-
-### The daily loop
-
-```bash
-git status                                 # what's modified, staged, etc.
-git status -s                              # short status
-git add <file>                             # stage one file
-git add .                                  # stage everything in current dir
-git add -A                                 # stage everything (incl. deletions)
-git add -p                                 # stage interactively (per hunk)
-git restore --staged <file>                # unstage a file
-git restore <file>                         # discard uncommitted changes
-git commit -m "message"                    # commit staged changes
-git commit -am "message"                   # add tracked files + commit (skips add)
-git commit --amend --no-edit               # add changes to last commit
-git commit --amend -m "new message"        # change last commit's message
-git push                                   # upload commits to remote
-git pull                                   # fetch + merge from remote
-git fetch                                  # fetch but don't merge
-git log --oneline --graph --all --decorate # pretty history
-git log -p <file>                          # history with diffs for a file
-git log --since="2 weeks ago"              # recent commits
-git log --author="Name"                    # commits by author
-git log -S "search string"                 # commits that added/removed string
-git show <hash>                            # show a specific commit
-git show HEAD                              # show latest commit
-git show HEAD~3                            # show commit 3 back
-git diff                                   # unstaged changes
-git diff --staged                          # staged changes
-git diff HEAD~1                            # changes since last commit
-git diff main feature/x                    # diff between branches
-git diff --word-diff                       # word-level diff
-```
-
-### Branches
-
-```bash
-git branch                                 # list local branches
-git branch -a                              # list all (incl. remote)
-git branch -vv                             # list with tracking info
-git branch <name>                          # create branch
-git switch <name>                          # switch to branch
-git switch -c <name>                       # create + switch
-git checkout -b <name>                     # legacy equivalent of -c
-git branch -d <name>                       # delete (safe; refuses if unmerged)
-git branch -D <name>                       # force delete
-git branch -m <new-name>                   # rename current branch
-git branch -m <old> <new>                  # rename any branch
-git push origin --delete <branch>          # delete remote branch
-git push -u <remote> <branch>              # push new branch + set upstream
-git merge <branch>                         # merge <branch> into current
-git merge --no-ff <branch>                 # force a merge commit
-git merge --abort                          # abort a conflicted merge
-git cherry-pick <hash>                     # apply a single commit on current branch
-git rebase <branch>                        # replay current branch onto <branch>
-git rebase -i HEAD~3                       # interactive rebase last 3 commits
-git rebase --abort                         # abort rebase
-git rebase --continue                      # continue after resolving conflict
-```
-
-### Remotes
-
-```bash
-git remote -v                              # list remotes
-git remote add <name> <url>                # add remote
-git remote remove <name>                   # remove remote
-git remote rename <old> <new>              # rename remote
-git remote set-url <name> <new-url>        # change remote URL
-git remote show <name>                     # details about a remote
-git fetch <remote>                         # fetch from named remote
-git fetch --all                            # fetch from all remotes
-git fetch --tags                           # fetch tags too
-git push <remote> <branch>                 # push to named remote/branch
-git push -u <remote> <branch>              # push + set upstream
-git push --force-with-lease                # safe force-push
-git push --tags                            # push all tags
-git pull <remote> <branch>                 # fetch + merge
-git clone <url>                            # clone a repo
-```
-
-### Inspection and archaeology
-
-```bash
-git log                                    # full history
-git log --oneline                          # one line per commit
-git log --oneline --graph --all            # graph view
-git log --stat                             # files changed per commit
-git log -p                                 # show diffs in log
-git log -p <file>                          # history of a file with diffs
-git log --follow <file>                    # follow file across renames
-git log -S "string"                        # commits adding/removing string
-git log --grep="pattern"                   # commits matching message pattern
-git log --author="name"                    # commits by author
-git log --since="2 weeks ago"              # commits since date
-git log --until="yesterday"                # commits until date
-git log <file>                              # commits touching a file
-git show <hash>                            # full info on a commit
-git show HEAD                              # latest commit info
-git show HEAD~1                            # parent commit
-git show <hash>:<file>                     # file content at a specific commit
-git show <branch>:<file>                   # file content at branch tip
-git diff                                   # unstaged changes
-git diff --staged                          # staged changes
-git diff HEAD~1 HEAD                       # diff between two commits
-git diff main..feature                     # diff between two branches
-git blame <file>                           # who wrote each line
-git blame -L 10,20 <file>                  # specific line range
-git blame -w <file>                        # ignore whitespace
-git grep "pattern"                         # search tracked files
-git grep -n "pattern"                      # with line numbers
-git shortlog -sne                          # contributors sorted by commit count
-git describe --tags                        # nearest tag + commit count
-git ls-files                              # list tracked files
-git ls-files -s                            # list with hashes (index inspection)
-git count-objects -v                       # repo size stats
-git fsck                                   # integrity check
-```
-
-### Undo and rescue
-
-```bash
-git restore --staged <file>                # unstage (keep changes)
-git restore <file>                         # discard uncommitted changes
-git restore .                              # discard all uncommitted
-git reset --soft HEAD~1                    # undo last commit, keep changes staged
-git reset HEAD~1                           # undo last commit, keep changes unstaged
-git reset --hard HEAD~1                    # undo last commit AND discard changes
-git reset --hard <hash>                    # move HEAD to a specific commit (destructive)
-git reset --hard origin/main               # match local to remote (destructive)
-git revert <hash>                          # add a new commit that undoes <hash>
-git revert -m 1 <merge-hash>              # revert a merge commit
-git commit --amend --no-edit              # add changes to last commit
-git commit --amend -m "new message"       # change last commit message
-git stash                                  # shelve uncommitted changes
-git stash -u                               # stash including untracked
-git stash -a                               # stash including ignored
-git stash push -m "wip: feature"          # stash with a message
-git stash list                             # list stashes
-git stash apply                            # apply most recent stash
-git stash apply stash@{1}                  # apply specific stash
-git stash pop                              # apply + drop most recent
-git stash drop stash@{0}                   # drop one stash
-git stash clear                            # drop all stashes
-git reflog                                 # show HEAD history
-git reflog --all                           # all refs' history
-git reset --hard HEAD@{2}                  # restore to 2 operations ago
-git branch <name> <hash>                   # recreate a deleted branch
-git cherry-pick <hash>                     # apply a commit to current branch
-git clean -n                               # dry run: show what would be deleted
-git clean -f                               # delete untracked files
-git clean -fd                              # delete untracked files + dirs
-git clean -fdx                             # also delete ignored files
-git push --force-with-lease                # safe force-push
-```
-
-### Tags and releases
-
-```bash
-git tag <name>                             # lightweight tag
-git tag -a <name> -m "message"             # annotated tag (recommended)
-git tag -a <name> -m "msg" <hash>          # tag a specific commit
-git tag                                    # list all tags
-git tag -l "v1.*"                           # filter tags
-git show <tag>                              # show tag details
-git push origin <tag>                       # push one tag
-git push origin --tags                      # push all tags
-git tag -d <name>                           # delete tag locally
-git push origin --delete <name>            # delete remote tag
-gh release create <tag> --notes "..."      # create release
-gh release create <tag> --generate-notes   # auto-generate notes
-gh release upload <tag> file.zip           # attach binary
-gh release download <tag>                  # download release assets
-gh release list                             # list releases
-```
-
-### Submodules and worktrees
-
-```bash
-git submodule add <url> <path>             # add submodule
-git submodule update --init --recursive    # init submodules after clone
-git submodule update --remote              # update submodules to latest
-git submodule deinit -f <path>             # deinit submodule
-git rm -f <path>                            # remove submodule
-git clone --recurse-submodules <url>       # clone with submodules
-
-git worktree add <path> <branch>           # add worktree
-git worktree list                           # list worktrees
-git worktree remove <path>                 # remove worktree
-```
-
-### Bisect
-
-```bash
-git bisect start                           # start
-git bisect bad                              # mark current as bad
-git bisect good <commit>                   # mark known-good commit
-git bisect good                             # mark current as good
-git bisect bad                              # mark current as bad
-git bisect reset                            # exit
-git bisect run <command>                   # automated
-```
-
-### GitHub CLI
-
-```bash
-gh auth login                              # authenticate
-gh auth status                              # check auth
-gh repo create <name>                       # create repo
-gh repo clone <owner>/<repo>                # clone
-gh repo view --web                          # open in browser
-gh repo fork <owner>/<repo> --clone         # fork + clone
-gh repo sync <owner>/<repo>                 # sync fork
-
-gh pr create --title "..." --body "..."     # open PR
-gh pr list                                  # list PRs
-gh pr view <num>                            # view PR
-gh pr view <num> --web                       # open in browser
-gh pr checkout <num>                        # checkout PR branch locally
-gh pr diff <num>                            # view diff
-gh pr merge <num> --squash --delete-branch  # merge + delete branch
-gh pr close <num>                           # close PR
-gh pr ready <num>                           # mark draft PR ready
-
-gh issue create --title "..." --body "..."  # open issue
-gh issue list                               # list issues
-gh issue view <num>                         # view issue
-gh issue close <num>                        # close issue
-gh issue comment <num> --body "..."         # comment on issue
-
-gh run list                                 # list workflow runs
-gh run view <id>                            # view a run
-gh run view <id> --log                      # view logs
-gh run rerun <id>                           # rerun failed run
-gh run watch <id>                           # live-watch a run
-
-gh release create <tag> --notes "..."       # create release
-gh release upload <tag> <file>              # attach binary
-gh release download <tag>                    # download
-
-gh secret set <name> --body "value"          # set secret
-gh secret list                                # list secrets
-gh secret delete <name>                      # delete secret
-
-gh gist create <file> --public                # create gist
-gh gist list                                  # list gists
-```
-
----
-
-## 14.2 How Do I...? (The Scenario Table)
-
-| I want to... | Command |
-|---|---|
-| See what changed | `git status` |
-| See unstaged diff | `git diff` |
-| See staged diff | `git diff --staged` |
-| See commit history | `git log --oneline` |
-| See who wrote each line of a file | `git blame <file>` |
-| Stage all changes | `git add .` |
-| Stage only part of a file | `git add -p <file>` |
-| Unstage a file | `git restore --staged <file>` |
-| Discard local changes | `git restore <file>` |
-| Discard all local changes | `git restore .` |
-| Discard everything and match HEAD | `git reset --hard HEAD` |
-| Discard everything and match remote | `git reset --hard origin/main` |
-| Amend last commit | `git commit --amend --no-edit` |
-| Change last commit message | `git commit --amend -m "new"` |
-| Undo last commit, keep changes | `git reset --soft HEAD~1` |
-| Undo last commit, lose changes | `git reset --hard HEAD~1` |
-| Undo a pushed commit | `git revert <hash>` then `git push` |
-| Save work in progress | `git stash` |
-| Restore stash | `git stash pop` |
-| Create a branch | `git switch -c <name>` |
-| Switch to a branch | `git switch <name>` |
-| List branches | `git branch` |
-| Delete a branch | `git branch -d <name>` |
-| Rename current branch | `git branch -m <new>` |
-| Merge a branch | `git merge <branch>` |
-| Abort a merge | `git merge --abort` |
-| See all branches graph | `git log --oneline --graph --all` |
-| Push to remote | `git push` |
-| Force push safely | `git push --force-with-lease` |
-| Pull from remote | `git pull` |
-| Fetch without merging | `git fetch` |
-| Add a remote | `git remote add origin <url>` |
-| Change remote URL | `git remote set-url origin <new>` |
-| See remotes | `git remote -v` |
-| Clone a repo | `git clone <url>` |
-| Tag a release | `git tag -a v1.0 -m "Release 1.0"` |
-| Push tags | `git push --tags` |
-| Recover deleted branch | `git reflog` → `git branch <name> <hash>` |
-| Recover lost commit | `git reflog` → `git reset --hard <hash>` |
-| Squash last 3 commits | `git rebase -i HEAD~3` then `squash` |
-| Find which commit broke something | `git bisect start`, `git bisect bad`, `git bisect good <hash>` |
-| Search commit messages | `git log --grep="pattern"` |
-| Search code in history | `git log -S "string"` |
-| Find what changed in a file | `git log -p <file>` |
-| Set up an alias | `git config --global alias.lg "log --oneline --graph"` |
-| See config | `git config --global --list` |
-| Open repo on github.com | `gh repo view --web` |
-| Open PR from CLI | `gh pr create` |
-| See my CI runs | `gh run list` |
-
----
-
-## 14.3 The Full Map of Git
-
-```
-                              ┌─────────────────────────┐
-                              │      GitHub.com         │
-                              │   (your remote: origin) │
-                              └────────────┬────────────┘
-                                           │
-                            push/pull/fetch│ (over SSH or HTTPS)
-                                           │
-        ┌──────────────────────────────────┴───────────────────────────────────┐
-        │                          Your Computer                              │
-        │                                                                    │
-        │   ┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐
-        │   │ Working Directory│    │  Staging Area    │    │  .git directory  │
-        │   │                  │    │   (index)        │    │                  │
-        │   │  Your files on   │    │                  │    │  objects/        │
-        │   │  disk, edited    │    │                  │    │   blobs, trees,  │
-        │   │  by you          │    │                  │    │   commits        │
-        │   │                  │    │                  │    │  refs/           │
-        │   │                  │    │                  │    │   heads/ (branches)│
-        │   │                  │    │                  │    │   tags/          │
-        │   │                  │    │                  │    │  HEAD            │
-        │   │                  │    │                  │    │  index           │
-        │   │                  │    │                  │    │  logs/ (reflog) │
-        │   │                  │    │                  │    │  hooks/         │
-        │   │                  │    │                  │    │  config         │
-        │   │                  │    │                  │    │                  │
-        │   │  git diff        │    │ git diff --staged│    │ git log          │
-        │   │  git status      │    │ git ls-files -s  │    │ git show         │
-        │   │  git restore     │    │ git restore -S   │    │ git cat-file     │
-        │   │                  │    │                  │    │                  │
-        │   │  ▲      │        │    │  ▲      │        │    │  ▲      │        │
-        │   │  │      ▼        │    │  │      ▼        │    │  │      ▼        │
-        │   │  │   git restore │    │  │   git commit   │    │  │   git checkout │
-        │   │  │   <file>      │    │  │               │    │  │   / git switch  │
-        │   │  │      ▲        │    │  │      ▲        │    │  │      ▲        │
-        │   │  │      │        │    │  │      │        │    │  │      │        │
-        │   │  └──────┴──────  │    │  └──────┴──────  │    │  └──────┴──────  │
-        │   │   git add <file> │    │   git commit -m  │    │  (move commits   │
-        │   │   ────────────►   │    │   ────────────►  │    │   back to working│
-        │   │                   │    │                   │    │   directory)    │
-        │   └──────────────────┘    └──────────────────┘    └──────────────────┘
-        │                                                                    │
-        │              Stash:  git stash (saves working+staging aside)         │
-        │              Reflog: git reflog (history of HEAD movements)         │
-        │              Hooks:  .git/hooks/ (auto-runs on events)              │
-        │                                                                    │
-        └────────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 14.4 Glossary A to Z
-
-| Term | Definition |
-|---|---|
-| **Annotated tag** | A tag object with metadata (author, date, message). Recommended over lightweight tags. |
-| **Atomic commit** | A commit that does exactly one thing. |
-| **Author** | The person who originally wrote a commit. May differ from committer (e.g. after rebase). |
-| **Bare repo** | A repo with no working directory, just the `.git` contents. Used as a remote. |
-| **Bisect** | Binary search through commits to find which one introduced a bug. |
-| **Blob** | Git object representing the content of a file. |
-| **Branch** | A movable pointer to a commit. Stored in `refs/heads/`. |
-| **Cherry-pick** | Apply a single commit from another branch onto the current branch. |
-| **Clone** | A local copy of a remote repo, including full history. |
-| **Commit** | A saved snapshot in history. Has a tree, parent(s), author, message, hash. |
-| **Committer** | The person who applied a commit. May differ from author. |
-| **Conflict** | When two branches changed the same lines; Git cannot auto-merge. |
-| **Detached HEAD** | When `HEAD` points at a commit directly, not at a branch. |
-| **Diff** | A line-by-line display of changes between two states. |
-| **Distributed** | Every clone has the full history. No central server required. |
-| **Fast-forward** | A merge where the target branch just moves forward (no merge commit). |
-| **Fork** | A server-side copy of a repo under your account. GitHub concept. |
-| **Garbage collection** | Git's cleanup of unreferenced objects (`git gc`). |
-| **HEAD** | Pointer to the current commit (via the current branch). |
-| **Hook** | A script that runs automatically before/after a Git event. |
-| **Index** | Synonym for staging area. Binary file at `.git/index`. |
-| **Lightweight tag** | A tag that's just a ref to a commit, no metadata. |
-| **Main** | The conventional default branch name (since 2020). |
-| **Master** | The old default branch name. Some repos still use it. |
-| **Merge** | Combining two branches' histories. |
-| **Merge commit** | A commit with two parents, created by a 3-way merge. |
-| **Origin** | The default name for the remote you cloned from. |
-| **Packfile** | A compressed bundle of Git objects (`objects/pack/*.pack`). |
-| **Pull** | Fetch + merge from remote. |
-| **Pull request (PR)** | A proposal to merge a branch. GitHub concept. |
-| **Push** | Upload commits to a remote. |
-| **Rebase** | Replay commits on top of another branch. Rewrites history. |
-| **Ref** | A named pointer: branch, tag, or `HEAD`. |
-| **Reflog** | Log of where `HEAD` has been. Safety net. |
-| **Release** | A GitHub Pages-style published version of a tag with notes and binaries. |
-| **Remote** | Another Git repo yours syncs with. Usually named `origin`. |
-| **Repository (repo)** | A folder Git is tracking. Contains the `.git` directory. |
-| **SHA / hash** | 40-char fingerprint of a Git object. |
-| **Snapshot** | A complete state of all tracked files at one moment. A commit. |
-| **Stage** | To mark changes for the next commit (via `git add`). |
-| **Stash** | Temporary storage for uncommitted changes. |
-| **Submodule** | A Git repo nested inside another. |
-| **Tag** | A fixed pointer to a specific commit. Used for releases. |
-| **Tree** | Git object representing a directory (file names + blob hashes). |
-| **Upstream** | Convention for the original repo's remote (when you forked). |
-| **Working directory** | The actual files on disk that you edit. |
-
----
-
-## 14.5 File Locations Cheat Sheet
-
-| File | Location | Purpose |
-|---|---|---|
-| Global config | `~/.gitconfig` | User-level Git settings. |
-| Repo config | `<repo>/.git/config` | Repo-level settings (overrides global). |
-| SSH private key | `~/.ssh/id_ed25519` | Your private SSH key. **Never share.** |
-| SSH public key | `~/.ssh/id_ed25519.pub` | Your public SSH key. Share with GitHub. |
-| SSH known hosts | `~/.ssh/known_hosts` | Servers you've verified. |
-| Repo database | `<repo>/.git/` | All of Git's data. Don't touch manually. |
-| Repo objects | `<repo>/.git/objects/` | All blobs, trees, commits. |
-| Repo branches | `<repo>/.git/refs/heads/` | One file per local branch. |
-| Repo tags | `<repo>/.git/refs/tags/` | One file per tag. |
-| Repo HEAD | `<repo>/.git/HEAD` | Pointer to current branch. |
-| Repo index | `<repo>/.git/index` | Binary file: the staging area. |
-| Repo reflog | `<repo>/.git/logs/HEAD` | History of HEAD movements. |
-| Hooks | `<repo>/.git/hooks/` | Sample hook scripts. |
-| Workflow files | `<repo>/.github/workflows/` | GitHub Actions workflows. |
-| Issue templates | `<repo>/.github/ISSUE_TEMPLATE/` | Templates for new issues. |
-| PR template | `<repo>/.github/PULL_REQUEST_TEMPLATE.md` | Default PR description. |
-| Code owners | `<repo>/.github/CODEOWNERS` or `<repo>/CODEOWNERS` | Path → owner mappings. |
-| Dependabot config | `<repo>/.github/dependabot.yml` | Dependency update config. |
-
----
-
-## 14.6 File Conventions Cheat Sheet
-
-| File | Purpose |
-|---|---|
-| `.gitignore` | Files Git should not track. |
-| `.gitattributes` | Per-file attributes (line endings, binary/text, etc.). |
-| `.editorconfig` | Editor behavior (indent style, charset, etc.). |
-| `.env` | Environment variables. **Should be gitignored.** |
-| `.env.example` | Template for required env vars (committed). |
-| `README.md` | Project description. First thing visitors see. |
-| `LICENSE` | Open-source license. |
-| `CHANGELOG.md` | Manual changelog. |
-| `CONTRIBUTING.md` | How to contribute. |
-| `CODE_OF_CONDUCT.md` | Community behavior rules. |
-| `SECURITY.md` | How to report vulnerabilities. |
-| `Dockerfile` | Container build instructions. |
-| `Makefile` | Common dev commands. |
-| `package.json` | Node.js project manifest. |
-| `pyproject.toml` | Python project manifest. |
-| `Cargo.toml` | Rust project manifest. |
-
-Bookmark this chapter. You'll be back.
-
-**Next up: Chapter 15 — Troubleshooting and FAQ.** When things go wrong, jump here.
-
----
----
-
-
-# Chapter 15 — Troubleshooting and FAQ
-
-> **Goal of this chapter:** Fix the most common Git errors. Search by error message. Bookmark this page.
-
-When Git refuses to do something, it usually tells you exactly why. This chapter translates the error messages into fixes.
-
----
-
-## `fatal: not a git repository (or any of the parent directories): .git`
-
-**Cause:** You're running a Git command in a folder that isn't inside a Git repo.
-
-**Fix:**
-1. `cd` into the right folder (the one with `.git/` inside).
-2. Or run `git init` if you want to make this folder a repo.
-3. Or `git clone <url>` to download an existing repo.
-
-To check whether a folder is a repo:
-
-```bash
-ls -la | grep .git
-# or:
-git rev-parse --git-dir
-```
-
----
-
-## `Permission denied (publickey)` when pushing/pulling over SSH
-
-**Cause:** GitHub doesn't recognize your SSH key.
-
-**Fixes:**
-1. Verify you have a key:
-   ```bash
-   ls ~/.ssh/
-   ```
-   You should see `id_ed25519` and `id_ed25519.pub` (or `id_rsa` / `id_rsa.pub`).
-
-2. If not, generate one (Chapter 1.5).
-
-3. Verify the key is loaded in the agent:
-   ```bash
-   ssh-add -l
-   ```
-   Should list your key. If empty:
-   ```bash
-   eval "$(ssh-agent -s)"
-   ssh-add ~/.ssh/id_ed25519
-   ```
-
-4. Verify GitHub knows your key:
-   ```bash
-   ssh -T git@github.com
-   ```
-   Should print `Hi <username>!`.
-
-5. Verify the remote URL uses SSH:
-   ```bash
-   git remote -v
-   ```
-   Should show `git@github.com:owner/repo.git`. If it shows `https://`, switch:
-   ```bash
-   git remote set-url origin git@github.com:owner/repo.git
-   ```
-
----
-
-## `ERROR: Repository not found` / `fatal: unable to access ... : The requested URL returned error: 403`
-
-**Cause:** Either the repo doesn't exist, or you don't have access.
-
-**Fixes:**
-1. Verify the URL is correct (typos happen).
-2. Verify the repo exists (open in browser).
-3. If it's a private repo, verify you've been added as a collaborator.
-4. If you're forking, make sure you're pushing to your fork (`yourname/repo`), not the original.
-5. If using HTTPS, verify your PAT is correct (re-create it if needed).
-
----
-
-## `! [rejected] main -> main (fetch first)` / `failed to push some refs`
-
-**Cause:** The remote has commits you don't have locally.
-
-**Fix:**
-```bash
-git pull
-# resolve any conflicts
+git pull origin main --allow-unrelated-histories    # the explicit override: "yes, merge the two beginnings"
+# (resolve conflicts if both sides created the same file, e.g., README.md)
 git push
 ```
 
----
+**Prevention:** when connecting an existing local repo, create the GitHub side *empty* (no README, no license) - Chapter 22.2's checklist.
 
-## `fatal: refusing to merge unrelated histories`
+#### 37.6 `Permission denied (publickey)` / `fatal: Could not read from remote repository`
 
-**Cause:** Git sees two completely independent histories. Usually happens when you `git init` a repo, then `git remote add origin <url>` and `git pull` — but the remote already had commits you don't share a common ancestor with.
-
-**Fix:** If you're sure you want to merge:
-```bash
-git pull origin main --allow-unrelated-histories
-# resolve conflicts if any, then:
-git push
-```
-
-But better: when starting, clone the empty remote repo instead of `git init` locally.
-
----
-
-## `fatal: You are not currently on a branch` / "detached HEAD"
-
-**Cause:** You checked out a commit (not a branch), so `HEAD` doesn't point to a branch. New commits won't be on any branch.
-
-**Fix:**
-
-If you haven't made any commits:
-```bash
-git switch main
-```
-
-If you made commits you want to keep:
-```bash
-git branch save-my-work      # create branch at current commit
-git switch main              # safely leave detached HEAD
-# later:
-git switch save-my-work      # continue work on the saved branch
-```
-
----
-
-## `Your branch is ahead of 'origin/main' by N commits`
-
-**Not an error!** It just means you have N local commits you haven't pushed yet.
-
-**Fix:** Push them:
-```bash
-git push
-```
-
----
-
-## `warning: LF will be replaced by CRLF` (or the reverse)
-
-**Cause:** Windows uses CRLF line endings; Unix uses LF. Git is normalising line endings. Usually harmless.
-
-**Fix:** Add a `.gitattributes` file (Chapter 8.14):
-```text
-* text=auto eol=lf
-*.bat text eol=crlf
-*.png binary
-```
-
-Or globally:
-```bash
-git config --global core.autocrlf input    # macOS/Linux
-git config --global core.autocrlf true     # Windows
-```
-
----
-
-## Merge conflict markers got committed (I see `<<<<<<<` in files on GitHub)
-
-**Cause:** You committed a file without resolving the conflict markers.
-
-**Fix:**
-1. Open the file, find the `<<<<<<<`, `=======`, `>>>>>>>` markers.
-2. Edit the file to the final desired content (removing all markers).
-3. `git add <file>` and `git commit` to record the fix.
-
-If the markers are in an old commit (already pushed), use `git revert` to add a fix commit, or `git rebase -i` to fix interactively (if not yet pushed).
-
----
-
-## `fatal: remote origin already exists`
-
-**Cause:** You tried `git remote add origin <url>` but `origin` already exists.
-
-**Fix:** Use `set-url` instead:
-```bash
-git remote set-url origin <new-url>
-```
-
-Or remove first:
-```bash
-git remote remove origin
-git remote add origin <new-url>
-```
-
----
-
-## `error: failed to push some refs ... hint: Updates were rejected because the tip of your current branch is behind` after history rewriting
-
-**Cause:** You rebased or amended commits that were already pushed. The remote has the old commits; your local has new ones.
-
-**Fix:** Force-push (safely):
-```bash
-git push --force-with-lease
-```
-
-⚠ Only do this on branches that nobody else is using. Never force-push to `main` on a shared project.
-
----
-
-## `error: Your local changes to the following files would be overwritten by merge/checkout`
-
-**Cause:** You have uncommitted changes that conflict with what Git wants to do.
-
-**Fixes:**
-
-1. **Stash them:**
-   ```bash
-   git stash
-   # do your merge / checkout / pull
-   git stash pop
-   ```
-
-2. **Commit them:**
-   ```bash
-   git add . && git commit -m "WIP"
-   # do your operation
-   ```
-
-3. **Discard them (if you don't want them):**
-   ```bash
-   git restore .
-   # or:
-   git checkout -- .
-   ```
-
----
-
-## `Merge branch 'x' of ...` messages everywhere / my history is a braid
-
-**Cause:** You're using `git pull` (which creates merge commits) on a repo where you're the only contributor. Each pull adds a merge commit, even when unnecessary.
-
-**Fix:** Switch to pull with rebase:
-```bash
-git config --global pull.rebase true
-```
-
-Then `git pull` will rebase your local commits on top of the remote, giving a linear history.
-
-To clean up existing braid history:
-```bash
-git rebase -i origin/main
-# pick the first commit, "squash" or "reword" the rest
-```
-
----
-
-## `fatal: bad object <hash>` / `error: object file ... is empty` / repo seems corrupted
-
-**Cause:** Disk corruption, crashed write, or interrupted operation. Rare but happens.
-
-**Fixes:**
-
-1. Run integrity check:
-   ```bash
-   git fsck --full
-   ```
-   This will report missing / corrupt objects.
-
-2. Try to recover from a backup remote:
-   ```bash
-   git fetch --all
-   ```
-
-3. If a single object is broken:
-   ```bash
-   # identify the broken file:
-   git fsck --full | grep "missing\|corrupt"
-   # delete the broken file, then re-fetch:
-   rm .git/objects/<first-2-chars>/<remaining-38-chars>
-   git fetch --all
-   ```
-
-4. Last resort: re-clone the repo from the remote:
-   ```bash
-   cd ..
-   git clone <url> new-clone
-   ```
-   You'll lose uncommitted changes in the corrupted repo, but committed-and-pushed work is safe.
-
----
-
-## `error: lock file exists: .git/index.lock` / `Another git process seems to be running`
-
-**Cause:** A previous Git command crashed or was killed, leaving a `.git/index.lock` file behind.
-
-**Fix:** Verify no Git process is running, then remove the lock:
-```bash
-ps aux | grep git
-# if nothing relevant, remove:
-rm .git/index.lock
-```
-
-⚠ Only do this if you're sure no Git command is running. Removing an active lock can corrupt the repo.
-
----
-
-## `Please tell me who you are` before your first commit
-
-**Cause:** You haven't set your name and email.
-
-**Fix:**
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "you@example.com"
-```
-
----
-
-## GitHub asks for a password over HTTPS and rejects it
-
-**Cause:** GitHub stopped accepting account passwords for Git operations in August 2021. You need a Personal Access Token (PAT) instead, or SSH.
-
-**Fix:**
-
-Option 1 — use SSH (recommended):
-```bash
-git remote set-url origin git@github.com:owner/repo.git
-```
-
-Option 2 — use a PAT:
-1. Create one at <https://github.com/settings/tokens>.
-2. When Git asks for password, paste the PAT (not your account password).
-3. Set up credential storage so you only enter it once:
-   ```bash
-   git config --global credential.helper osxkeychain   # macOS
-   git config --global credential.helper manager        # Windows
-   git config --global credential.helper store          # Linux (plaintext; less secure)
-   ```
-
----
-
-## `fatal: ambiguous argument 'HEAD'` (on a brand-new repo)
-
-**Cause:** You haven't made any commits yet, so `HEAD` doesn't point anywhere.
-
-**Fix:** Make your first commit:
-```bash
-git add .
-git commit -m "Initial commit"
-```
-
----
-
-## `error: pathspec '<file>' did not match any file(s) known to git`
-
-**Cause:** You tried to `git add` (or operate on) a file that doesn't exist or isn't in the repo.
-
-**Fixes:**
-- Verify the file path (typos, case sensitivity).
-- For `git checkout -- <file>`: the file must be tracked. If it's new (untracked), use `git restore` instead.
-- For `git log <file>`: the file must exist in the current branch.
-
----
-
-## `fatal: refusing to merge unrelated histories` (during pull)
-
-**Cause:** Local and remote histories have no common ancestor. Common after `git init` + `git remote add` + `git pull` on a non-empty remote.
-
-**Fix:**
-```bash
-git pull origin main --allow-unrelated-histories
-# resolve conflicts
-git push
-```
-
-Better prevention: clone empty repos instead of init+remote+pull.
-
----
-
-## `fatal: refusing to delete branch currently checked out`
-
-**Cause:** You can't delete the branch you're on.
-
-**Fix:** Switch to another branch first:
-```bash
-git switch main
-git branch -D <other-branch>
-```
-
----
-
-## `error: cannot lock ref 'refs/heads/feature/...': 'refs/heads/feature' exists`
-
-**Cause:** You have a branch named `feature` and tried to create `feature/something`. Git can't have both a branch and a "folder" with the same name.
-
-**Fix:** Rename the conflicting branch:
-```bash
-git branch -m feature feature-old
-git switch -c feature/something
-```
-
----
-
-## FAQ — quick answers
-
-**Q: How do I undo `git init`?**
-A: Delete the `.git` folder: `rm -rf .git`. The rest of your files are untouched.
-
-**Q: How do I undo `git add`?**
-A: `git restore --staged <file>` (or `git reset HEAD <file>`).
-
-**Q: How do I change the commit message of the last commit (not pushed)?**
-A: `git commit --amend -m "new message"`.
-
-**Q: How do I change the commit message of an old commit?**
-A: `git rebase -i HEAD~N`, change `pick` to `reword` for that commit, save.
-
-**Q: How do I push a new branch to remote?**
-A: `git push -u origin <branch>` (the `-u` sets up tracking).
-
-**Q: How do I rename a remote branch?**
-A: You can't rename a remote branch directly. Push the new name, delete the old:
-```bash
-git push origin <old>:<new>
-git push origin --delete <old>
-```
-
-**Q: How do I see which branches are merged into main?**
-A: `git branch --merged main`.
-
-**Q: How do I delete all merged branches?**
-A: `git branch --merged main | grep -v main | xargs git branch -d`.
-
-**Q: How do I make Git stop asking for my SSH passphrase?**
-A: On macOS: add to `~/.ssh/config`:
-```
-Host github.com
-  AddKeysToAgent yes
-  UseKeychain yes
-  IdentityFile ~/.ssh/id_ed25519
-```
-On Linux: use `ssh-agent` and add to your shell startup.
-
-**Q: How do I find the commit that introduced a specific line?**
-A: `git blame <file>` then look at the commit hash for that line.
-
-**Q: How do I find the commit that broke a feature?**
-A: `git bisect` (Chapter 8.8).
-
-**Q: How do I share my Git config across machines?**
-A: Commit your `~/.gitconfig` to a dotfiles repo and symlink it. Or use `chezmoi` / `yadm`.
-
-**Q: How do I see what's in the staging area before committing?**
-A: `git diff --staged` (or `git diff --cached`).
-
-**Q: How do I make Git case-sensitive for file names?**
-A: `git config core.ignorecase false` (per repo).
-
-**Q: How do I switch to a branch that exists only on the remote?**
-A: `git fetch && git switch <branch-name>` (modern Git auto-creates a tracking branch).
-
-**Q: How do I see the contents of a file as it was in commit X?**
-A: `git show <hash>:<file>`.
-
-**Q: How do I move my repo to GitHub without including sensitive files in history?**
-A: Use `git filter-repo` (Chapter 7.12) to scrub history, then push.
-
-**Q: How do I download a single file from GitHub without cloning?**
-A: On github.com, open the file → **Raw** button → save. Or `curl https://raw.githubusercontent.com/owner/repo/branch/path/file`.
-
-**Q: How do I find the most recent commit that touched a specific line?**
-A: `git blame -L <line>,<line> <file>`.
-
-**Q: Can I undo a force-push?**
-A: Often yes, if you know the previous commit hash. `git push --force origin <old-hash>:main`. GitHub staff can sometimes recover via support ticket otherwise.
-
-**Q: How do I see who has access to my repo?**
-A: Repo → Settings → Collaborators and teams.
-
-**Q: How do I make a public repo private?**
-A: Repo → Settings → Change visibility. Free accounts can have unlimited private repos.
-
-**Q: How do I transfer a repo to another account?**
-A: Repo → Settings → Transfer. Both accounts must agree.
-
-**Q: How do I download an entire repo as a ZIP without Git?**
-A: github.com → **Code** button → **Download ZIP**. Or `gh repo clone`.
-
-**Q: My PR has conflicts. How do I fix them?**
-A: On github.com, click "Resolve conflicts" if it's simple. Otherwise, pull the target branch into your feature branch locally and resolve manually:
-```bash
-git switch feature/x
-git fetch origin
-git merge origin/main   # or git rebase origin/main
-# resolve conflicts
-git push
-```
-
-If you've encountered an error not covered here, the official Git FAQ is at <https://git-scm.com/docs/git-faq> and Stack Overflow's `git` tag has answers to virtually every Git question ever asked.
-
-**Next up: Chapter 16 — Resources, Glossary & Next Steps.** Where to go after this guide.
-
----
----
-
-
-# Chapter 16 — Resources, Glossary & Next Steps
-
-> **Goal of this chapter:** Give you a curated map of where to go next. Books, courses, tools, communities, and projects to deepen your mastery.
-
-You've finished the guide. Now what? This chapter is your reading list and your path forward.
-
----
-
-## 16.1 Official Documentation
-
-| Resource | URL |
-|---|---|
-| Git official site | <https://git-scm.com/> |
-| Pro Git book (free, comprehensive) | <https://git-scm.com/book> |
-| Git reference manual | <https://git-scm.com/docs> |
-| Git FAQ | <https://git-scm.com/docs/git-faq> |
-| GitHub Docs | <https://docs.github.com/> |
-| GitHub Skills (interactive tutorials) | <https://skills.github.com/> |
-| GitHub CLI docs | <https://cli.github.com/manual/> |
-| GitHub Actions docs | <https://docs.github.com/actions> |
-| GitHub REST API | <https://docs.github.com/rest> |
-| GitHub GraphQL API | <https://docs.github.com/graphql> |
-| GitHub Pages docs | <https://docs.github.com/pages> |
-| GitHub security best practices | <https://docs.github.com/code-security> |
-
-The Pro Git book is the single best resource. Read it cover-to-cover once; refer back forever.
-
----
-
-## 16.2 Interactive Practice
-
-| Resource | What it is |
-|---|---|
-| <https://learngitbranching.js.org/> | Visual, interactive Git branching tutorial. Best way to internalise branching/merging. |
-| <https://onlywei.github.io/explain-git-with-d3/> | Animated visualisations of Git commands. |
-| <https://git.github.io/git-reference/> | Quick command reference. |
-| <https://www.atlassian.com/git/tutorials> | Atlassian's Git tutorials (high quality, free). |
-| <https://lab.github.com/> | GitHub's own learning lab. |
-| <https://www.firsttimersonly.com/> | Resources specifically for first-time open-source contributors. |
-
-Spend 30 minutes on **learngitbranching.js.org** — it's the most effective branching visualisation ever built.
-
----
-
-## 16.3 Tools Worth Trying
-
-| Tool | What it does | Why you'd use it |
-|---|---|---|
-| `lazygit` | Terminal UI for Git | Keyboard-driven, very fast |
-| `tig` | Terminal history browser | Quick log inspection |
-| `gh` | GitHub CLI | Do GitHub stuff from terminal |
-| `delta` | Beautiful `git diff` | Best-looking diffs |
-| `git-delta` | Same as above (alt name) | Same |
-| `pre-commit` | Hook framework | Manage hooks as code |
-| `commitlint` | Enforce commit message format | Conventional commits enforcement |
-| `semantic-release` | Auto version + publish | Conventional commits → auto release |
-| `git-filter-repo` | Rewrite history (remove secrets) | Modern replacement for BFG |
-| `git-lfs` | Large File Storage | Track binaries without bloating repo |
-| `husky` | Git hooks for JS projects | Easy hook management with npm |
-| `lint-staged` | Lint only staged files | Faster pre-commit hooks |
-| GitLens (VS Code) | Git superpower for VS Code | Inline blame, hover details, rebase editor |
-| Git Graph (VS Code) | Visualise branch graph | Inside VS Code |
-| GitHub Desktop | GUI Git client | Beginner-friendly |
-| GitKraken | Cross-platform GUI | Beautiful visualisations |
-| Sourcetree | Atlassian's GUI client | Power features in GUI |
-
-Try one new tool per week. Most are installable in under 5 minutes.
-
----
-
-## 16.4 Books
-
-| Book | Author | Notes |
-|---|---|---|
-| **Pro Git** | Scott Chacon, Ben Straub | Free online. The Bible. |
-| **Version Control with Git** | Jon Loeliger, Matthew McCullough | O'Reilly. Deep. |
-| **Git for Teams** | Emma Jane Hogbin Westby | Workflow-focused. |
-| **GitHub Essentials** | Achilleas Pipinellis | Quick start. |
-
----
-
-## 16.5 Communities
-
-| Community | Where |
-|---|---|
-| GitHub Community Discussions | <https://github.community/> |
-| Stack Overflow `git` tag | <https://stackoverflow.com/questions/tagged/git> |
-| Reddit r/git | <https://reddit.com/r/git> |
-| Reddit r/github | <https://reddit.com/r/github> |
-| Git mailing list | <https://git.wiki.kernel.org/index.php/GitCommunity> |
-| GitHub Discord | Linked from github.com/community |
-
-If you get stuck, search Stack Overflow first — most Git questions have been asked and answered.
-
----
-
-## 16.6 Where Do You Go From Here?
-
-You've completed the guide. The path forward depends on your goals:
-
-### If you're a student or career-switcher
-
-- Build a portfolio of 3–5 GitHub projects (use the structure from Chapter 11).
-- Contribute to one open-source project (Chapter 13).
-- Pin your best repos on your GitHub profile.
-- Add your GitHub URL to your resume.
-- Apply for internships / junior roles — you have the Git skills they want.
-
-### If you're a working developer who never formally learned Git
-
-- Audit your team's repo against the Chapter 11.7 checklist.
-- Propose conventions: PR templates, branch protection, CI.
-- Mentor juniors on Git (teaching is the best way to solidify knowledge).
-- Read *Pro Git* once cover-to-cover.
-
-### If you want to specialise
-
-- **DevOps/Platform Engineering:** Deep-dive GitHub Actions, self-hosted runners, GitHub Enterprise, GitHub Packages, GitHub Container Registry, deployment strategies (blue/green, canary).
-- **Security:** GitHub Advanced Security, CodeQL, Dependabot, secret scanning, signed commits (GPG, SSH, X.509), SLSA framework.
-- **Open Source Maintainer:** Pick one project you depend on, contribute regularly, eventually become a maintainer. Apply everything in Chapter 13.
-
-### If you want to go deeper on Git internals
-
-- Read the Git source code: <https://github.com/git/git>
-- Read the Git book's "Git Internals" chapter (Chapter 10 of Pro Git).
-- Watch Linus Torvalds' talk on Git's design: <https://www.youtube.com/watch?v=4XpnKHJAok8>
-- Read "Git from the Bottom Up": <https://jwiegley.github.io/git-from-the-bottom-up/>
-- Experiment: build a tiny Git clone in your favorite language (a common learning exercise).
-
----
-
-## 16.7 The Long-Term Mastery Roadmap
-
-| Time | Milestone |
-|---|---|
-| **Week 1** | Finished this guide. Can init/commit/push/branch/merge confidently. |
-| **Month 1** | First real project on GitHub. First PR reviewed and merged. CI configured. |
-| **Month 3** | First open-source contribution merged. Comfortable with rebase, stash, reflog. |
-| **Month 6** | Mentoring a teammate on Git. Reviewing PRs. |
-| **Year 1** | Can explain any Git command's internals. Have architected CI/CD for a project. |
-| **Year 2+** | Maintainer of an OSS project, or designing org-wide Git workflows at work. |
-
-Git is one of those tools that pays compound interest. The more you use it, the more you understand; the more you understand, the faster you work; the faster you work, the more time you have to learn even more.
-
----
-
-## 16.8 Final Thoughts
-
-A few years ago, version control felt intimidating. Now you know:
-
-- What Git is, where it came from, and why it exists.
-- How to install and configure it.
-- The mental models: snapshots, three areas, branches as pointers, distributed history.
-- Everyday commands: `add`, `commit`, `push`, `pull`, `log`, `diff`, `status`.
-- Branching and merging, including conflict resolution.
-- How to push to GitHub and collaborate via PRs.
-- How to undo anything: `reset`, `revert`, `stash`, `reflog`, `restore`.
-- Power tools: `rebase`, `cherry-pick`, `bisect`, `blame`, `tag`, `submodule`, `worktree`, hooks.
-- How to write CI/CD with GitHub Actions.
-- How to use GUI clients and IDE integrations.
-- Best practices: atomic commits, conventional messages, repo housekeeping, licensing.
-- How to contribute to open source.
-- How to recover from any disaster.
-- Where to learn more.
-
-You are no longer a Git beginner. You're not even intermediate. You are competent — and competence grows into mastery with use.
-
-The next step is not more reading. The next step is **doing**.
-
-Open a terminal. Create a new repo. Build something. Push it. Open a PR. Get feedback. Merge it. Tag a release.
-
-Then do it again tomorrow. And the day after.
-
-Git is a tool; mastery is a habit. Go build.
-
----
-
-## License of this guide
-
-This guide is released under the **Creative Commons Attribution 4.0 International (CC BY 4.0)** license. You are free to:
-
-- **Share** — copy and redistribute the material in any medium or format.
-- **Adapt** — remix, transform, and build upon the material for any purpose, even commercially.
-
-Under the following terms:
-
-- **Attribution** — you must give appropriate credit (link to this repo), indicate if changes were made, and distribute under the same license.
-
-Full license text: <https://creativecommons.org/licenses/by/4.0/>
-
----
-
-## Contribute to this guide
-
-Found a typo? Want to add a chapter? Open a PR.
+**Meaning:** the SSH handshake from Chapter 10.6 failed: your key is missing, not loaded, or not the one GitHub has. **Fix, in order of likelihood:**
 
 ```bash
-gh repo fork AzizNader1/Learning_Git_GitHub_From_Zero_To_Hero --clone
-cd Learning_Git_GitHub_From_Zero_To_Hero
-git switch -c docs/improve-section-x
-# make changes
-git commit -m "docs: improve Section X.Y for clarity"
-git push -u origin docs/improve-section-x
-gh pr create --title "Docs: improve Section X.Y" --body "What I changed and why."
+ls ~/.ssh/id_ed25519*                  # 1. Does the key exist at all? If nothing prints: rerun ssh-keygen (Chapter 10.4)
+ssh -T git@github.com                   # 2. Test the connection (success prints "Hi yourname!" - Chapter 10.6)
+cat ~/.ssh/id_ed25519.pub               # 3. If the test fails: is THIS key's public half on GitHub? (Settings -> SSH keys)
+git remote -v                          # 4. Is the remote even SSH-form? An https:// URL uses PAT auth, not SSH keys
 ```
 
-All contributions welcome. Be kind. Follow the Code of Conduct (when added).
+**Prevention:** one deliberate Chapter 10 setup session, once per machine.
+
+#### 37.7 `fatal: Authentication failed` (HTTPS / PAT)
+
+**Meaning:** HTTPS remotes authenticate with a Personal Access Token (Chapter 22.7), and yours is missing, mistyped, or expired. **Fix:** create a fresh token (github.com -> Settings -> Developer settings -> Personal access tokens -> fine-grained, scoped to your repositories) and let your credential manager store it on first use; or sidestep tokens entirely by switching the remote to SSH: `git remote set-url origin git@github.com:yourname/repo.git`. **Prevention:** SSH keys (Chapter 10) - they never expire silently.
+
+#### 37.8 `You are in 'detached HEAD' state`
+
+**Meaning:** HEAD is pinned to a commit instead of riding a branch - you checked out a tag or commit ID (Chapter 21.6), or poked around an old hash. Not dangerous for *looking*; dangerous for *committing* (a commit made here belongs to no branch and is hard to find again). **Fix:** `git switch main` (or your branch) to reattach. If you already committed in detached state and want the work: `git branch rescue <that-commit-id>` before switching, or find it later via `git reflog` (Chapter 26.7). **Prevention:** visiting history with `git switch --detach` *while knowing it is a visit*, and `git log`/`git show` (read-only tools) instead of checkout when you only want to look.
+
+#### 37.9 `error: Your local changes to the following files would be overwritten by merge/checkout`
+
+**Meaning:** you have uncommitted edits in a file that the incoming operation wants to rewrite; Git refuses to steamroll your work. **Fix, choose your truth:**
+
+```bash
+git stash                       # option A: the edits are precious - drawer them (Chapter 20), operate, pop later
+git restore <file>              # option B: the edits are garbage - discard them (Chapter 26.2), then retry
+git commit -am "wip"            # option C: commit them first, as a real save point
+```
+
+**Prevention:** clean-or-stashed working directory before switching and merging - the three-way decision above *is* the professional reflex.
+
+#### 37.10 `error: Another git process seems to be running... (index.lock exists)`
+
+**Meaning:** a previous Git operation died mid-flight (crash, closed terminal) and left its lock file - Git's "do not disturb" sign for the staging area (Chapter 30's `index` plus its `index.lock` sibling). **Fix:**
+
+```bash
+ps aux | grep git               # 1. Confirm NO git process is genuinely running (if one is: wait or close it)
+rm -f .git/index.lock           # 2. Remove the stale lock (safe ONLY when no git process is running)
+```
+
+**Prevention:** little to do - it is a crash artifact, not a habit flaw. The file's existence and meaning are yours to read now, courtesy of Chapter 30.
+
+#### 37.11 A merge is stuck half-done
+
+**Meaning:** you started a merge (or rebase, or cherry-pick), conflicts appeared (Chapter 18), and you wandered off / got confused. `git status` will say `You have unmerged paths` (or `interactive rebase in progress`). **Fix:** the two exits are always the same pair: finish (edit, `git add`, `git commit` or `git rebase --continue`) or abort (`git merge --abort` / `git rebase --abort` / `git cherry-pick --abort` - all restore the pre-operation state exactly). Search files for leftover markers if `status` still complains: `grep -rn "<<<<<<<" .` finds any marker Git is waiting on you to remove.
+
+#### 37.12 `warning: LF will be replaced by CRLF` (or the reverse)
+
+**Meaning:** not an error - Chapter 9.4's line-ending normalization doing its job out loud. Windows's two-character line endings (CRLF) versus the universal single LF: your `core.autocrlf` setting is harmonizing them, and warning you about it, verbosely, forever. **Fix:** nothing; or silence it by adding a `.gitattributes` file with one line, `* text=auto`, which makes the rule explicit and portable (the same normalization, declared in the repository instead of per-machine config). **Prevention:** the Chapter 9.4 settings at setup time; formatting tools (Prettier et al.) end the deeper tabs-vs-spaces noise.
+
+#### 37.13 The 100 MB wall: `remote: error: File ... exceeds GitHub's file storage limit`
+
+**Meaning:** GitHub rejects files over 100 MB and warns on those over 50 MB - repositories are for source, not for videos, datasets, and installers. **Fix for the future:** the file belongs in `.gitignore` (Chapter 15), in cloud storage, or in **Git LFS** (Large File Storage - an official extension that tracks huge files as small pointers and stores the bytes elsewhere). **Fix for the crime already committed:** if it *only* exists in recent local commits, unwind with `git reset --soft HEAD~N` and commit properly without it; if it has been pushed, history rewriting with `git filter-repo` is the standard tool - a genuinely advanced operation; and if the file was a *secret* rather than merely *large*, reread Chapter 36.2's protocol: rotate first, clean second.
+
+#### 37.14 `error: src refspec main does not match any`
+
+**Meaning:** you tried to push a branch name that does not exist locally - almost always pushing from a repository with zero commits, or before your first commit on `main`. **Fix:** commit something first (`git status` narrates what is pending), then push; if your local branch is genuinely named differently (`master` from an old default), rename it (`git branch -m main`, Chapter 11.2) or push the name that exists. **Prevention:** the Chapter 9 `init.defaultBranch main` setting makes the mismatch never happen on your machines.
+
+#### 37.15 The Meta-Errors: YAML and Indentation (Actions)
+
+From Chapter 31: workflows failing with `invalid yaml` or `while parsing a block mapping` are *indentation* errors, not code errors - two spaces, never tabs, alignment carries meaning. And a workflow file that lives anywhere except exactly `.github/workflows/*.yml` simply never runs (silently: the file is committed, GitHub ignores it). The debugging order for Actions failures: 1) did the workflow even trigger? (Actions tab) 2) which step red? (the first `error` in its log is the real one) 3) does it pass locally on a fresh clone? - the runner is a stranger's blank machine (Chapter 31.6), and "works on my machine" is precisely what CI exists to catch.
 
 ---
 
-> **End of guide.** You started at zero. You are now at hero. Go build something worth committing.
->
-> *— The Author, 2026*
+### Chapter 38: Git Interview Questions and Answers
+
+Fifteen questions that cover what interviews actually ask. Answer in your own words first; then read the model answer.
+
+**1. What is the difference between Git and GitHub?**
+Git is a distributed version control program that runs locally on your machine, storing history in the hidden `.git` folder of a repository. GitHub is a website that hosts copies of Git repositories in the cloud and layers collaboration features on top - pull requests, issues, Actions automation, Pages hosting. They integrate (you push and pull between them) but they are separate products by separate origins.
+
+**2. What is the difference between `git fetch` and `git pull`?**
+`git fetch` downloads everything new from the remote and updates your remote-tracking markers (`origin/main`) while changing nothing else - you can inspect before integrating. `git pull` is `git fetch` immediately followed by a merge (or rebase, per configuration) into your current branch. Fetch is look-then-decide; pull is fetch-and-leap.
+
+**3. What is the staging area and why does it exist?**
+The staging area (index) is the list of changes that the next commit will contain. It exists so commits can be composed deliberately: you can stage two finished files and leave the half-written one out, letting each commit be one logical, reviewable, revertible unit of change instead of "everything on my disk right now."
+
+**4. What is the difference between `git merge` and `git rebase`?**
+Both integrate one branch's work into another. Merge creates a new commit with two parents, preserving the true history of parallel work. Rebase replays your commits one by one onto the target's tip, producing a linear history as if the work happened sequentially - but rewriting commit IDs. The professional rule: rebase your private, unshared branches; merge (or revert) anything already shared.
+
+**5. What is the difference between `git reset` and `git revert`?**
+Reset moves the current branch pointer backward to an earlier commit - history is rewritten from the branch's point of view (with `--soft/--mixed/--hard` controlling what survives on disk). Revert creates a *new* commit that performs the inverse of a given commit, so history only grows forward. Reset is for local, unshared history; revert is the shared-safe undo.
+
+**6. What is HEAD?**
+HEAD is Git's "you are here" pointer: normally a file (`.git/HEAD`) naming the branch you are on, which in turn names that branch's tip commit. Committing advances the current branch, which moves HEAD's referent. When HEAD holds a raw commit hash instead of a branch name, you are in "detached HEAD" state - safe for inspecting, unwise for committing.
+
+**7. What is a fast-forward merge?**
+A merge where the current branch has no new commits since the other branch diverged, so Git can simply slide the current branch pointer forward to the other branch's tip - no merge commit needed. `--no-ff` forces a merge commit anyway, recording explicitly that a feature branch existed.
+
+**8. How do you undo a commit that has already been pushed to a shared branch?**
+With `git revert <commit>`: it creates a new, inverse commit, which you push normally. Never `reset` or rewrite history on shared branches - teammates' histories would diverge from yours, producing duplicated and conflicting work.
+
+**9. What is the reflog?**
+The reference log: Git's local, append-only diary of everywhere HEAD and branch pointers have been. Because commits are objects in a database (and "deletion" usually just un-references them), the reflog typically lets you find and restore "lost" commits for around 90 days - the safety net behind `git reset --hard` mistakes.
+
+**10. How does `git bisect` work?**
+Binary search over history to find the commit that introduced a bug: you mark the current version bad and a known-good version good; Git checks out the midpoint, you judge it, and the suspect range halves each round - about six steps for 60 commits. `git bisect run <command>` automates the judging using a test's exit code.
+
+**11. What is a detached HEAD state and how do you get out of it?**
+HEAD pointing directly at a commit instead of riding a branch - caused by checking out a tag or commit hash. Exit with `git switch <branch>`. If you committed while detached and want that work, `git branch rescue <hash>` first (or find it via the reflog).
+
+**12. What is the difference between an annotated and a lightweight tag?**
+A lightweight tag is just a pointer file - a private bookmark. An annotated tag is a full Git object carrying tagger, date, message, and optional cryptographic signature, and it is what you publish for releases.
+
+**13. How do you resolve a merge conflict?**
+Git marks the file with `<<<<<<<` (your branch's side), `=======` (divider), and `>>>>>>>` (incoming branch's side). I edit the file into the version that should exist going forward - choosing one side, the other, or a combination - then `git add` the file to mark it resolved and `git commit` to complete the merge. `git merge --abort` cancels everything if needed.
+
+**14. What is the staging command you would use to commit only *some* of the changes inside a single file?**
+`git add -p <file>` (patch mode): it walks through the file's changed regions ("hunks") one by one, asking y/n per hunk, building a staging selection finer than whole files. (Chapter 12 mentioned it as a teaser; it is a fair interview follow-up.)
+
+**15. What is the `.git` directory?**
+The entire repository's machinery in one hidden folder: `HEAD` (the you-are-here pointer), `config` (local settings), `index` (the staging area, literally a file), `objects/` (the content-addressed database of every blob, tree, and commit), `refs/` (branches are small pointer files inside it), `logs/` (the reflog), and `hooks/`. Deleting it converts the project back into a plain folder with no history.
+
+---
+
+### Chapter 39: Your Roadmap to Mastery
+
+#### 39.1 The Four-Week Practice Ladder
+
+Reading this guide made you *literate*; the following month makes you *fluent*. Each week assumes about 30-60 minutes of deliberate practice, and each builds on the last exactly as the chapters did.
+
+- **Week 1 - The loop, until it is boring.** Create a fresh repository every day and run the full Chapter 12 cycle: edit, status, add, commit, log, diff. On day 3, add branching (Chapter 16); on day 5, deliberately create and resolve a conflict (Chapter 18). Boring is the goal: fluency is boredom, installed.
+- **Week 2 - Live on GitHub.** Push every practice repository (Chapter 22). Convert each of the five TaskFlow-adjacent mini-projects into a proper repo: README with badge, issues filed *before* working, each change through a PR you self-review, squash-merged. Tag each one `v1.0.0` with a Release (Chapter 34.9's shape).
+- **Week 3 - Collaborate with yourself, then others.** Clone your own repos on a second machine (or a second folder) and practice pull-merge-push sync (Chapter 37.4's dance). Then go public: find an open source project you actually use, find its `good first issue` label (Chapter 24.4), and contribute one documentation fix through the full fork-and-PR workflow. The first merged PR is a career moment; documentation is the honest, high-merge-rate place to earn it.
+- **Week 4 - Automate.** Add CI to one repository (Chapter 32's shape, adapted: real tests if the project has them, syntax checks if not), then a Pages deployment (Chapter 33). Break your own CI deliberately (introduce a failing test) and read the failure log - debugging the red X is half the skill of owning the green one.
+
+#### 39.2 Project Ideas That Compound
+
+The portfolio that grows from this ladder: a personal homepage at `yourname.github.io` (Chapter 25.6, deployed via your own Chapter 33 workflow); TaskFlow extended into *your* idea of a tool (recurrence? due dates? multiple lists? - each feature a branch and a PR); a `dotfiles` repository (your editor and shell configuration, versioned - a beloved developer tradition that doubles as configuration-as-code practice); and one contribution each to two open source projects (documentation counts, always).
+
+#### 39.3 The Resources Worth Your Time
+
+- **Pro Git** (git-scm.com/book) - the official, complete, free book by Scott Chacon and Ben Straub; Chapters 1-3 and 7 overlap beautifully with this guide's territory, and its reference chapters outlast any tutorial.
+- **The official Git documentation and tutorials** (git-scm.com/doc) - `git help <command>` in your terminal is the same content, offline.
+- **GitHub Skills** (skills.github.com) - GitHub's free interactive course platform; "Introduction to GitHub" and "Communicate using Markdown" are the natural next credits after this guide.
+- **Learn Git Branching** (learngitbranching.js.org) - the famous interactive visual trainer for branching, merging, and rebasing; the sandbox where Chapter 7's pointer diagrams come alive.
+- **Oh Shit, Git!?!** (ohshitgit.com) - the friendly emergency manual for exactly the Chapter 37 moments, with the profanity level the URL promises.
+- **The GitHub docs** (docs.github.com) - authoritative for every platform feature: Actions, Pages, security, and the API.
+
+#### 39.4 The Closing Perspective
+
+You began this guide with the folder named `final_v2_FINAL_fixed_real_LAST.doc`, and you now know why that folder is extinct in professional software. You know the three areas and why every command is a transfer between them. You can branch, merge, resolve, rebase, revert, and rescue. You have shipped a real application through issues, pull requests, automated tests, and automated deployment, and you possess the encyclopedia for the days things go wrong anyway - because they will, to everyone, forever, and that is fine.
+
+Git rewards depth for decades: every advanced topic you will ever meet - worktrees, filter-repo, `log -S`, replace refs, signed commits - is a composition of the ideas in this guide, built on the three areas, the checksummed objects, and the pointers. You did not just learn commands; you learned the machine underneath them.
+
+The last assignment is the first one, again, for real: open a terminal, `git init` something that matters to you, and begin.
+
+## Appendices
+
+### Appendix A: Complete Command Reference
+
+Every command taught in this guide, grouped by purpose. The chapter where each concept was taught appears in parentheses.
+
+**Setup and configuration (Chapter 8-9, 10)**
+
+| Command | Meaning |
+| --- | --- |
+| `git --version` | show the installed Git version |
+| `git config --global user.name "Name"` | set the name stamped on your commits |
+| `git config --global user.email "email"` | set the email stamped on your commits (match GitHub) |
+| `git config --global init.defaultBranch main` | name new repositories' first branch `main` |
+| `git config --global core.editor "code --wait"` | choose the editor for commit messages |
+| `git config --global core.autocrlf true` / `input` | normalize line endings (Windows / macOS-Linux) |
+| `git config --list [--show-origin]` | print all settings, optionally with source files |
+| `git config --global --unset <key>` | remove a setting |
+| `ssh-keygen -t ed25519 -C "email"` | generate an SSH key pair |
+| `ssh -T git@github.com` | test the GitHub SSH connection |
+
+**Starting repositories (Chapter 11)**
+
+| Command | Meaning |
+| --- | --- |
+| `git init [-b main]` | make the current folder a repository |
+| `git clone <url> [folder]` | download a full copy of a remote repository |
+| `git clone --depth 1 <url>` | shallow clone: latest snapshot only |
+| `git branch -m main` | rename the current branch to `main` |
+
+**The daily loop (Chapters 12-14)**
+
+| Command | Meaning |
+| --- | --- |
+| `git status [-sb]` | show the state of the three areas |
+| `git add <file>` / `git add .` / `git add -A` / `git add -u` | stage files (specific / here / all / all-tracked) |
+| `git add -p` | stage selected hunks interactively |
+| `git commit -m "message"` | commit the staged snapshot, with message |
+| `git commit -am "message"` | stage tracked changes and commit in one step |
+| `git commit --amend [--no-edit]` | fix the most recent commit |
+| `git log [--oneline -n --stat -p --graph --all]` | view history (compact / limited / with stats / with diffs / drawn) |
+| `git log --grep="word"` / `--author="Name"` | filter history by message or author |
+| `git show [revision]` | inspect one commit |
+| `git diff` / `--staged` / `HEAD` | compare: disk-vs-staging / staging-vs-HEAD / disk-vs-HEAD |
+| `git diff A B` / `--stat` | compare two commits or branches / summary only |
+| `git blame [-L a,b] <file>` | who changed each line, when, in which commit |
+| `git shortlog -sn` | commit counts per author |
+
+**Ignoring files (Chapter 15)**
+
+| Command | Meaning |
+| --- | --- |
+| `git status --ignored` | include ignored files in status |
+| `git check-ignore -v <path>` | show which ignore rule matches a path |
+| `git rm --cached <file>` | stop tracking a file, keep it on disk |
+
+**Branching and merging (Chapters 16-18)**
+
+| Command | Meaning |
+| --- | --- |
+| `git branch [-v]` | list branches (with tips) |
+| `git branch <name>` | create a branch |
+| `git branch -d / -D <name>` | delete a branch (safely / forcefully) |
+| `git branch -m <new-name>` | rename the current branch |
+| `git switch <branch>` | change branches |
+| `git switch -c <name>` | create and switch in one step |
+| `git switch -` | return to the previous branch |
+| `git switch --detach <tag-or-commit>` | visit a commit or tag (detached HEAD) |
+| `git merge <branch>` | merge that branch into the current one |
+| `git merge --no-ff <branch>` | merge, always creating a merge commit |
+| `git merge --abort` | cancel a conflicted merge |
+
+**Rewriting and parking (Chapters 19-20)**
+
+| Command | Meaning |
+| --- | --- |
+| `git rebase <branch>` | replay current branch's commits onto that branch |
+| `git rebase -i HEAD~n` | interactively edit your last n commits |
+| `git rebase --continue / --abort` | proceed past / cancel a rebase |
+| `git stash [push -m "msg"]` | shelve uncommitted work |
+| `git stash -u` | stash including untracked files |
+| `git stash list` | show the stash stack |
+| `git stash pop / apply [stash@{n}]` | restore (and remove / keep) a stash |
+| `git stash drop / clear` | delete one / all stashes |
+
+**Tags (Chapter 21)**
+
+| Command | Meaning |
+| --- | --- |
+| `git tag` / `git tag -l "v1.*"` | list tags (all / matching pattern) |
+| `git tag -a v1.0.0 -m "msg"` | create an annotated tag |
+| `git tag -a v1.0.0 <commit>` | tag a past commit |
+| `git show v1.0.0` | inspect a tag and its commit |
+| `git tag -d v1.0.0` | delete a local tag |
+| `git push origin v1.0.0` / `--tags` | push one / all tags |
+| `git push origin --delete v1.0.0` | delete a remote tag |
+
+**Remotes and collaboration (Chapters 22-24)**
+
+| Command | Meaning |
+| --- | --- |
+| `git remote add <name> <url>` | register a remote (origin / upstream) |
+| `git remote -v` | list remotes with addresses |
+| `git remote set-url <name> <url>` | change a remote's address |
+| `git remote rename / remove` | rename / forget a remote |
+| `git push [-u origin main]` | upload commits (-u links the branch) |
+| `git fetch [origin]` | download remote updates, change nothing local |
+| `git pull [--rebase]` | fetch and merge (or rebase) into current branch |
+| `git log main..origin/main` | commits the remote has that you don't |
+
+**Undoing and recovering (Chapters 26-27)**
+
+| Command | Meaning |
+| --- | --- |
+| `git restore <file>` | discard uncommitted changes to a file |
+| `git restore --staged <file>` | unstage a file |
+| `git reset --soft / --mixed / --hard HEAD~n` | undo n commits (keep staged / keep unstaged / erase) |
+| `git revert <commit>` | undo a shared commit with an inverse commit |
+| `git revert -m 1 <merge-commit>` | revert a merge commit |
+| `git reflog` | the HEAD movement diary |
+| `git clean -n` / `-f` / `-fd` | dry-run / delete untracked files |
+| `git cherry-pick [-x] <commit>` | copy one commit onto the current branch |
+| `git bisect start/bad/good/reset` | binary-search history for a bug |
+| `git bisect run <command>` | automated bisect via a test command |
+| `git grep [-n -i -c -l] "pattern" [revision]` | search tracked files (line numbers / insensitive / count / files / in history) |
+
+**Hooks, aliases, internals (Chapters 28-30)**
+
+| Command | Meaning |
+| --- | --- |
+| `chmod +x .git/hooks/<hook>` | activate a hook script |
+| `git commit --no-verify` | skip hooks for one commit |
+| `git config --global alias.<name> "<cmd>"` | create a shorthand |
+| `git config --global --get-regexp alias` | list your aliases |
+| `git submodule add <url> [path]` | embed a repository |
+| `git submodule update --init --recursive` | populate submodules after cloning |
+| `git clone --recurse-submodules <url>` | clone including submodules |
+| `git cat-file -p <object>` | pretty-print any internal object |
+| `git hash-object <file>` | show the checksum ID content would have |
+| `git ls-files` | list the files in the index |
+
+### Appendix B: Glossary
+
+| Term | One-line meaning |
+| --- | --- |
+| Repository (repo) | a folder whose complete history Git stores in its `.git` directory |
+| Working directory | the folder you actually see and edit ("real life") |
+| Staging area / index | the waiting room of selected changes that the next commit will contain |
+| Commit | a permanent, checksummed snapshot with message, author, and parent |
+| SHA / hash | the 40-character checksum ID of any Git object |
+| HEAD | the pointer marking where you are (usually: the current branch) |
+| Branch | a movable pointer to one commit; a line of work |
+| Checkout | old multi-purpose command for switching/creating branches and restoring files |
+| `git switch` / `git restore` | the modern (2019) split of checkout's duties: branches / files |
+| Merge | combining two branches' work into one history |
+| Merge commit | a commit with two parents, recording a merge |
+| Fast-forward | a merge where the branch pointer can simply slide forward |
+| Conflict | two histories changed the same lines; a human decides the result |
+| Rebase | replaying commits onto a new parent, producing linear history |
+| Golden Rule | never rebase or rewrite history that others already have |
+| Stash | a drawer for uncommitted work, restored later |
+| Tag | a permanent named pointer, usually marking a release |
+| Annotated tag | a full tag object with tagger, date, message |
+| SemVer | MAJOR.MINOR.PATCH version numbering with meaning |
+| Remote | a named shortcut to a copy of the repo elsewhere (GitHub) |
+| origin / upstream | conventional remote names: yours / the original project |
+| Remote-tracking branch | your local snapshot of a remote branch's position (`origin/main`) |
+| Clone / fork | local copy of a repository / your server-side copy on GitHub |
+| Pull request (PR) | the web page requesting that your branch be reviewed and merged |
+| Squash merge | melting all of a PR's commits into one on merge |
+| Issue | a tracked discussion for one bug or task |
+| Release | a tag plus notes plus artifacts, published on GitHub |
+| CI / CD | automatic test-and-build on every change / automatic delivery and deployment |
+| Workflow / job / step / runner / action | GitHub Actions vocabulary: file / unit / item / machine / reusable step |
+| Reflog | the local diary of HEAD movements; the recovery time machine |
+| Detached HEAD | HEAD pinned to a commit instead of riding a branch |
+| Conventional Commits | `feat:`/`fix:`/... typed commit messages machines can parse |
+| Atomic commit | one commit = one logical change |
+| `.gitignore` / `.gitattributes` | files Git should not track / per-path behavior rules |
+| `.gitmodules` | the file recording a repository's submodules |
+| Git LFS | the extension for versioning huge files via pointers |
+| Plumbing / porcelain | Git's low-level commands / its friendly everyday commands |
+| Blob / tree / commit object | file content / directory listing / snapshot-plus-metadata in the database |
+| Monorepo | one repository containing many related projects |
+| Trunk-based development | merging to main multiple times daily behind feature flags |
+| Personal Access Token | a password-like credential for HTTPS Git operations |
+| Secret | an encrypted value GitHub exposes only to workflows |
 
